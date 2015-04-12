@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package to.sauerkraut.admin.db.repository;
+package to.sauerkraut.krautadmin.db.repository;
 
 import com.google.inject.ProvidedBy;
 import com.google.inject.internal.DynamicSingletonProvider;
@@ -24,7 +24,7 @@ import ru.vyarus.guice.persist.orient.repository.core.ext.service.result.ext.det
 import ru.vyarus.guice.persist.orient.support.repository.mixin.crud.ObjectCrud;
 
 import java.util.List;
-import to.sauerkraut.admin.db.model.SampleEntity;
+import to.sauerkraut.krautadmin.db.model.SampleEntity;
 
 /**
  *

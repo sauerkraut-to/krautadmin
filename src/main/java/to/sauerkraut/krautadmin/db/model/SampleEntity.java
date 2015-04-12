@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package to.sauerkraut.admin.db.model;
+package to.sauerkraut.krautadmin.db.model;
 
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 

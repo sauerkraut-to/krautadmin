@@ -14,31 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package to.sauerkraut.admin.db;
+package to.sauerkraut.krautadmin.db;
 
-import com.google.inject.persist.PersistService;
-import io.dropwizard.lifecycle.Managed;
+import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
+import org.slf4j.Logger;
+import ru.vyarus.guice.ext.log.Log;
+import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
+import to.sauerkraut.krautadmin.db.model.SampleEntity;
+import to.sauerkraut.krautadmin.db.repository.SampleEntityRepository;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Singleton
-public class PersistenceManager implements Managed {
+@Transactional
+public class DataBootstrap implements DataInitializer {
 
     @Inject
-    private PersistService persistService;
+    private SampleEntityRepository repository;
+    @Log
+    private Logger logger;
 
     @Override
-    public void start() throws Exception {
-        persistService.start();
-    }
+    public void initializeData() {
+        if (repository.count() == 0) {
+            logger.info("Bootstrapping sample data");
 
-    @Override
-    public void stop() throws Exception {
-        persistService.stop();
+            for (int i = 0; i < 20; i++) {
+                repository.save(new SampleEntity("comment" + i));
+            }
+        }
     }
 }

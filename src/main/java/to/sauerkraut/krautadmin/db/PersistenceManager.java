@@ -14,34 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package to.sauerkraut.admin.resources;
+package to.sauerkraut.krautadmin.db;
 
-import to.sauerkraut.admin.db.model.SampleEntity;
-import to.sauerkraut.admin.db.repository.SampleEntityRepository;
+import com.google.inject.persist.PersistService;
+import io.dropwizard.lifecycle.Managed;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import java.util.List;
+import javax.inject.Singleton;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-@Path("/sample")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public class SampleEntityResource {
+@Singleton
+public class PersistenceManager implements Managed {
 
     @Inject
-    private SampleEntityRepository dao;
+    private PersistService persistService;
 
-    @GET
-    @Path("/")
-    public List<SampleEntity> list() {
-        return dao.dontDoThat();
+    @Override
+    public void start() throws Exception {
+        persistService.start();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        persistService.stop();
     }
 }

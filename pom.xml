@@ -10,7 +10,7 @@
     </prerequisites>
 
     <groupId>to.sauerkraut</groupId>
-    <artifactId>admin</artifactId>
+    <artifactId>krautadmin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -21,7 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.8.1</dropwizard.version>
         <orient.version>2.0.6</orient.version>
-        <mainClass>to.sauerkraut.admin.KrautAdminApplication</mainClass>
+        <mainClass>to.sauerkraut.krautadmin.KrautAdminApplication</mainClass>
     </properties>
 
     <dependencies>

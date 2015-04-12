@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package to.sauerkraut.admin;
+package to.sauerkraut.krautadmin;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
@@ -33,7 +33,7 @@ import ru.vyarus.guice.persist.orient.RepositoryModule;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
 import ru.vyarus.guice.persist.orient.support.AutoScanSchemeModule;
 import ru.vyarus.guice.validator.ImplicitValidationModule;
-import to.sauerkraut.admin.db.DataBootstrap;
+import to.sauerkraut.krautadmin.db.DataBootstrap;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.AnnotatedElement;
