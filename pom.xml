@@ -217,6 +217,75 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- BEGIN JD DEPENDENCIES -->
+        <dependency>
+            <groupId>org.jdownloader</groupId>
+            <artifactId>jd-core</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jdownloader</groupId>
+            <artifactId>jd-browser</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.appwork</groupId>
+            <artifactId>jd-util</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mozilla</groupId>
+            <artifactId>rhino</artifactId>
+            <version>1.7R5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.47</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit-core-js</artifactId>
+            <version>2.15</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jhlabs</groupId>
+            <artifactId>filters</artifactId>
+            <version>2.0.235-1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jclarion</groupId>
+            <artifactId>image4j</artifactId>
+            <version>0.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.flex.compiler</groupId>
+            <artifactId>swfutils</artifactId>
+            <version>4.6.b.23201</version>
+        </dependency>
+        <dependency>
+            <groupId>com.adobe.flex.compiler</groupId>
+            <artifactId>asc</artifactId>
+            <version>4.6.b.23201</version>
+        </dependency>
+        <dependency>
+            <groupId>com.btr</groupId>
+            <artifactId>proxy-vole</artifactId>
+            <version>20131209</version>
+        </dependency>
+        <!-- END JD DEPENDENCIES -->
+        <dependency>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>zt-zip</artifactId>
+            <version>1.8</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>
@@ -362,6 +431,15 @@
             <id>sonatype-nexus-snapshots</id>
             <name>Sonatype Nexus Snapshots</name>
             <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+        <repository>
+            <id>sonatype-forge</id>
+            <url>https://repository.sonatype.org/content/groups/forge/</url>
+        </repository>
+        <repository>
+            <id>soapui-maven</id>
+            <name>Soapui Maven</name>
+            <url>http://www.soapui.org/repository/maven2</url>
         </repository>
     </repositories>
 </project>
