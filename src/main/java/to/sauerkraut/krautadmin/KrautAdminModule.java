@@ -37,7 +37,6 @@ import to.sauerkraut.krautadmin.db.DataBootstrap;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.AnnotatedElement;
-import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
 
 /**
  *
@@ -74,20 +73,11 @@ public class KrautAdminModule extends AbstractModule implements
     }
 
     private void bindDb() {
-        final KrautAdminConfiguration.DbConfiguration db = configuration.getDbConfiguration();
+        final KrautAdminConfiguration.DatabaseConfiguration db = configuration.getDatabaseConfiguration();
         final String pkg = configuration.getClass().getPackage().getName();
-        String databaseParentFolderPath = null;
         
-        try {
-            databaseParentFolderPath = OrientServerConfiguration.getJarContainingFolder();
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to determine application .jar location", e);
-        }
-        
-        install(new OrientModule(db.getUri().replace("$TMP", System.getProperty("java.io.tmpdir"))
-                .replace("$JAR", databaseParentFolderPath), db.getUser(), db.getPass())
-                .autoCreateLocalDatabase(db.isCreate()).
-                dropInsecureUsersOnAutoCreate(db.isDropInsecureUsersOnCreate()));
+        install(new OrientModule(db.getUri(), db.getUser(), db.getPass())
+                .autoCreateLocalDatabase(false));
         // auto scan classpath for entities annotated with @Persistent
         install(new AutoScanSchemeModule(pkg));
         install(new RepositoryModule());

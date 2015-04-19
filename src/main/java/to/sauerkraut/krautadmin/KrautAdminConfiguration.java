@@ -18,48 +18,55 @@ package to.sauerkraut.krautadmin;
 
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.persist.PersistService;
+import java.io.File;
+import java.net.URLDecoder;
+import java.security.CodeSource;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.dropwizard.orient.configuration.HasOrientServerConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
+import to.sauerkraut.krautadmin.db.setup.HasDatabaseConfiguration;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-public class KrautAdminConfiguration extends Configuration implements HasOrientServerConfiguration {
+public class KrautAdminConfiguration extends Configuration 
+    implements HasOrientServerConfiguration, HasDatabaseConfiguration {
     
     @NotNull
     @Valid
     @JsonProperty("db")
-    private DbConfiguration dbConfiguration;
+    private DatabaseConfiguration databaseConfiguration;
     
     @NotNull
     @Valid
     @JsonProperty("orient-server")
-    private OrientServerConfiguration orientServerConfiguration;
+    private JarLocationAwareOrientServerConfiguration orientServerConfiguration;
     
     @Inject
     private PersistService orientService;
 
     @Override
-    public OrientServerConfiguration getOrientServerConfiguration() {
+    public JarLocationAwareOrientServerConfiguration getOrientServerConfiguration() {
         return orientServerConfiguration;
     }
     
-    public void setOrientServerConfiguration(final OrientServerConfiguration orientServerConfiguration) {
+    public void setOrientServerConfiguration(
+            final JarLocationAwareOrientServerConfiguration orientServerConfiguration) {
         this.orientServerConfiguration = orientServerConfiguration;
     }
     
-    public void setDbConfiguration(final DbConfiguration dbConfiguration) {
-        this.dbConfiguration = dbConfiguration;
+    public void setDatabaseConfiguration(final DatabaseConfiguration dbConfiguration) {
+        this.databaseConfiguration = dbConfiguration;
     }
     
-    public DbConfiguration getDbConfiguration() {
-        return dbConfiguration;
+    public DatabaseConfiguration getDatabaseConfiguration() {
+        return databaseConfiguration;
     }
 
     public PersistService getOrientService() {
@@ -70,11 +77,45 @@ public class KrautAdminConfiguration extends Configuration implements HasOrientS
         this.orientService = orientService;
     }
     
+    public static String getJarContainingFolder() throws Exception {
+        return getJarContainingFolder(OrientServerConfiguration.class);
+    }
+    
+    private static String getJarContainingFolder(final Class aclass) throws Exception {
+        final CodeSource codeSource = aclass.getProtectionDomain().getCodeSource();
+
+        File jarFile;
+
+        if (codeSource.getLocation() != null) {
+            jarFile = new File(codeSource.getLocation().toURI());
+        } else {
+            final String path = aclass.getResource(aclass.getSimpleName() + ".class").getPath();
+            String jarFilePath = path.substring(path.indexOf(':') + 1, path.indexOf('!'));
+            jarFilePath = URLDecoder.decode(jarFilePath, "UTF-8");
+            jarFile = new File(jarFilePath);
+        }
+        return jarFile.getParentFile().getAbsolutePath();
+    }
+    
+    public static String parseDbPath(final String path) {
+        final String trimmedPath = Strings.emptyToNull(path);
+        
+        try {
+            return trimmedPath == null ? null
+                : trimmedPath.replace("$TMP", System.getProperty("java.io.tmpdir"))
+                    .replace("$JAR", getJarContainingFolder(OrientServerConfiguration.class));
+            
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to determine "
+            + "application .jar location", e);
+        }
+    }
+    
     /**
      *
      * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
      */
-    public static class DbConfiguration {
+    public static class DatabaseConfiguration {
         @NotBlank
         @JsonProperty
         private String uri;
@@ -110,7 +151,7 @@ public class KrautAdminConfiguration extends Configuration implements HasOrientS
         }
 
         public void setUri(final String uri) {
-            this.uri = uri;
+            this.uri = parseDbPath(uri);
         }
 
         public void setUser(final String user) {
@@ -131,6 +172,29 @@ public class KrautAdminConfiguration extends Configuration implements HasOrientS
 
         public void setDropInsecureUsersOnCreate(final boolean dropInsecureUsersOnCreate) {
             this.dropInsecureUsersOnCreate = dropInsecureUsersOnCreate;
+        }
+    }
+    
+    /**
+     *
+     * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
+     */
+    public static class JarLocationAwareOrientServerConfiguration extends OrientServerConfiguration {
+        
+        /**
+         * Directory may not exist - orient will create it when necessary.
+         * Special variable '$TMP' could be used. It will be substituted
+         * by system temp directory path ('java.io.tmpdir').
+         * Special variable '$JAR' could be used. It will be substituted
+         * by current jar's directory path - in fat jars this will be the folder 
+         * containing the fat jar.
+         *
+         * @param filesPath path to store database files.
+         */
+        @JsonProperty("files-path")
+        @Override
+        public void setFilesPath(final String filesPath) {
+            super.setFilesPath(parseDbPath(filesPath));
         }
     }
 }
