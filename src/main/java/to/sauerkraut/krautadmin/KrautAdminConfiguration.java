@@ -18,18 +18,16 @@ package to.sauerkraut.krautadmin;
 
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.persist.PersistService;
-import java.io.File;
-import java.net.URLDecoder;
-import java.security.CodeSource;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.dropwizard.orient.configuration.HasOrientServerConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
+import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.setup.HasDatabaseConfiguration;
+import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
 
 /**
  *
@@ -42,6 +40,11 @@ public class KrautAdminConfiguration extends Configuration
     @Valid
     @JsonProperty("db")
     private DatabaseConfiguration databaseConfiguration;
+    
+    @NotNull
+    @Valid
+    @JsonProperty("scheduler")
+    private ExtendedSchedulerConfiguration schedulerConfiguration;
     
     @NotNull
     @Valid
@@ -65,6 +68,7 @@ public class KrautAdminConfiguration extends Configuration
         this.databaseConfiguration = dbConfiguration;
     }
     
+    @Override
     public DatabaseConfiguration getDatabaseConfiguration() {
         return databaseConfiguration;
     }
@@ -76,39 +80,13 @@ public class KrautAdminConfiguration extends Configuration
     public void setOrientService(final PersistService orientService) {
         this.orientService = orientService;
     }
-    
-    public static String getJarContainingFolder() throws Exception {
-        return getJarContainingFolder(OrientServerConfiguration.class);
-    }
-    
-    private static String getJarContainingFolder(final Class aclass) throws Exception {
-        final CodeSource codeSource = aclass.getProtectionDomain().getCodeSource();
 
-        File jarFile;
-
-        if (codeSource.getLocation() != null) {
-            jarFile = new File(codeSource.getLocation().toURI());
-        } else {
-            final String path = aclass.getResource(aclass.getSimpleName() + ".class").getPath();
-            String jarFilePath = path.substring(path.indexOf(':') + 1, path.indexOf('!'));
-            jarFilePath = URLDecoder.decode(jarFilePath, "UTF-8");
-            jarFile = new File(jarFilePath);
-        }
-        return jarFile.getParentFile().getAbsolutePath();
+    public ExtendedSchedulerConfiguration getSchedulerConfiguration() {
+        return schedulerConfiguration;
     }
-    
-    public static String parseDbPath(final String path) {
-        final String trimmedPath = Strings.emptyToNull(path);
-        
-        try {
-            return trimmedPath == null ? null
-                : trimmedPath.replace("$TMP", System.getProperty("java.io.tmpdir"))
-                    .replace("$JAR", getJarContainingFolder(OrientServerConfiguration.class));
-            
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to determine "
-            + "application .jar location", e);
-        }
+
+    public void setSchedulerConfiguration(final ExtendedSchedulerConfiguration schedulerConfiguration) {
+        this.schedulerConfiguration = schedulerConfiguration;
     }
     
     /**
@@ -151,7 +129,7 @@ public class KrautAdminConfiguration extends Configuration
         }
 
         public void setUri(final String uri) {
-            this.uri = parseDbPath(uri);
+            this.uri = Toolkit.parseDbPath(uri);
         }
 
         public void setUser(final String user) {
@@ -183,9 +161,9 @@ public class KrautAdminConfiguration extends Configuration
         
         /**
          * Directory may not exist - orient will create it when necessary.
-         * Special variable '$TMP' could be used. It will be substituted
+         * Special variable '$TMP' can be used. It will be substituted
          * by system temp directory path ('java.io.tmpdir').
-         * Special variable '$JAR' could be used. It will be substituted
+         * Special variable '$JAR' can be used. It will be substituted
          * by current jar's directory path - in fat jars this will be the folder 
          * containing the fat jar.
          *
@@ -194,7 +172,7 @@ public class KrautAdminConfiguration extends Configuration
         @JsonProperty("files-path")
         @Override
         public void setFilesPath(final String filesPath) {
-            super.setFilesPath(parseDbPath(filesPath));
+            super.setFilesPath(Toolkit.parseDbPath(filesPath));
         }
     }
 }

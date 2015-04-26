@@ -20,16 +20,15 @@ import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.io.IOException;
 import java.util.HashMap;
-import jd.utils.JDUtilities;
 import org.jdownloader.plugins.controller.PluginClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
 import ru.vyarus.dropwizard.orient.OrientServerBundle;
 import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
+import to.sauerkraut.krautadmin.core.Toolkit;
 
 /**
  *
@@ -37,7 +36,12 @@ import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
  */
 public class KrautAdminApplication extends Application<KrautAdminConfiguration> {
     
-    private final Logger logger = LoggerFactory.getLogger(KrautAdminApplication.class);
+    private static String jarFolder;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    
+    public static String getJarFolder() {
+        return jarFolder;
+    }
           
     /**
      * This is the application's entry point.
@@ -46,6 +50,11 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
      * @throws Exception 
      */
     public static void main(final String[] args) throws Exception {
+        try {
+            jarFolder = Toolkit.getJarContainingFolder();
+        } catch (Exception ex) {
+            throw new IOException(ex);
+        }
         new KrautAdminApplication().run(args);
     }
 
@@ -57,17 +66,13 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
     @Override
     public void initialize(final Bootstrap<KrautAdminConfiguration> bootstrap) {
         // disable jd dynamic libraries, as we include everything we need via maven
-        // TODO: throw / capsule
+        // TODO: throw / capsule?
         try {
-            final Field dynLibsField = PluginClassLoader.class.getDeclaredField("DYNAMIC_LOADABLE_LOBRARIES");
-            setFinalStatic(dynLibsField, new HashMap<String, String>());
+            Toolkit.setFinalStaticField(PluginClassLoader.class.getDeclaredField("DYNAMIC_LOADABLE_LOBRARIES"), 
+                    new HashMap<String, String>());
         } catch (Exception ex) {
-            logger.error("could not deacitvate jd dynamic libraries - app start is going to fail", ex);
+            logger.error("could not disable some jd automatism - app start is going to fail", ex);
         }
-        //TODO: unlink tmp folder with hoster cache on startup
-        //bootstrap.addBundle(new JDownloaderHostersUpdateBundle()); // remote update hoster plugins from Github
-        // init hoster plugins
-        JDUtilities.getPluginForHost("DirectHTTP"); 
         bootstrap.addBundle(new AssetsBundle("/assets/", "/", "index.html", "client"));
         bootstrap.addBundle(new DatabaseAutoCreationBundle());
         bootstrap.addBundle(new OrientServerBundle(getConfigurationClass()));
@@ -82,15 +87,5 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
     public void run(final KrautAdminConfiguration configuration,
                     final Environment environment) {
         
-    }
-    
-    static void setFinalStatic(final Field field, final Object newValue) throws Exception {
-        field.setAccessible(true);
-
-        final Field modifiersField = Field.class.getDeclaredField("modifiers");
-        modifiersField.setAccessible(true);
-        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-        field.set(null, newValue);
     }
 }

@@ -122,3 +122,7 @@ orient-server:
        - name: log.file.level
          value: fine
 
+scheduler:
+    basePackage: to.sauerkraut.krautadmin.job
+    timezone: 'Europe/Viennna'
+    intervalInitialDelaySeconds: 30

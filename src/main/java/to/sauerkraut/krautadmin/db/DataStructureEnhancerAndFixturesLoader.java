@@ -32,13 +32,13 @@ import to.sauerkraut.krautadmin.db.repository.SampleEntityRepository;
  */
 @Singleton
 @Transactional
-public class DataBootstrap implements DataInitializer {
-
+public class DataStructureEnhancerAndFixturesLoader implements DataInitializer {
+    
+    @Log
+    private static Logger logger;
     @Inject
     private SampleEntityRepository repository;
-    @Log
-    private Logger logger;
-
+    
     @Override
     public void initializeData() {
         if (repository.count() == 0) {

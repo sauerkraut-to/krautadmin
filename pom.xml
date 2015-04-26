@@ -26,6 +26,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
             <groupId>ru.vyarus</groupId>
             <artifactId>guice-validator</artifactId>
             <version>1.1.0</version>
@@ -107,6 +112,12 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
             <version>${dropwizard.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>
@@ -275,16 +286,23 @@
         </dependency>
         <!-- END JD DEPENDENCIES -->
         <dependency>
-            <groupId>org.zeroturnaround</groupId>
-            <artifactId>zt-zip</artifactId>
-            <version>1.8</version>
+            <groupId>com.fiestacabin.dropwizard.quartz</groupId>
+            <artifactId>dropwizard-quartz</artifactId>
+            <version>0.7.2</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
+                    <groupId>com.google.inject</groupId>
+                    <artifactId>guice</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.dropwizard</groupId>
+                    <artifactId>dropwizard-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>annotations</artifactId>
                 </exclusion>
             </exclusions>
-            <type>jar</type>
         </dependency>
     </dependencies>
 
@@ -402,6 +420,7 @@
                                 <exclude>META-INF/*.SF</exclude>
                                 <exclude>META-INF/*.DSA</exclude>
                                 <exclude>META-INF/*.RSA</exclude>
+                                <exclude>jd/plugins/hoster/**</exclude>
                             </excludes>
                         </filter>
                     </filters>
@@ -425,7 +444,6 @@
             </plugin>
         </plugins>
     </build>
-    
     <repositories>
         <repository>
             <id>sonatype-nexus-snapshots</id>

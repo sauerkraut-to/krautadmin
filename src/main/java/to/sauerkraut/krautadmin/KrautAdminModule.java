@@ -30,18 +30,21 @@ import ru.vyarus.dropwizard.guice.module.support.EnvironmentAwareModule;
 import ru.vyarus.guice.ext.ExtAnnotationsModule;
 import ru.vyarus.guice.persist.orient.OrientModule;
 import ru.vyarus.guice.persist.orient.RepositoryModule;
-import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
 import ru.vyarus.guice.persist.orient.support.AutoScanSchemeModule;
 import ru.vyarus.guice.validator.ImplicitValidationModule;
-import to.sauerkraut.krautadmin.db.DataBootstrap;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.AnnotatedElement;
+import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
+import to.sauerkraut.krautadmin.db.DataStructureEnhancerAndFixturesLoader;
+import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
+import to.sauerkraut.krautadmin.job.SchedulerModule;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
+@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class KrautAdminModule extends AbstractModule implements
         EnvironmentAwareModule,
         BootstrapAwareModule<KrautAdminConfiguration>,
@@ -70,6 +73,12 @@ public class KrautAdminModule extends AbstractModule implements
     protected void configure() {
         bindSupplement();
         bindDb();
+        bindScheduler();
+    }
+    
+    private void bindScheduler() {
+        bind(ExtendedSchedulerConfiguration.class).toInstance(configuration.getSchedulerConfiguration());
+        install(new SchedulerModule());
     }
 
     private void bindDb() {
@@ -83,7 +92,7 @@ public class KrautAdminModule extends AbstractModule implements
         install(new RepositoryModule());
 
         // not required, but using this feature of persist-orient to fill database
-        bind(DataInitializer.class).to(DataBootstrap.class);
+        bind(DataInitializer.class).to(DataStructureEnhancerAndFixturesLoader.class);
     }
 
     private void bindSupplement() {
