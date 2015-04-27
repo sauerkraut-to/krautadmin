@@ -304,6 +304,28 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse.jgit</groupId>
+            <artifactId>org.eclipse.jgit</artifactId>
+            <version>3.7.0.201502260915-r</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- for shallow cloning unfortunately we need a second git lib
+             using system git, due to jgit not supporting it -->
+        <dependency>
+            <groupId>to.sauerkraut</groupId>
+            <artifactId>jgitclone</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -458,6 +480,10 @@
             <id>soapui-maven</id>
             <name>Soapui Maven</name>
             <url>http://www.soapui.org/repository/maven2</url>
+        </repository>
+        <repository>
+            <id>jgit-repository</id>
+            <url>https://repo.eclipse.org/content/groups/releases/</url>
         </repository>
     </repositories>
 </project>

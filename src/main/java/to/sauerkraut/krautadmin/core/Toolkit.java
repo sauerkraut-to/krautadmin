@@ -18,8 +18,10 @@ package to.sauerkraut.krautadmin.core;
 
 import com.google.common.base.Strings;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.security.CodeSource;
 import java.util.ArrayList;
@@ -28,12 +30,21 @@ import org.apache.commons.io.FileUtils;
 import org.appwork.exceptions.WTFException;
 import org.appwork.shutdown.ShutdownController;
 import org.appwork.shutdown.ShutdownEvent;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.RebaseResult;
+import org.eclipse.jgit.api.RebaseResult.Status;
+import org.eclipse.jgit.api.ResetCommand;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.merge.MergeStrategy;
 import org.jdownloader.plugins.controller.PluginClassLoader;
 import org.jdownloader.plugins.controller.UpdateRequiredClassNotFoundException;
 import org.jdownloader.plugins.controller.host.HostPluginController;
 import org.jdownloader.plugins.controller.host.LazyHostPlugin;
 import org.slf4j.Logger;
-import ru.vyarus.guice.ext.log.Log;
+import org.slf4j.LoggerFactory;
+import to.sauerkraut.jgitclone.api.commands.GitClone;
+import to.sauerkraut.jgitclone.api.commands.GitCloneOptions;
+import to.sauerkraut.jgitclone.utilities.UrlUtilities;
 import to.sauerkraut.krautadmin.KrautAdminApplication;
 
 /**
@@ -41,8 +52,9 @@ import to.sauerkraut.krautadmin.KrautAdminApplication;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public final class Toolkit {
-    @Log
-    private static Logger logger;
+    public static final String LINKCHECKER_UPDATES_GIT_URL = "https://github.com/sauerkraut-to/jdupdates.git";
+    
+    private static final Logger LOG = LoggerFactory.getLogger(Toolkit.class);
     
     private Toolkit() {
         
@@ -102,22 +114,123 @@ public final class Toolkit {
         }
     }
     
-    public static void updateLinkCheckers() throws Exception {
+    public static synchronized void updateLinkCheckers() throws Exception {
+        final File pluginsParentDirectory = new File(
+                KrautAdminApplication.getJarFolder().concat(File.separator).concat("jd"));
+        boolean needsClassesReload = false;
+        final URI linkCheckerUpdatesGitUri = new URI(LINKCHECKER_UPDATES_GIT_URL);
+        
+        // try incremental update at first - if it fails, try a whole new repo clone
+        try {
+            needsClassesReload = updateFromGit(pluginsParentDirectory, linkCheckerUpdatesGitUri);
+        } catch (Exception e) {
+            if (e instanceof WTFException) {
+                LOG.error(e.getMessage(), e);
+            } else {
+                LOG.info(e.getMessage());
+            }
+            cloneFromGit(pluginsParentDirectory, linkCheckerUpdatesGitUri, true);
+            needsClassesReload = true;
+        }
+        
+        if (needsClassesReload) {
+            reloadLinkCheckerClasses();
+        }
+    }
+    
+    public static void cloneFromGit(final File targetDirectory, final URI repositoryUri, final boolean shallow) 
+            throws Exception {
+        try {
+            FileUtils.deleteDirectory(targetDirectory);
+            FileUtils.forceMkdir(targetDirectory);
+        } catch (IOException ioex) {
+            LOG.info("Could not delete and/or recreate plugin git repo directory, maybe did not exist");
+        }
+        
+        LOG.info("starting full plugin-update from git (shallow: " + String.valueOf(shallow) + ") ...");
+
+        if (shallow) {
+            final GitClone gitClone = new GitClone();
+            final GitCloneOptions gitCloneOptions = new GitCloneOptions();
+            gitCloneOptions.setDepth(2);
+
+            gitClone.clone(targetDirectory, gitCloneOptions, UrlUtilities.url2JavaGitUrl(repositoryUri.toURL()), 
+                    targetDirectory);
+        } else {
+            Git.cloneRepository().setURI(repositoryUri.toString()).setDirectory(targetDirectory).call();
+        }
+        LOG.info("full plugin-update successful");
+    }
+    
+    public static boolean updateFromGit(final File repositoryDirectory, final URI repositoryUri) 
+            throws Exception {
+        final String unexpectedExceptionText = "incremental plugin-update from git failed";
+        final String upstream = "refs/remotes/origin/master";
+        boolean hasUpdated = false;
+        Git gitRepo = null;
+        
+        try {
+            gitRepo = Git.open(repositoryDirectory);
+            // first reset local changes
+            gitRepo.reset().setMode(ResetCommand.ResetType.HARD).call(); 
+            LOG.info("starting incremental plugin-update from git...");
+            gitRepo.fetch().setRemote(Constants.DEFAULT_REMOTE_NAME).call();
+            final RebaseResult rebaseResult = gitRepo.rebase().setStrategy(MergeStrategy.THEIRS).
+                    setUpstream(upstream).
+                    setUpstreamName(upstream).call();
+            final Status rebaseStatus = rebaseResult.getStatus();
+            if (rebaseStatus.isSuccessful()) {
+                if (!(Status.UP_TO_DATE.equals(rebaseStatus))) {
+                    hasUpdated = true;
+                }
+            } else {
+                throw new WTFException(unexpectedExceptionText);
+            }
+
+            if (hasUpdated) {
+                LOG.info("incremental plugin-update from git successful");
+            } else {
+                LOG.info("plugin-files are up-to-date");
+            }
+        } finally {
+            try {
+                if (gitRepo != null) {
+                    gitRepo.close();
+                }
+            } catch (Exception closex) {
+                LOG.debug("closing git repo failed");
+            }
+        }
+        
+        return hasUpdated;
+    }
+    
+    protected static synchronized void reloadLinkCheckerClasses() throws Exception {
         clearLinkCheckerCaches();
         HostPluginController.getInstance().init();
         try {
             Toolkit.setFinalPrivateField(ShutdownController.class.getDeclaredField("hooks"), 
                     ShutdownController.getInstance(), new ArrayList<ShutdownEvent>());
         } catch (Exception ex) {
-            logger.error("could not disable unnecessary JD shutdown hooks", ex);
+            LOG.error("could not disable unnecessary JD shutdown hooks", ex);
         }
     }
     
-    protected static void clearLinkCheckerCaches() throws Exception {
+    protected static synchronized void clearLinkCheckerCaches() throws Exception {
         try {
             final String appPath = KrautAdminApplication.getJarFolder();
-            FileUtils.deleteDirectory(new File(appPath.concat(File.separator.concat("cfg"))));
-            FileUtils.deleteDirectory(new File(appPath.concat(File.separator.concat("tmp"))));
+            
+            try {
+                FileUtils.deleteDirectory(new File(appPath.concat(File.separator.concat("cfg"))));
+            } catch (IOException ioex) {
+                LOG.info("Could not delete 'cfg' directory");
+            }
+            try {
+                FileUtils.deleteDirectory(new File(appPath.concat(File.separator.concat("tmp"))));
+            } catch (IOException ioex) {
+                LOG.info("Could not delete 'tmp' directory");
+            }
+            
             Toolkit.setPrivateField(HostPluginController.class.getDeclaredField("lastKnownPlugins"), 
                     HostPluginController.getInstance(), new ArrayList<LazyHostPlugin>());
         } catch (Exception ex) {

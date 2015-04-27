@@ -71,7 +71,7 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
             Toolkit.setFinalStaticField(PluginClassLoader.class.getDeclaredField("DYNAMIC_LOADABLE_LOBRARIES"), 
                     new HashMap<String, String>());
         } catch (Exception ex) {
-            logger.error("could not disable some jd automatism - app start is going to fail", ex);
+            logger.error("could not disable jd dynamic libraries - app start is going to fail", ex);
         }
         bootstrap.addBundle(new AssetsBundle("/assets/", "/", "index.html", "client"));
         bootstrap.addBundle(new DatabaseAutoCreationBundle());

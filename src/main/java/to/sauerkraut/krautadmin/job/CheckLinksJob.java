@@ -34,7 +34,7 @@ import to.sauerkraut.krautadmin.db.repository.SampleEntityRepository;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @DisallowConcurrentExecution
-@Scheduled(interval = 1, unit = TimeUnit.SECONDS)
+@Scheduled(interval = 1, unit = TimeUnit.MINUTES)
 public class CheckLinksJob implements org.quartz.Job {
     
     @Log
