@@ -23,6 +23,7 @@ import com.google.inject.persist.PersistService;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import org.hibernate.validator.constraints.NotBlank;
+import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.HasOrientServerConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
 import to.sauerkraut.krautadmin.core.Toolkit;
@@ -43,6 +44,11 @@ public class KrautAdminConfiguration extends Configuration
     
     @NotNull
     @Valid
+    @JsonProperty("security")
+    private SecurityConfiguration securityConfiguration;
+    
+    @NotNull
+    @Valid
     @JsonProperty("scheduler")
     private ExtendedSchedulerConfiguration schedulerConfiguration;
     
@@ -50,6 +56,11 @@ public class KrautAdminConfiguration extends Configuration
     @Valid
     @JsonProperty("orient-server")
     private JarLocationAwareOrientServerConfiguration orientServerConfiguration;
+    
+    @NotNull
+    @Valid
+    @JsonProperty("shiro")
+    private ShiroConfiguration shiroConfiguration;
     
     @Inject
     private PersistService orientService;
@@ -87,6 +98,51 @@ public class KrautAdminConfiguration extends Configuration
 
     public void setSchedulerConfiguration(final ExtendedSchedulerConfiguration schedulerConfiguration) {
         this.schedulerConfiguration = schedulerConfiguration;
+    }
+
+    public ShiroConfiguration getShiroConfiguration() {
+        return shiroConfiguration;
+    }
+
+    public void setShiroConfiguration(final ShiroConfiguration shiroConfiguration) {
+        this.shiroConfiguration = shiroConfiguration;
+    }
+
+    public SecurityConfiguration getSecurityConfiguration() {
+        return securityConfiguration;
+    }
+
+    public void setSecurityConfiguration(final SecurityConfiguration securityConfiguration) {
+        this.securityConfiguration = securityConfiguration;
+    }
+    
+    /**
+     *
+     * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
+     */
+    public static class SecurityConfiguration {
+        @NotBlank
+        @JsonProperty
+        private String passwordHashFormat;
+        
+        @JsonProperty
+        private int passwordHashIterations;
+
+        public String getPasswordHashFormat() {
+            return passwordHashFormat;
+        }
+
+        public void setPasswordHashFormat(final String passwordHashFormat) {
+            this.passwordHashFormat = passwordHashFormat;
+        }
+
+        public int getPasswordHashIterations() {
+            return passwordHashIterations;
+        }
+
+        public void setPasswordHashIterations(final int passwordHashIterations) {
+            this.passwordHashIterations = passwordHashIterations;
+        }
     }
     
     /**

@@ -23,7 +23,10 @@ import ru.vyarus.guice.ext.log.Log;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
 
 import javax.inject.Singleton;
+import to.sauerkraut.krautadmin.db.model.FrontendDataMirror;
 import to.sauerkraut.krautadmin.db.model.SampleEntity;
+import to.sauerkraut.krautadmin.db.model.SecureFrontendDataMirror;
+import to.sauerkraut.krautadmin.db.repository.FrontendDataMirrorRepository;
 import to.sauerkraut.krautadmin.db.repository.SampleEntityRepository;
 
 /**
@@ -38,6 +41,8 @@ public class DataStructureEnhancerAndFixturesLoader implements DataInitializer {
     private static Logger logger;
     @Inject
     private SampleEntityRepository repository;
+    @Inject
+    private FrontendDataMirrorRepository frontendDataMirrorRepository;
     
     @Override
     public void initializeData() {
@@ -47,6 +52,17 @@ public class DataStructureEnhancerAndFixturesLoader implements DataInitializer {
             for (int i = 0; i < 20; i++) {
                 repository.save(new SampleEntity("comment" + i));
             }
+            
+            final FrontendDataMirror frontendDataMirror = new SecureFrontendDataMirror(
+                    SecureFrontendDataMirror.SecureFrontendDataMirrorProtocol.SSL, true);
+            frontendDataMirror.setActive(true);
+            frontendDataMirror.setFtpServer("ftp.test.org");
+            frontendDataMirror.setFtpUsername("testuser");
+            frontendDataMirror.setFtpPassword("testpass");
+            
+            frontendDataMirrorRepository.save(frontendDataMirror);
         }
+        
+        //TODO: at the end execute update scripts in right order and only if not executed yet
     }
 }

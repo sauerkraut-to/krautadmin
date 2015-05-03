@@ -21,21 +21,28 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.realm.Realm;
 import org.jdownloader.plugins.controller.PluginClassLoader;
+import org.secnod.dropwizard.shiro.ShiroBundle;
+import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
 import ru.vyarus.dropwizard.orient.OrientServerBundle;
 import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
 import to.sauerkraut.krautadmin.core.Toolkit;
+import to.sauerkraut.krautadmin.db.repository.UserRepository;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
+@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class KrautAdminApplication extends Application<KrautAdminConfiguration> {
-    
     private static String jarFolder;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
@@ -81,6 +88,26 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
                 .enableAutoConfig(getClass().getPackage().getName())
                 .searchCommands(true)
                 .build());
+        bootstrap.addBundle(new ShiroBundle<KrautAdminConfiguration>() {
+            @Override
+            protected ShiroConfiguration narrow(final KrautAdminConfiguration configuration) {
+                return configuration.getShiroConfiguration();
+            }
+            @Override
+            protected Collection<Realm> createRealms(final KrautAdminConfiguration configuration) {
+                final KrautAdminConfiguration.SecurityConfiguration securityConfiguration = 
+                        configuration.getSecurityConfiguration();
+                final HashedCredentialsMatcher hashedCredentialsMatcher = 
+                        new HashedCredentialsMatcher(securityConfiguration.getPasswordHashFormat());
+                hashedCredentialsMatcher.setHashIterations(securityConfiguration.getPasswordHashIterations());
+                hashedCredentialsMatcher.setStoredCredentialsHexEncoded(false);
+                final to.sauerkraut.krautadmin.auth.Realm r = 
+                        new to.sauerkraut.krautadmin.auth.Realm(hashedCredentialsMatcher);
+                final UserRepository userRepository = GuiceBundle.getInjector().getInstance(UserRepository.class);
+                r.setUserRepository(userRepository);
+                return Collections.singleton((Realm) r);
+            }
+        });
     }
 
     @Override

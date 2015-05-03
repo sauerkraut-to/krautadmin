@@ -35,7 +35,11 @@ import ru.vyarus.guice.validator.ImplicitValidationModule;
 
 import javax.ws.rs.Path;
 import java.lang.reflect.AnnotatedElement;
+import org.apache.shiro.crypto.hash.ConfigurableHashService;
+import org.eclipse.jetty.server.session.SessionHandler;
+import org.secnod.shiro.jaxrs.ShiroExceptionMapper;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
+import to.sauerkraut.krautadmin.auth.PasswordService;
 import to.sauerkraut.krautadmin.db.DataStructureEnhancerAndFixturesLoader;
 import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
 import to.sauerkraut.krautadmin.job.SchedulerModule;
@@ -71,9 +75,30 @@ public class KrautAdminModule extends AbstractModule implements
 
     @Override
     protected void configure() {
+        enableSessions();
+        registerShiroExceptionMapper();
+        bindPasswordService();
         bindSupplement();
         bindDb();
         bindScheduler();
+    }
+    
+    private void registerShiroExceptionMapper() {
+        environment.jersey().register(new ShiroExceptionMapper());
+    }
+    
+    private void enableSessions() {
+        environment.getApplicationContext().setSessionHandler(new SessionHandler());
+    }
+    
+    private void bindPasswordService() {
+        final KrautAdminConfiguration.SecurityConfiguration securityConfiguration = 
+                configuration.getSecurityConfiguration();
+        final PasswordService passwordService = new PasswordService();
+        final ConfigurableHashService hashService = passwordService.getConfigurableHashService();
+        hashService.setHashAlgorithmName(securityConfiguration.getPasswordHashFormat());
+        hashService.setHashIterations(securityConfiguration.getPasswordHashIterations());
+        bind(PasswordService.class).toInstance(passwordService);
     }
     
     private void bindScheduler() {

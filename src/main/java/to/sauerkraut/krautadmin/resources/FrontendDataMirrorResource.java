@@ -16,9 +16,7 @@
  */
 package to.sauerkraut.krautadmin.resources;
 
-import to.sauerkraut.krautadmin.db.model.SampleEntity;
-import to.sauerkraut.krautadmin.db.repository.SampleEntityRepository;
-
+import java.util.ArrayList;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -26,22 +24,30 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import org.apache.shiro.subject.Subject;
+import org.secnod.shiro.jaxrs.Auth;
+import to.sauerkraut.krautadmin.db.model.FrontendDataMirror;
+import to.sauerkraut.krautadmin.db.repository.FrontendDataMirrorRepository;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-@Path("/sample")
+@Path("/frontendDataMirror")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class SampleEntityResource {
+public class FrontendDataMirrorResource {
 
     @Inject
-    private SampleEntityRepository dao;
+    private FrontendDataMirrorRepository dao;
 
     @GET
     @Path("/list")
-    public List<SampleEntity> list() {
-        return dao.dontDoThat();
+    public List<FrontendDataMirror> list(@Auth final Subject subject) {
+        if (subject.isAuthenticated()) {
+            return dao.detachAll(dao.list());
+        } else {
+            return new ArrayList<>();
+        }
     }
 }

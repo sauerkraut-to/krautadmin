@@ -14,34 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package to.sauerkraut.krautadmin.resources;
+package to.sauerkraut.krautadmin.db.repository;
 
-import to.sauerkraut.krautadmin.db.model.SampleEntity;
-import to.sauerkraut.krautadmin.db.repository.SampleEntityRepository;
-
-import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import java.util.List;
+import com.google.inject.ProvidedBy;
+import com.google.inject.internal.DynamicSingletonProvider;
+import com.google.inject.persist.Transactional;
+import java.util.Set;
+import ru.vyarus.guice.persist.orient.repository.command.query.Query;
+import ru.vyarus.guice.persist.orient.support.repository.mixin.crud.ObjectCrud;
+import to.sauerkraut.krautadmin.db.model.FrontendDataMirror;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-@Path("/sample")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-public class SampleEntityResource {
+@Transactional
+@ProvidedBy(DynamicSingletonProvider.class)
+public interface FrontendDataMirrorRepository extends ObjectCrud<FrontendDataMirror> {
 
-    @Inject
-    private SampleEntityRepository dao;
-
-    @GET
-    @Path("/list")
-    public List<SampleEntity> list() {
-        return dao.dontDoThat();
-    }
+    @Query("select from FrontendDataMirror")
+    Set<FrontendDataMirror> list();
+    
+    @Query("select count(*) from FrontendDataMirror")
+    int count();
 }

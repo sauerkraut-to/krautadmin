@@ -123,6 +123,14 @@ orient-server:
          value: fine
 
 scheduler:
-    basePackage: to.sauerkraut.krautadmin.job
-    timezone: 'Europe/Viennna'
-    intervalInitialDelaySeconds: 30
+  basePackage: to.sauerkraut.krautadmin.job
+  timezone: 'Europe/Viennna'
+  intervalInitialDelaySeconds: 30
+
+shiro:
+  filterUrlPattern: '/*'
+  iniConfigs: ['classpath:shiro.ini']
+
+security:
+  passwordHashFormat: 'SHA-256'
+  passwordHashIterations: 500000
