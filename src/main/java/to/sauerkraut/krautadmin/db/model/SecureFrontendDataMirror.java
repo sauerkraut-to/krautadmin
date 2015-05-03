@@ -16,6 +16,7 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
+import javax.validation.constraints.NotNull;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
 /**
@@ -25,6 +26,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 @Persistent
 public class SecureFrontendDataMirror extends FrontendDataMirror {
     private boolean isImplicit;
+    @NotNull
     private SecureFrontendDataMirrorProtocol protocol;
     
     public SecureFrontendDataMirror() {

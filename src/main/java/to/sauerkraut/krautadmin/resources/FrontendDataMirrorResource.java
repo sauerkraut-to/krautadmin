@@ -16,7 +16,6 @@
  */
 package to.sauerkraut.krautadmin.resources;
 
-import java.util.ArrayList;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -44,10 +43,6 @@ public class FrontendDataMirrorResource {
     @GET
     @Path("/list")
     public List<FrontendDataMirror> list(@Auth final Subject subject) {
-        if (subject.isAuthenticated()) {
-            return dao.detachAll(dao.list());
-        } else {
-            return new ArrayList<>();
-        }
+        return dao.detachAll(dao.list());
     }
 }

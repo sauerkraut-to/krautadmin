@@ -19,6 +19,7 @@ package to.sauerkraut.krautadmin.db.model;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Version;
+import org.hibernate.validator.constraints.NotEmpty;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
 /**
@@ -32,11 +33,16 @@ public class FrontendDataMirror {
     @Version
     private Long version;
     private String name;
+    @NotEmpty
     private String ftpServer;
+    @NotEmpty
     private String ftpUsername;
+    @NotEmpty
     private String ftpPassword;
     private int ftpPort;
+    @NotEmpty
     private String ftpBasePath;
+    @NotEmpty
     private String httpBaseUrl;
     private boolean visible; 
     private boolean active; 

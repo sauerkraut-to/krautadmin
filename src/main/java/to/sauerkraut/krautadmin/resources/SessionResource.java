@@ -40,4 +40,10 @@ public class SessionResource {
         subject.login(new UsernamePasswordToken(username, password));
         //return username;
     }
+    
+    @POST
+    @Path("/logout")
+    public void logout(@Auth final Subject subject) {
+        subject.logout();
+    }
 }
