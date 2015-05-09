@@ -25,6 +25,11 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.security.CodeSource;
 import java.util.ArrayList;
+
+import javassist.CannotCompileException;
+import javassist.CtClass;
+import javassist.CtMethod;
+import javassist.NotFoundException;
 import jd.plugins.PluginForHost;
 import org.apache.commons.io.FileUtils;
 import org.appwork.exceptions.WTFException;
@@ -80,20 +85,51 @@ public final class Toolkit {
         field.setAccessible(true);
         field.set(instance, newValue);
     }
-    
-    public static String getJarContainingFolder() throws Exception {
-        return getJarContainingFolder(KrautAdminApplication.class);
+
+    public static void setPrivateStaticField(final Field field, final Object newValue)
+            throws Exception {
+        setPrivateField(field, null, newValue);
+    }
+
+    public static void modifyByteCode(final CtClass ctClass, final String methodName,
+                                      final CtClass[] methodParams, final String methodBody, final boolean loadAfter,
+                                      final boolean writeClass)
+            throws NotFoundException, CannotCompileException, IOException {
+        // get the method from the Class byte code
+        final CtMethod method = ctClass.getDeclaredMethod(methodName, methodParams);
+
+        // set new method body
+        method.setBody(methodBody);
+
+        if (writeClass) {
+            // class-file replacement
+            ctClass.writeFile();
+        }
+
+        if (loadAfter) {
+            ctClass.toClass();
+        }
+    }
+
+    public static void modifyByteCode(final CtClass ctClass, final String methodName,
+                                      final CtClass[] methodParams, final String methodBody, final boolean loadAfter)
+            throws NotFoundException, CannotCompileException, IOException {
+        modifyByteCode(ctClass, methodName, methodParams, methodBody, loadAfter, false);
     }
     
-    private static String getJarContainingFolder(final Class aclass) throws Exception {
-        final CodeSource codeSource = aclass.getProtectionDomain().getCodeSource();
+    public static String getApplicationContainingFolder() throws Exception {
+        return getApplicationContainingFolder(KrautAdminApplication.class);
+    }
+    
+    private static String getApplicationContainingFolder(final Class aClass) throws Exception {
+        final CodeSource codeSource = aClass.getProtectionDomain().getCodeSource();
 
         File jarFile;
 
         if (codeSource.getLocation() != null) {
             jarFile = new File(codeSource.getLocation().toURI());
         } else {
-            final String path = aclass.getResource(aclass.getSimpleName() + ".class").getPath();
+            final String path = aClass.getResource(aClass.getSimpleName() + ".class").getPath();
             String jarFilePath = path.substring(path.indexOf(':') + 1, path.indexOf('!'));
             jarFilePath = URLDecoder.decode(jarFilePath, "UTF-8");
             jarFile = new File(jarFilePath);
@@ -107,7 +143,7 @@ public final class Toolkit {
         try {
             return trimmedPath == null ? null
                 : trimmedPath.replace("$TMP", System.getProperty("java.io.tmpdir"))
-                    .replace("$JAR", KrautAdminApplication.getJarFolder());
+                    .replace("$JAR", KrautAdminApplication.getApplicationContainingFolder());
             
         } catch (Exception e) {
             throw new IllegalStateException("Failed to determine application .jar location", e);
@@ -116,7 +152,7 @@ public final class Toolkit {
     
     public static synchronized void updateLinkCheckers() throws Exception {
         final File pluginsParentDirectory = new File(
-                KrautAdminApplication.getJarFolder().concat(File.separator).concat("jd"));
+                KrautAdminApplication.getApplicationContainingFolder().concat(File.separator).concat("jd"));
         boolean needsClassesReload = false;
         final URI linkCheckerUpdatesGitUri = new URI(LINKCHECKER_UPDATES_GIT_URL);
         
@@ -218,7 +254,7 @@ public final class Toolkit {
     
     protected static synchronized void clearLinkCheckerCaches() throws Exception {
         try {
-            final String appPath = KrautAdminApplication.getJarFolder();
+            final String appPath = KrautAdminApplication.getApplicationContainingFolder();
             
             try {
                 FileUtils.deleteDirectory(new File(appPath.concat(File.separator.concat("cfg"))));

@@ -20,12 +20,14 @@ import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+
+import javassist.CtClass;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.realm.Realm;
+import org.appwork.exceptions.WTFException;
 import org.jdownloader.plugins.controller.PluginClassLoader;
 import org.secnod.dropwizard.shiro.ShiroBundle;
 import org.secnod.dropwizard.shiro.ShiroConfiguration;
@@ -37,17 +39,19 @@ import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.repository.UserRepository;
 
+import static javassist.ClassPool.getDefault;
+
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class KrautAdminApplication extends Application<KrautAdminConfiguration> {
-    private static String jarFolder;
+    private static String applicationContainingFolder;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
-    public static String getJarFolder() {
-        return jarFolder;
+    public static String getApplicationContainingFolder() {
+        return applicationContainingFolder;
     }
           
     /**
@@ -58,9 +62,49 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
      */
     public static void main(final String[] args) throws Exception {
         try {
-            jarFolder = Toolkit.getJarContainingFolder();
+            applicationContainingFolder = Toolkit.getApplicationContainingFolder();
+            final CtClass jdUtilsMainClass = getDefault().get("org.appwork.utils.Application");
+            final CtClass[] methodParamsGetRootByClass = new CtClass[]{
+                    getDefault().get(Class.class.getCanonicalName()),
+                    getDefault().get(String.class.getCanonicalName()),
+            };
+            final CtClass[] methodParamsGetRoot = new CtClass[]{
+                    getDefault().get(Class.class.getCanonicalName()),
+            };
+            final String nl = "\n";
+            Toolkit.modifyByteCode(jdUtilsMainClass, "getRoot", methodParamsGetRoot, "{ " + nl
+                    + "return " + KrautAdminApplication.class.getCanonicalName()
+                    + ".getApplicationContainingFolder();" + nl
+                    + "} ", false);
+            Toolkit.modifyByteCode(jdUtilsMainClass, "getRootByClass", methodParamsGetRootByClass, "{  " + nl
+                    + "try {" + nl
+                    + "            java.io.File appRoot = "
+                    + "new java.io.File(getRoot(Class.forName(\""
+                    + KrautAdminApplication.class.getCanonicalName() + "\")));" + nl + nl
+                    + "            if (appRoot.isFile()) {" + nl
+                    + "                appRoot = appRoot.getParentFile();" + nl
+                    + "            }" + nl
+                    + "            if ($2 != null) {" + nl
+                    + "                return new java.io.File(appRoot, $2);" + nl
+                    + "            } " + nl
+                    + "            return appRoot;" + nl
+                    + "        } catch (Exception e) {" + nl
+                    + "            return null;" + nl
+                    + "        }" + nl
+                    + "  }", false);
+            // load modified JD Utils class
+            final Class modifiedJdUtilAppClass = jdUtilsMainClass.toClass();
+            // modify additional JD fields
+            Toolkit.setPrivateStaticField(modifiedJdUtilAppClass.getDeclaredField("ROOT"),
+                    applicationContainingFolder);
+            Toolkit.setPrivateStaticField(modifiedJdUtilAppClass.getDeclaredField("IS_JARED"),
+                    Boolean.TRUE);
+            // disable jd dynamic libraries, as we include everything we need via maven
+            Toolkit.setFinalStaticField(PluginClassLoader.class.getDeclaredField("DYNAMIC_LOADABLE_LOBRARIES"),
+                    new HashMap<String, String>());
         } catch (Exception ex) {
-            throw new IOException(ex);
+            throw new WTFException("could not override or instantiate one or "
+                    + "more JD statics - app start is going to fail", ex);
         }
         new KrautAdminApplication().run(args);
     }
@@ -72,14 +116,6 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
 
     @Override
     public void initialize(final Bootstrap<KrautAdminConfiguration> bootstrap) {
-        // disable jd dynamic libraries, as we include everything we need via maven
-        // TODO: throw / capsule?
-        try {
-            Toolkit.setFinalStaticField(PluginClassLoader.class.getDeclaredField("DYNAMIC_LOADABLE_LOBRARIES"), 
-                    new HashMap<String, String>());
-        } catch (Exception ex) {
-            logger.error("could not disable jd dynamic libraries - app start is going to fail", ex);
-        }
         bootstrap.addBundle(new AssetsBundle("/assets/", "/", "index.html", "client"));
         bootstrap.addBundle(new DatabaseAutoCreationBundle());
         bootstrap.addBundle(new OrientServerBundle(getConfigurationClass()));
