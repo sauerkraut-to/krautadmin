@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.8.1</dropwizard.version>
-        <orient.version>2.0.6</orient.version>
+        <orient.version>2.0.8</orient.version>
         <mainClass>to.sauerkraut.krautadmin.KrautAdminApplication</mainClass>
     </properties>
 
@@ -62,7 +62,11 @@
                 <exclusion>
                     <groupId>javax.inject</groupId>
                     <artifactId>javax.inject</artifactId>
-                </exclusion> 
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject</groupId>
+                    <artifactId>guice</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -148,17 +152,46 @@
                 <exclusion>
                     <groupId>com.google.inject</groupId>
                     <artifactId>guice</artifactId>
-                </exclusion> 
+                </exclusion>
                 <exclusion>
                     <groupId>javax.inject</groupId>
                     <artifactId>javax.inject</artifactId>
-                </exclusion> 
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>aopalliance</groupId>
+                    <artifactId>aopalliance</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.inject</groupId>
+                    <artifactId>javax.inject</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-servlet</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-multibindings</artifactId>
+            <version>4.0</version>
         </dependency>
         <dependency>
             <groupId>ru.vyarus</groupId>
             <artifactId>dropwizard-guicey</artifactId>
-            <version>2.1.2</version>
+            <version>3.0.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>io.dropwizard</groupId>
@@ -188,37 +221,45 @@
                     <groupId>javax.inject</groupId>
                     <artifactId>javax.inject</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject.extensions</groupId>
+                    <artifactId>guice-servlet</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject.extensions</groupId>
+                    <artifactId>guice-multibindings</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>ru.vyarus</groupId>
             <artifactId>guice-persist-orient</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
             <exclusions>
-              <exclusion>
-                  <groupId>com.orientechnologies</groupId>
-                  <artifactId>orientdb-graphdb</artifactId>
-              </exclusion>
-              <exclusion>
+                <exclusion>
+                    <groupId>com.orientechnologies</groupId>
+                    <artifactId>orientdb-graphdb</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>org.javassist</groupId>
                     <artifactId>javassist</artifactId>
-              </exclusion>
-              <exclusion>
+                </exclusion>
+                <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
-              </exclusion>
-              <exclusion>
-                    <groupId>com.google.inject</groupId>
-                    <artifactId>guice</artifactId>
-              </exclusion>
-              <exclusion>
+                </exclusion>
+                <exclusion>
                     <groupId>com.orientechnologies</groupId>
                     <artifactId>orientdb-object</artifactId>
-              </exclusion>
-              <exclusion>
+                </exclusion>
+                <exclusion>
                     <groupId>com.orientechnologies</groupId>
                     <artifactId>orientdb-core</artifactId>
-              </exclusion>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject</groupId>
+                    <artifactId>guice</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -356,22 +397,20 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.15</version>
                 <executions>
-                  <execution>
-                    <id>validate</id>
-                    <phase>validate</phase>
-                    <configuration>
-                      <configLocation>maven/config/checkstyle/checkstyle.xml</configLocation>
-                      <encoding>UTF-8</encoding>
-                      <consoleOutput>false</consoleOutput>
-                      <failsOnError>false</failsOnError>
-                      <linkXRef>true</linkXRef>
-                      <failsOnViolation>true</failsOnViolation>
-                      <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    </configuration>
-                    <goals>
-                      <goal>check</goal>
-                    </goals>
-                  </execution>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <configuration>
+                            <configLocation>maven/config/checkstyle/checkstyle.xml</configLocation>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>false</consoleOutput>
+                            <failsOnError>false</failsOnError>
+                            <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -379,7 +418,6 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.4</version>
                 <configuration>
-                    <linkXref>true</linkXref>
                     <rulesets>
                         <ruleset>maven/config/pmd/pmd.xml</ruleset>
                     </rulesets>
@@ -402,7 +440,7 @@
                         <id>enforce</id>
                         <configuration>
                             <rules>
-                                <DependencyConvergence />
+                                <DependencyConvergence/>
                             </rules>
                         </configuration>
                         <goals>
@@ -471,8 +509,10 @@
                         </goals>
                         <configuration>
                             <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>${mainClass}</mainClass>
                                 </transformer>
                             </transformers>

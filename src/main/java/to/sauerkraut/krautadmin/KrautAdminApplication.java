@@ -33,6 +33,7 @@ import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
+import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import ru.vyarus.dropwizard.orient.OrientServerBundle;
 import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
 import to.sauerkraut.krautadmin.core.Toolkit;
@@ -116,6 +117,7 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
 
     @Override
     public void initialize(final Bootstrap<KrautAdminConfiguration> bootstrap) {
+        final Application<KrautAdminConfiguration> app = this;
         bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/", "index.html", "client"));
         bootstrap.addBundle(new DatabaseAutoCreationBundle());
         bootstrap.addBundle(new OrientServerBundle(getConfigurationClass()));
@@ -139,8 +141,7 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
                 hashedCredentialsMatcher.setStoredCredentialsHexEncoded(false);
                 final to.sauerkraut.krautadmin.auth.Realm r = 
                         new to.sauerkraut.krautadmin.auth.Realm(hashedCredentialsMatcher);
-                final UserRepository userRepository = GuiceBundle.getInjector().getInstance(UserRepository.class);
-                r.setUserRepository(userRepository);
+                r.setUserRepository(InjectorLookup.getInjector(app).get().getInstance(UserRepository.class));
                 return Collections.singleton((Realm) r);
             }
         });
