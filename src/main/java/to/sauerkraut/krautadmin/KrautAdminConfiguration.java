@@ -16,6 +16,8 @@
  */
 package to.sauerkraut.krautadmin;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Maps;
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.inject.Inject;
@@ -29,18 +31,27 @@ import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.setup.HasDatabaseConfiguration;
 import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
+import to.sauerkraut.krautadmin.resources.assets.ConfiguredAssetsBundle;
+import to.sauerkraut.krautadmin.resources.assets.HasAssetsConfiguration;
+
+import java.util.Map;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public class KrautAdminConfiguration extends Configuration 
-    implements HasOrientServerConfiguration, HasDatabaseConfiguration {
+    implements HasOrientServerConfiguration, HasDatabaseConfiguration, HasAssetsConfiguration {
     
     @NotNull
     @Valid
     @JsonProperty("db")
     private DatabaseConfiguration databaseConfiguration;
+
+    @NotNull
+    @Valid
+    @JsonProperty("assets")
+    private AssetsConfiguration assetsConfiguration;
     
     @NotNull
     @Valid
@@ -115,7 +126,15 @@ public class KrautAdminConfiguration extends Configuration
     public void setSecurityConfiguration(final SecurityConfiguration securityConfiguration) {
         this.securityConfiguration = securityConfiguration;
     }
-    
+
+    public AssetsConfiguration getAssetsConfiguration() {
+        return assetsConfiguration;
+    }
+
+    public void setAssetsConfiguration(final AssetsConfiguration assetsConfiguration) {
+        this.assetsConfiguration = assetsConfiguration;
+    }
+
     /**
      *
      * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
@@ -208,6 +227,37 @@ public class KrautAdminConfiguration extends Configuration
             this.dropInsecureUsersOnCreate = dropInsecureUsersOnCreate;
         }
     }
+
+    /**
+     *
+     * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
+     */
+    public class AssetsConfiguration {
+        @NotNull
+        @JsonProperty
+        private String cacheSpec = ConfiguredAssetsBundle.DEFAULT_CACHE_SPEC.toParsableString();
+
+        @NotNull
+        @JsonProperty
+        private Map<String, String> overrides = Maps.newHashMap();
+
+        @NotNull
+        @JsonProperty
+        private Map<String, String> mimeTypes = Maps.newHashMap();
+
+        /** The caching specification for how to memoize assets. */
+        public String getCacheSpec() {
+            return cacheSpec;
+        }
+
+        public Iterable<Map.Entry<String, String>> getOverrides() {
+            return Iterables.unmodifiableIterable(overrides.entrySet());
+        }
+
+        public Iterable<Map.Entry<String, String>> getMimeTypes() {
+            return Iterables.unmodifiableIterable(mimeTypes.entrySet());
+        }
+    }
     
     /**
      *
@@ -219,8 +269,8 @@ public class KrautAdminConfiguration extends Configuration
          * Directory may not exist - orient will create it when necessary.
          * Special variable '$TMP' can be used. It will be substituted
          * by system temp directory path ('java.io.tmpdir').
-         * Special variable '$JAR' can be used. It will be substituted
-         * by current jar's directory path - in fat jars this will be the folder 
+         * Special variable '$APP' can be used. It will be substituted
+         * by current app's directory path - in fat jars this will be the folder
          * containing the fat jar.
          *
          * @param filesPath path to store database files.

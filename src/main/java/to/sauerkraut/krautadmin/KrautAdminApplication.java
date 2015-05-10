@@ -17,7 +17,6 @@
 package to.sauerkraut.krautadmin;
 
 import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import java.util.Collection;
@@ -38,6 +37,7 @@ import ru.vyarus.dropwizard.orient.OrientServerBundle;
 import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.repository.UserRepository;
+import to.sauerkraut.krautadmin.resources.assets.ConfiguredAssetsBundle;
 
 import static javassist.ClassPool.getDefault;
 
@@ -116,7 +116,7 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
 
     @Override
     public void initialize(final Bootstrap<KrautAdminConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/assets/", "/", "index.html", "client"));
+        bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/", "index.html", "client"));
         bootstrap.addBundle(new DatabaseAutoCreationBundle());
         bootstrap.addBundle(new OrientServerBundle(getConfigurationClass()));
         bootstrap.addBundle(GuiceBundle.<KrautAdminConfiguration>builder()

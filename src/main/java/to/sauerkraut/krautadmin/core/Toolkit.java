@@ -139,15 +139,9 @@ public final class Toolkit {
     
     public static String parseDbPath(final String path) {
         final String trimmedPath = Strings.emptyToNull(path);
-        
-        try {
-            return trimmedPath == null ? null
-                : trimmedPath.replace("$TMP", System.getProperty("java.io.tmpdir"))
-                    .replace("$JAR", KrautAdminApplication.getApplicationContainingFolder());
-            
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to determine application .jar location", e);
-        }
+
+        return trimmedPath == null ? null : trimmedPath.replace("$TMP", System.getProperty("java.io.tmpdir"))
+                .replace("$APP", KrautAdminApplication.getApplicationContainingFolder());
     }
     
     public static synchronized void updateLinkCheckers() throws Exception {

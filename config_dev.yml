@@ -136,4 +136,6 @@ security:
   passwordHashIterations: 500000
 
 assets:
-  cacheSpec: 'maximumSize=100'
+  cacheSpec: 'maximumSize=0'
+  overrides:
+      /: src/main/resources/assets/
