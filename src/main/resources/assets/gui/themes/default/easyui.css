@@ -1929,6 +1929,8 @@
   border-radius: 0px 0px 0px 0px;
   overflow: hidden;
   position: relative;
+  max-height: 17px;
+  line-height: 17px;
 }
 .progressbar-text {
   text-align: center;
@@ -1944,14 +1946,19 @@
 }
 .progressbar {
   border-color: #59667A;
+  background-color: #4481AE;
+  background: url('images/tabgrau.gif') repeat-x;
 }
 .progressbar-text {
-  color: #000;
+  color: #FFFFFC;
+  font-weight: bold;
   font-size: 8pt;
 }
 .progressbar-value .progressbar-text {
-  background-color: #FFFFFC;
-  color: #000;
+  background-color: #4481AE;
+  background: url('images/tab.gif') repeat-x;
+  font-weight: bold;
+  color: #FFFFFC;
 }
 .searchbox {
   display: inline-block;
