@@ -33,6 +33,7 @@ import ru.vyarus.guice.persist.orient.RepositoryModule;
 import ru.vyarus.guice.persist.orient.support.AutoScanSchemeModule;
 import ru.vyarus.guice.validator.ImplicitValidationModule;
 
+import javax.validation.ValidatorFactory;
 import javax.ws.rs.Path;
 import java.lang.reflect.AnnotatedElement;
 import org.apache.shiro.crypto.hash.ConfigurableHashService;
@@ -82,6 +83,11 @@ public class KrautAdminModule extends AbstractModule implements
         bindDb();
         bindScheduler();
         bindConfiguration();
+        bindValidatorFactory();
+    }
+
+    private void bindValidatorFactory() {
+        bind(ValidatorFactory.class).toInstance(bootstrap.getValidatorFactory());
     }
     
     private void registerShiroExceptionMapper() {
