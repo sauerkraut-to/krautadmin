@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
 import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import ru.vyarus.dropwizard.orient.OrientServerBundle;
+import to.sauerkraut.krautadmin.cli.LocationAwareConfigurationFactoryFactory;
 import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.repository.UserRepository;
@@ -50,7 +51,7 @@ import static javassist.ClassPool.getDefault;
 public class KrautAdminApplication extends Application<KrautAdminConfiguration> {
     private static String applicationContainingFolder;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    
+
     public static String getApplicationContainingFolder() {
         return applicationContainingFolder;
     }
@@ -118,6 +119,8 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
     @Override
     public void initialize(final Bootstrap<KrautAdminConfiguration> bootstrap) {
         final Application<KrautAdminConfiguration> app = this;
+        bootstrap.setConfigurationFactoryFactory(
+                new LocationAwareConfigurationFactoryFactory<KrautAdminConfiguration>());
         bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/", "index.html", "client"));
         bootstrap.addBundle(new DatabaseAutoCreationBundle());
         bootstrap.addBundle(new OrientServerBundle(getConfigurationClass()));

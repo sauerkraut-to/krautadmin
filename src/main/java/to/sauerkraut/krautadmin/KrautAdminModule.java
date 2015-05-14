@@ -81,6 +81,7 @@ public class KrautAdminModule extends AbstractModule implements
         bindSupplement();
         bindDb();
         bindScheduler();
+        bindConfiguration();
     }
     
     private void registerShiroExceptionMapper() {
@@ -99,6 +100,10 @@ public class KrautAdminModule extends AbstractModule implements
         hashService.setHashAlgorithmName(securityConfiguration.getPasswordHashFormat());
         hashService.setHashIterations(securityConfiguration.getPasswordHashIterations());
         bind(PasswordService.class).toInstance(passwordService);
+    }
+
+    private void bindConfiguration() {
+        bind(KrautAdminConfiguration.class).toInstance(configuration);
     }
     
     private void bindScheduler() {

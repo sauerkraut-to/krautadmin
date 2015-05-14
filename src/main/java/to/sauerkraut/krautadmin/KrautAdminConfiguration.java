@@ -16,6 +16,7 @@
  */
 package to.sauerkraut.krautadmin;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import io.dropwizard.Configuration;
@@ -28,6 +29,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.HasOrientServerConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
+import to.sauerkraut.krautadmin.cli.ApplicationLocationAware;
+import to.sauerkraut.krautadmin.cli.ConfigurationLocationAware;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.setup.HasDatabaseConfiguration;
 import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
@@ -41,7 +44,13 @@ import java.util.Map;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public class KrautAdminConfiguration extends Configuration 
-    implements HasOrientServerConfiguration, HasDatabaseConfiguration, HasAssetsConfiguration {
+    implements HasOrientServerConfiguration, HasDatabaseConfiguration, HasAssetsConfiguration,
+        ApplicationLocationAware, ConfigurationLocationAware {
+
+    @JsonIgnore
+    private String applicationLocation;
+    @JsonIgnore
+    private String configurationLocation;
     
     @NotNull
     @Valid
@@ -133,6 +142,26 @@ public class KrautAdminConfiguration extends Configuration
 
     public void setAssetsConfiguration(final AssetsConfiguration assetsConfiguration) {
         this.assetsConfiguration = assetsConfiguration;
+    }
+
+    @Override
+    public void setApplicationLocation(final String applicationLocation) {
+        this.applicationLocation = applicationLocation;
+    }
+
+    @Override
+    public String getApplicationLocation() {
+        return applicationLocation;
+    }
+
+    @Override
+    public void setConfigurationLocation(final String configurationLocation) {
+        this.configurationLocation = configurationLocation;
+    }
+
+    @Override
+    public String getConfigurationLocation() {
+        return configurationLocation;
     }
 
     /**
