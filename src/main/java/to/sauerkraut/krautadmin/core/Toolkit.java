@@ -58,6 +58,7 @@ import to.sauerkraut.krautadmin.KrautAdminApplication;
  */
 public final class Toolkit {
     public static final String LINKCHECKER_UPDATES_GIT_URL = "https://github.com/sauerkraut-to/jdupdates.git";
+    public static final String LINKCHECKER_DOWNLOAD_FOLDER_NAME = "jd";
     
     private static final Logger LOG = LoggerFactory.getLogger(Toolkit.class);
     
@@ -164,10 +165,22 @@ public final class Toolkit {
         return trimmedPath == null ? null : trimmedPath.replace("$TMP", System.getProperty("java.io.tmpdir"))
                 .replace("$APP", KrautAdminApplication.getApplicationContainingFolder());
     }
+
+    /**
+     * Delete all downloaded link checker classes.
+     * It will force the next iteration of the link checker update cronjob to fully re-download the latest set
+     * of link checker classes.
+     * @throws IOException if the directory containing the link checker classes couldn't be deleted
+     */
+    public static synchronized void clearLinkCheckers() throws IOException {
+        FileUtils.deleteDirectory(new File(KrautAdminApplication.getApplicationContainingFolder()
+                .concat(File.separator.concat(LINKCHECKER_DOWNLOAD_FOLDER_NAME))));
+    }
     
     public static synchronized void updateLinkCheckers() throws Exception {
         final File pluginsParentDirectory = new File(
-                KrautAdminApplication.getApplicationContainingFolder().concat(File.separator).concat("jd"));
+                KrautAdminApplication.getApplicationContainingFolder().concat(File.separator)
+                        .concat(LINKCHECKER_DOWNLOAD_FOLDER_NAME));
         boolean needsClassesReload = false;
         final URI linkCheckerUpdatesGitUri = new URI(LINKCHECKER_UPDATES_GIT_URL);
         

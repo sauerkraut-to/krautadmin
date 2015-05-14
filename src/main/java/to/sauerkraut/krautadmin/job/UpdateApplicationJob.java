@@ -86,6 +86,8 @@ public class UpdateApplicationJob implements org.quartz.Job {
         } catch (AssertionError e) {
             logger.error("received incomplete response data from GitHub for latest-release-request", e);
         }
+
+        //TODO: epmty jd plugins folder after app upgrade and before app restart
     }
 
     /**

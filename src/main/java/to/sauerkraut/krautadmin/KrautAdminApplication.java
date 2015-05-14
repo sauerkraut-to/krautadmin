@@ -19,6 +19,8 @@ package to.sauerkraut.krautadmin;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,7 +52,7 @@ import static javassist.ClassPool.getDefault;
 @SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class KrautAdminApplication extends Application<KrautAdminConfiguration> {
     private static String applicationContainingFolder;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger LOG = LoggerFactory.getLogger(KrautAdminApplication.class);
 
     public static String getApplicationContainingFolder() {
         return applicationContainingFolder;
@@ -104,9 +106,14 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
             // disable jd dynamic libraries, as we include everything we need via maven
             Toolkit.setFinalStaticField(PluginClassLoader.class.getDeclaredField("DYNAMIC_LOADABLE_LOBRARIES"),
                     new HashMap<String, String>());
-        } catch (Exception ex) {
+        } catch (Exception e) {
             throw new WTFException("could not override or instantiate one or "
-                    + "more JD statics - app start is going to fail", ex);
+                    + "more JD statics - app start is going to fail", e);
+        }
+        try {
+            Toolkit.clearLinkCheckers();
+        } catch (IOException e) {
+            LOG.error("Could not delete 'jd' directory, JD plugins won't be loaded freshly on application start", e);
         }
         new KrautAdminApplication().run(args);
     }
