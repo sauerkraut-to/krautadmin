@@ -18,49 +18,33 @@ package to.sauerkraut.krautadmin.job;
 
 import com.fiestacabin.dropwizard.quartz.Scheduled;
 import com.google.inject.Inject;
-import java.util.concurrent.TimeUnit;
-import jd.plugins.PluginForHost;
-import org.jdownloader.plugins.controller.UpdateRequiredClassNotFoundException;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import ru.vyarus.guice.ext.log.Log;
-import to.sauerkraut.krautadmin.core.Toolkit;
-import to.sauerkraut.krautadmin.db.repository.SampleEntityRepository;
+import to.sauerkraut.krautadmin.KrautAdminConfiguration;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @DisallowConcurrentExecution
-@Scheduled(interval = 60, unit = TimeUnit.MINUTES)
-public class CheckLinksJob implements org.quartz.Job {
+@Scheduled(interval = 10, unit = TimeUnit.MINUTES)
+public class UpdateApplicationJob implements org.quartz.Job {
     
     @Log
     private static Logger logger;
     @Inject
-    private SampleEntityRepository repository;
+    private KrautAdminConfiguration configuration;
 
     @Override
     public void execute(final JobExecutionContext context) throws JobExecutionException {
-        logger.info("repo count: " + repository.count());
-        
-        try {
-            Toolkit.updateLinkCheckers();
-        } catch (Exception ex) {
-            logger.error("problem updating link checkers", ex);
-            //TODO: log to db
-        }
-        
-        try {
-            final String targetHost = "streamcloud.eu";
-            final PluginForHost linkChecker1 = Toolkit.getLinkCheckerForHost(targetHost);
-            logger.info(linkChecker1.getAGBLink());
-        } catch (UpdateRequiredClassNotFoundException ex) {
-            logger.error("loading link checker failed", ex);
-            //throw new RuntimeException(ex);
-            //TODO: log to db, cancel job for current plugin
-        } 
+        logger.info("Application location: {}", configuration.getApplicationLocation());
+        logger.info("Configuration path: {}", configuration.getConfigurationPath());
+        logger.info(".jar name: {}", configuration.getJarName() == null ? "<not in .jar>" : configuration.getJarName());
+        logger.info("Application release: {}", configuration.getRelease());
     }
 }

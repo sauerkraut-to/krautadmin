@@ -19,7 +19,7 @@ package to.sauerkraut.krautadmin.cli;
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-public interface ConfigurationLocationAware {
-    void setConfigurationLocation(final String configurationLocation);
-    String getConfigurationLocation();
+public interface JarNameAware {
+    String getJarName();
+    void setJarName(final String jarName);
 }

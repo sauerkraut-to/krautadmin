@@ -16,20 +16,9 @@
  */
 package to.sauerkraut.krautadmin.cli;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dropwizard.configuration.ConfigurationFactory;
-import io.dropwizard.configuration.ConfigurationFactoryFactory;
-
-import javax.validation.Validator;
-
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
- * @param <T> the configuration class
  */
-public class LocationAwareConfigurationFactoryFactory<T> implements ConfigurationFactoryFactory<T> {
-    @Override
-    public ConfigurationFactory<T> create(final Class<T> klass, final Validator validator,
-                                          final ObjectMapper objectMapper, final String propertyPrefix) {
-        return new LocationAwareConfigurationFactory<>(klass, validator, objectMapper, propertyPrefix);
-    }
+public interface MetadataAware extends JarNameAware, ApplicationLocationAware, ConfigurationPathAware {
+
 }

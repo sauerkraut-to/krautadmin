@@ -29,8 +29,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.HasOrientServerConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
-import to.sauerkraut.krautadmin.cli.ApplicationLocationAware;
-import to.sauerkraut.krautadmin.cli.ConfigurationLocationAware;
+import to.sauerkraut.krautadmin.cli.MetadataAware;
+import to.sauerkraut.krautadmin.core.ReleaseAware;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.setup.HasDatabaseConfiguration;
 import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
@@ -45,12 +45,18 @@ import java.util.Map;
  */
 public class KrautAdminConfiguration extends Configuration 
     implements HasOrientServerConfiguration, HasDatabaseConfiguration, HasAssetsConfiguration,
-        ApplicationLocationAware, ConfigurationLocationAware {
+        ReleaseAware, MetadataAware {
 
     @JsonIgnore
     private String applicationLocation;
     @JsonIgnore
-    private String configurationLocation;
+    private String configurationPath;
+    @JsonIgnore
+    private String jarName;
+
+    @NotNull
+    @JsonProperty("release")
+    private String release;
     
     @NotNull
     @Valid
@@ -144,6 +150,14 @@ public class KrautAdminConfiguration extends Configuration
         this.assetsConfiguration = assetsConfiguration;
     }
 
+    public String getRelease() {
+        return release;
+    }
+
+    public void setRelease(final String release) {
+        this.release = release;
+    }
+
     @Override
     public void setApplicationLocation(final String applicationLocation) {
         this.applicationLocation = applicationLocation;
@@ -155,13 +169,23 @@ public class KrautAdminConfiguration extends Configuration
     }
 
     @Override
-    public void setConfigurationLocation(final String configurationLocation) {
-        this.configurationLocation = configurationLocation;
+    public void setConfigurationPath(final String configurationPath) {
+        this.configurationPath = configurationPath;
     }
 
     @Override
-    public String getConfigurationLocation() {
-        return configurationLocation;
+    public String getConfigurationPath() {
+        return configurationPath;
+    }
+
+    @Override
+    public String getJarName() {
+        return jarName;
+    }
+
+    @Override
+    public void setJarName(final String jarName) {
+        this.jarName = jarName;
     }
 
     /**

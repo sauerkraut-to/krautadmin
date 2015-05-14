@@ -23,13 +23,14 @@ import io.dropwizard.configuration.ConfigurationSourceProvider;
 import to.sauerkraut.krautadmin.core.Toolkit;
 
 import javax.validation.Validator;
+import java.io.File;
 import java.io.IOException;
 
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  * @param <T> the configuration class
  */
-public class LocationAwareConfigurationFactory<T> extends ConfigurationFactory<T> {
+public class MetadataAwareConfigurationFactory<T> extends ConfigurationFactory<T> {
     /**
      * Creates a new configuration factory for the given class.
      *
@@ -38,7 +39,7 @@ public class LocationAwareConfigurationFactory<T> extends ConfigurationFactory<T
      * @param objectMapper   the Jackson {@link ObjectMapper} to use
      * @param propertyPrefix the system property name prefix used by overrides
      */
-    public LocationAwareConfigurationFactory(final Class<T> klass, final Validator validator,
+    public MetadataAwareConfigurationFactory(final Class<T> klass, final Validator validator,
                                              final ObjectMapper objectMapper, final String propertyPrefix) {
         super(klass, validator, objectMapper, propertyPrefix);
     }
@@ -49,18 +50,21 @@ public class LocationAwareConfigurationFactory<T> extends ConfigurationFactory<T
 
         final T config = super.build(provider, path);
 
-        if (config instanceof ApplicationLocationAware) {
-            final ApplicationLocationAware c1 = (ApplicationLocationAware) config;
+        if (config instanceof MetadataAware) {
+            final MetadataAware metadataConfig = (MetadataAware) config;
             try {
-                c1.setApplicationLocation(Toolkit.getApplicationContainingFolder());
+                final File configFile = new File(path);
+                if (!configFile.isAbsolute()) {
+                    metadataConfig.setConfigurationPath(
+                            System.getProperty("user.dir").concat(File.separator).concat(path));
+                } else {
+                    metadataConfig.setConfigurationPath(path);
+                }
+                metadataConfig.setApplicationLocation(Toolkit.getApplicationContainingFolder());
+                metadataConfig.setJarName(Toolkit.getApplicationJarName());
             } catch (Exception e) {
                 throw new IOException(e);
             }
-        }
-
-        if (config instanceof ConfigurationLocationAware) {
-            final ConfigurationLocationAware c2 = (ConfigurationLocationAware) config;
-            c2.setConfigurationLocation(path);
         }
 
         return config;

@@ -122,6 +122,26 @@ public final class Toolkit {
     }
     
     private static String getApplicationContainingFolder(final Class aClass) throws Exception {
+        final File jarFile = getPossibleApplicationJarFile(aClass);
+
+        return jarFile.getParentFile().getAbsolutePath();
+    }
+
+    /**
+     *
+     * @return null, if the application is not delivered as a fat .jar
+     */
+    public static String getApplicationJarName() throws Exception {
+        final File possibleJarFile = getPossibleApplicationJarFile(KrautAdminApplication.class);
+
+        if (possibleJarFile.getName().toUpperCase().endsWith(".JAR")) {
+            return possibleJarFile.getName();
+        } else {
+            return null;
+        }
+    }
+
+    private static File getPossibleApplicationJarFile(final Class aClass) throws Exception {
         final CodeSource codeSource = aClass.getProtectionDomain().getCodeSource();
 
         File jarFile;
@@ -134,7 +154,8 @@ public final class Toolkit {
             jarFilePath = URLDecoder.decode(jarFilePath, "UTF-8");
             jarFile = new File(jarFilePath);
         }
-        return jarFile.getParentFile().getAbsolutePath();
+
+        return jarFile;
     }
     
     public static String parseDbPath(final String path) {
