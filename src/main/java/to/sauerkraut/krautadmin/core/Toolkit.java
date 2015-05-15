@@ -25,6 +25,9 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import javassist.CannotCompileException;
 import javassist.CtClass;
@@ -56,9 +59,10 @@ import to.sauerkraut.krautadmin.KrautAdminApplication;
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
+@SuppressWarnings("checkstyle:classfanoutcomplexity")
 public final class Toolkit {
-    public static final String LINKCHECKER_UPDATES_GIT_URL = "https://github.com/sauerkraut-to/jdupdates.git";
-    public static final String LINKCHECKER_DOWNLOAD_FOLDER_NAME = "jd";
+    public static final String LINK_CHECKER_UPDATES_GIT_URL = "https://github.com/sauerkraut-to/jdupdates.git";
+    public static final String LINK_CHECKER_DOWNLOAD_FOLDER_NAME = "jd";
     
     private static final Logger LOG = LoggerFactory.getLogger(Toolkit.class);
     
@@ -79,6 +83,10 @@ public final class Toolkit {
         modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 
         field.set(instance, newValue);
+    }
+
+    public static synchronized void restartApplication() throws Exception {
+        //TODO: implement
     }
     
     public static void setPrivateField(final Field field, final Object instance, final Object newValue) 
@@ -174,15 +182,32 @@ public final class Toolkit {
      */
     public static synchronized void clearLinkCheckers() throws IOException {
         FileUtils.deleteDirectory(new File(KrautAdminApplication.getApplicationContainingFolder()
-                .concat(File.separator.concat(LINKCHECKER_DOWNLOAD_FOLDER_NAME))));
+                .concat(File.separator.concat(LINK_CHECKER_DOWNLOAD_FOLDER_NAME))));
+    }
+
+    /**
+     * Validates a Zip archive.
+     * If the archive is invalid, cannot be opened or integrity errors are detected,
+     * Exceptions will be thrown.
+     * @param zipFile
+     * @throws Exception
+     */
+    public static void validateZipFile(final File zipFile) throws Exception {
+        final ZipFile applicationUpdateJar = new ZipFile(zipFile);
+        final Enumeration<? extends ZipEntry> applicationUpdateJarEntries =
+                applicationUpdateJar.entries();
+        // iterating through the .jar will detect integrity errors of the zip archive
+        while (applicationUpdateJarEntries.hasMoreElements()) {
+            applicationUpdateJarEntries.nextElement().getName();
+        }
     }
     
     public static synchronized void updateLinkCheckers() throws Exception {
         final File pluginsParentDirectory = new File(
                 KrautAdminApplication.getApplicationContainingFolder().concat(File.separator)
-                        .concat(LINKCHECKER_DOWNLOAD_FOLDER_NAME));
+                        .concat(LINK_CHECKER_DOWNLOAD_FOLDER_NAME));
         boolean needsClassesReload = false;
-        final URI linkCheckerUpdatesGitUri = new URI(LINKCHECKER_UPDATES_GIT_URL);
+        final URI linkCheckerUpdatesGitUri = new URI(LINK_CHECKER_UPDATES_GIT_URL);
         
         // try incremental update at first - if it fails, try a whole new repo clone
         try {

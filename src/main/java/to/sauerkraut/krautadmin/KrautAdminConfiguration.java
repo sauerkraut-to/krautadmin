@@ -53,6 +53,8 @@ public class KrautAdminConfiguration extends Configuration
     private String configurationPath;
     @JsonIgnore
     private String jarName;
+    @JsonIgnore
+    private boolean updatePending;
 
     @NotNull
     @JsonProperty("release")
@@ -186,6 +188,14 @@ public class KrautAdminConfiguration extends Configuration
     @Override
     public void setJarName(final String jarName) {
         this.jarName = jarName;
+    }
+
+    public boolean isUpdatePending() {
+        return updatePending;
+    }
+
+    public void setUpdatePending(final boolean updatePending) {
+        this.updatePending = updatePending;
     }
 
     /**
