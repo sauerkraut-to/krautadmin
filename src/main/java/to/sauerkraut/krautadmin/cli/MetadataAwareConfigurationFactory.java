@@ -65,14 +65,26 @@ public class MetadataAwareConfigurationFactory<T> extends ConfigurationFactory<T
                 }
                 metadataConfig.setApplicationLocation(Toolkit.getApplicationContainingFolder());
                 final String applicationJarName = Toolkit.getApplicationJarName();
-                final String[] splitApplicationJarName = applicationJarName.split(JAR_NAME_PARTS_DELIMITER);
-                final String applicationJarPrefix = splitApplicationJarName[0].trim();
-                String applicationJarRelease = FilenameUtils.removeExtension(
-                        applicationJarName.replace(applicationJarPrefix.concat(JAR_NAME_PARTS_DELIMITER), "")).trim();
-                applicationJarRelease = applicationJarRelease.isEmpty() ? null : applicationJarRelease;
-                metadataConfig.setJarName(Toolkit.getApplicationJarName());
-                metadataConfig.setJarPrefix(applicationJarPrefix);
-                metadataConfig.setJarRelease(applicationJarRelease);
+                if (applicationJarName != null) {
+                    final String[] splitApplicationJarName = applicationJarName.split(JAR_NAME_PARTS_DELIMITER);
+
+                    metadataConfig.setJarName(applicationJarName);
+
+                    if (splitApplicationJarName.length == 1) {
+                        metadataConfig.setJarPrefix(FilenameUtils.removeExtension(applicationJarName));
+                        metadataConfig.setJarRelease(null);
+                    } else {
+                        final String applicationJarPrefix = splitApplicationJarName[0].trim();
+                        String applicationJarRelease = FilenameUtils.removeExtension(applicationJarName.replace(
+                                applicationJarPrefix.concat(JAR_NAME_PARTS_DELIMITER), "")).trim();
+                        applicationJarRelease = applicationJarRelease.isEmpty() ? null : applicationJarRelease;
+                        metadataConfig.setJarPrefix(applicationJarPrefix);
+                        metadataConfig.setJarRelease(applicationJarRelease);
+                    }
+                } else {
+                    metadataConfig.setJarPrefix(null);
+                    metadataConfig.setJarRelease(null);
+                }
             } catch (Exception e) {
                 throw new IOException(e);
             }
