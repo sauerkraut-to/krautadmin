@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fiestacabin.dropwizard.quartz.Scheduled;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -65,7 +66,6 @@ import java.util.zip.ZipException;
 public class UpdateApplicationJob implements org.quartz.Job {
     public static final String LATEST_RELEASE_METADATA_URL =
             "https://api.github.com/repos/sauerkraut-to/krautadmin/releases/latest";
-    private static final String UPDATE_FILE_PREFIX = "krautadmin-";
     
     @Log
     private static Logger logger;
@@ -73,27 +73,30 @@ public class UpdateApplicationJob implements org.quartz.Job {
     private KrautAdminConfiguration configuration;
     @Inject
     private ValidatorFactory validatorFactory;
+    private String jarName;
+    private String jarPrefix;
+    private String currentRelease;
+    private String applicationLocation;
 
     @Override
     public void execute(final JobExecutionContext context) throws JobExecutionException {
-        final String jarName = configuration.getJarName();
+        jarName = configuration.getJarName();
+        jarPrefix = configuration.getJarPrefix();
+        currentRelease = configuration.getJarRelease();
+        applicationLocation = configuration.getApplicationLocation();
 
-        /* TODO: check last loaded release as of database -> if not pending and .jar exists and .jar is valid
-         * and release > currentRelease then skip this update check
-         * (user has not yet switched to new .jar even though it exists and is valid)
-         */
         if (configuration.isUpdatePending()) {
             logger.info("skipping application auto-update due to a pending update");
         } else if (jarName == null) {
             logger.info("skipping application auto-update due to the app not being bundled as a .jar");
+        } else if (currentRelease == null) {
+            logger.info("skipping application auto-update because the current release String "
+                    + "could not be extracted from the .jar name");
         } else {
-            final String jarPath = configuration.getApplicationLocation().concat(File.separator).concat(jarName);
-            final String applicationLocation = configuration.getApplicationLocation();
-            final String currentRelease = configuration.getRelease();
             logger.info("currently running application release: {}", currentRelease);
-
+            logger.info("checking for application updates ...");
             try {
-                loadAndInstallApplicationUpdate(jarPath, currentRelease, applicationLocation);
+                checkApplicationUpdate();
             } catch (MalformedURLException e) {
                 logger.error("url to application repo seems to be malformed", e);
             } catch (JsonMappingException e) {
@@ -110,8 +113,7 @@ public class UpdateApplicationJob implements org.quartz.Job {
         }
     }
 
-    private void loadAndInstallApplicationUpdate(final String jarPath, final String currentRelease,
-                                                 final String applicationLocation) throws Exception {
+    private void checkApplicationUpdate() throws Exception {
         final URL applicationRepoUrl =
                 new URL(LATEST_RELEASE_METADATA_URL);
         final ObjectMapper responseMapper = new ObjectMapper();
@@ -122,55 +124,99 @@ public class UpdateApplicationJob implements org.quartz.Job {
         logger.info("latest application release: {}", latestRelease.getTagName());
 
         if (currentRelease.compareToIgnoreCase(latestRelease.getTagName()) < 0) {
+            final String applicationUpdateJarName =
+                    jarPrefix.concat("-").concat(latestRelease.getTagName()).concat(".jar");
             final String applicationUpdateJarPath = applicationLocation.concat(File.separator).
-                    concat(UPDATE_FILE_PREFIX).concat(latestRelease.getTagName()).concat(".jar");
-            ByteArrayOutputStream applicationUpdateOutputStream = null;
-            int expectedApplicationUpdateSize = -1;
-            boolean updateSuccess = false;
-            logger.info("application needs to be updated, attempting download ...");
-            for (GitHubReleaseAsset releaseAsset : latestRelease.getAssets()) {
-                if ("application/java-archive".equalsIgnoreCase(releaseAsset.getContentType())) {
-                    expectedApplicationUpdateSize = releaseAsset.getContentSize();
-                    try {
-                        applicationUpdateOutputStream = readApplicationUpdate(releaseAsset);
-                    } catch (URISyntaxException e) {
-                        logger.error("url to updated application .jar seems to be malformed", e);
-                    } catch (Exception e) {
-                        logger.error("could not download updated application .jar", e);
-                    }
-                    break;
-                }
-            }
+                    concat(applicationUpdateJarName);
 
-            final byte[] applicationUpdateBytes = applicationUpdateOutputStream == null
-                    ? new byte[]{} : applicationUpdateOutputStream.toByteArray();
-
-            logger.info("validating downloaded application update integrity ...");
-            if (validateApplicationUpdateSize(expectedApplicationUpdateSize, applicationUpdateBytes.length)) {
-                updateSuccess = writeApplicationUpdate(applicationUpdateJarPath, applicationUpdateBytes);
-            }
-
-            if (updateSuccess) {
-                logger.warn("successfully updated the application - it needs to be restarted!");
+            if (updatedApplicationJarExistsAndIsValid(applicationUpdateJarPath)) {
                 configuration.setUpdatePending(true);
-                saveUpdateSuccessNote(latestRelease.getTagName());
-                attemptLaunchScriptModification(jarPath, applicationUpdateJarPath);
-                attemptApplicationRestart();
+                logger.warn("the latest application release has already been loaded, but application has been started "
+                        + "using an older .jar - please edit your run-script "
+                        + "accordingly to use the latest application.jar");
             } else {
-                logger.warn("aborting application update due to errors, trying again later");
+                fetchAndWriteApplicationUpdate(latestRelease, applicationUpdateJarPath,
+                        applicationUpdateJarName);
             }
+        } else {
+            logger.info("application is up-to-date, nothing to do");
         }
     }
 
-    private void saveUpdateSuccessNote(final String releaseUpdatedTo) {
-        //TODO: implement & show notice of pending updates to users in acp
+    private void fetchAndWriteApplicationUpdate(final GitHubRelease latestRelease,
+                                                final String applicationUpdateJarPath,
+                                                final String applicationUpdateJarName) throws Exception {
+        ByteArrayOutputStream applicationUpdateOutputStream = null;
+        int expectedApplicationUpdateSize = -1;
+        boolean updateWriteSuccess = false;
+        logger.info("application needs to be updated, attempting download ...");
+        for (GitHubReleaseAsset releaseAsset : latestRelease.getAssets()) {
+            if ("application/java-archive".equalsIgnoreCase(releaseAsset.getContentType())) {
+                expectedApplicationUpdateSize = releaseAsset.getContentSize();
+                try {
+                    applicationUpdateOutputStream = readApplicationUpdate(releaseAsset);
+                } catch (URISyntaxException e) {
+                    logger.error("url to updated application .jar seems to be malformed", e);
+                } catch (Exception e) {
+                    logger.error("could not download updated application .jar", e);
+                }
+                break;
+            }
+        }
+
+        final byte[] applicationUpdateBytes = applicationUpdateOutputStream == null
+                ? new byte[]{} : applicationUpdateOutputStream.toByteArray();
+
+        logger.info("validating downloaded application update integrity ...");
+        if (validateApplicationUpdateSize(expectedApplicationUpdateSize, applicationUpdateBytes.length)) {
+            updateWriteSuccess = writeApplicationUpdate(applicationUpdateJarPath, applicationUpdateBytes);
+        }
+
+        if (updateWriteSuccess) {
+            logger.warn("successfully fetched an application update - a restart is needed!");
+            handleUpdateWriteSuccess(applicationUpdateJarName);
+        } else {
+            logger.warn("aborting application update due to errors, trying again later");
+        }
     }
 
-    private synchronized void attemptLaunchScriptModification(final String oldJarPath, final String newJarPath) {
-        logger.info("attempting to modify the launch script for the application (if exists, might fail) - "
-                + "on failure please modify it manually to point to the latest application .jar");
+    private boolean updatedApplicationJarExistsAndIsValid(final String applicationUpdateJarPath) {
+        try {
+            final File updateJarFile = new File(applicationUpdateJarPath);
+            if (updateJarFile.exists()) {
+                Toolkit.validateZipFile(updateJarFile);
+                logger.info("application update exists on disk and is valid");
+                return true;
+            } else {
+                return false;
+            }
+        } catch (ZipException e) {
+            logger.error("existing application update zip archive integrity check failed", e);
+        } catch (IOException e) {
+            logger.error("error opening existing application update .jar", e);
+        }
 
-        //TODO: implement for Debian-based Linux distributions
+        return false;
+    }
+
+    private void handleUpdateWriteSuccess(final String latestReleaseJarName) {
+        configuration.setUpdatePending(true);
+        try {
+            writeLatestReleaseTextFile(applicationLocation.concat(File.separator).concat("latest.release"),
+                    latestReleaseJarName);
+        } catch (IOException e) {
+            logger.error("failed to write latest application .jar name to text file", e);
+        }
+        attemptApplicationRestart();
+    }
+
+    private synchronized void writeLatestReleaseTextFile(final String latestReleaseTextFilePath,
+                                                         final String latestReleaseJarName) throws IOException {
+        logger.info("writing latest application .jar name to text file");
+
+        final File latestReleaseTextFile = new File(latestReleaseTextFilePath);
+        FileUtils.writeStringToFile(latestReleaseTextFile, latestReleaseJarName.concat(System.lineSeparator()),
+                "UTF-8");
     }
 
     private static synchronized void attemptApplicationRestart() {
@@ -210,9 +256,6 @@ public class UpdateApplicationJob implements org.quartz.Job {
             logger.error("downloaded application update zip archive integrity check failed", e);
         } catch (IOException e) {
             logger.error("error writing downloaded application update or overriding existing .jar", e);
-        } catch (Exception e) {
-            logger.error("downloaded application update could not be verified "
-                    + "or existing .jar could not be replaced", e);
         }
 
         return false;

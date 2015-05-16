@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package to.sauerkraut.krautadmin.core;
+package to.sauerkraut.krautadmin.cli;
 
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-public interface ReleaseAware {
-    void setRelease(final String release);
-    String getRelease();
+public interface JarReleaseAware {
+    String getJarRelease();
+    void setJarRelease(final String jarRelease);
 }

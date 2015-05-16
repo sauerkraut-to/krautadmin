@@ -139,5 +139,3 @@ assets:
   cacheSpec: 'maximumSize=0'
   overrides:
       /: src/main/resources/assets/
-
-release: v0.1.0

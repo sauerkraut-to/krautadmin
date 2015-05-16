@@ -192,7 +192,7 @@ public final class Toolkit {
      * @param zipFile
      * @throws Exception
      */
-    public static void validateZipFile(final File zipFile) throws Exception {
+    public static void validateZipFile(final File zipFile) throws IOException {
         final ZipFile applicationUpdateJar = new ZipFile(zipFile);
         final Enumeration<? extends ZipEntry> applicationUpdateJarEntries =
                 applicationUpdateJar.entries();

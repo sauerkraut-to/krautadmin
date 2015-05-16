@@ -30,7 +30,6 @@ import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.HasOrientServerConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
 import to.sauerkraut.krautadmin.cli.MetadataAware;
-import to.sauerkraut.krautadmin.core.ReleaseAware;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.setup.HasDatabaseConfiguration;
 import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
@@ -44,8 +43,7 @@ import java.util.Map;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public class KrautAdminConfiguration extends Configuration 
-    implements HasOrientServerConfiguration, HasDatabaseConfiguration, HasAssetsConfiguration,
-        ReleaseAware, MetadataAware {
+    implements HasOrientServerConfiguration, HasDatabaseConfiguration, HasAssetsConfiguration, MetadataAware {
 
     @JsonIgnore
     private String applicationLocation;
@@ -54,11 +52,11 @@ public class KrautAdminConfiguration extends Configuration
     @JsonIgnore
     private String jarName;
     @JsonIgnore
+    private String jarPrefix;
+    @JsonIgnore
+    private String jarRelease;
+    @JsonIgnore
     private boolean updatePending;
-
-    @NotNull
-    @JsonProperty("release")
-    private String release;
     
     @NotNull
     @Valid
@@ -152,14 +150,6 @@ public class KrautAdminConfiguration extends Configuration
         this.assetsConfiguration = assetsConfiguration;
     }
 
-    public String getRelease() {
-        return release;
-    }
-
-    public void setRelease(final String release) {
-        this.release = release;
-    }
-
     @Override
     public void setApplicationLocation(final String applicationLocation) {
         this.applicationLocation = applicationLocation;
@@ -196,6 +186,22 @@ public class KrautAdminConfiguration extends Configuration
 
     public void setUpdatePending(final boolean updatePending) {
         this.updatePending = updatePending;
+    }
+
+    public String getJarPrefix() {
+        return jarPrefix;
+    }
+
+    public void setJarPrefix(final String jarPrefix) {
+        this.jarPrefix = jarPrefix;
+    }
+
+    public String getJarRelease() {
+        return jarRelease;
+    }
+
+    public void setJarRelease(final String jarRelease) {
+        this.jarRelease = jarRelease;
     }
 
     /**

@@ -137,5 +137,3 @@ security:
 
 assets:
   cacheSpec: 'maximumSize=100'
-
-release: v0.1.0

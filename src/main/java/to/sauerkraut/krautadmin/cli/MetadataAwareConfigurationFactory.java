@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.configuration.ConfigurationException;
 import io.dropwizard.configuration.ConfigurationFactory;
 import io.dropwizard.configuration.ConfigurationSourceProvider;
+import org.apache.commons.io.FilenameUtils;
 import to.sauerkraut.krautadmin.core.Toolkit;
 
 import javax.validation.Validator;
@@ -31,6 +32,8 @@ import java.io.IOException;
  * @param <T> the configuration class
  */
 public class MetadataAwareConfigurationFactory<T> extends ConfigurationFactory<T> {
+    private static final String JAR_NAME_PARTS_DELIMITER = "-";
+
     /**
      * Creates a new configuration factory for the given class.
      *
@@ -61,7 +64,15 @@ public class MetadataAwareConfigurationFactory<T> extends ConfigurationFactory<T
                     metadataConfig.setConfigurationPath(path);
                 }
                 metadataConfig.setApplicationLocation(Toolkit.getApplicationContainingFolder());
+                final String applicationJarName = Toolkit.getApplicationJarName();
+                final String[] splitApplicationJarName = applicationJarName.split(JAR_NAME_PARTS_DELIMITER);
+                final String applicationJarPrefix = splitApplicationJarName[0].trim();
+                String applicationJarRelease = FilenameUtils.removeExtension(
+                        applicationJarName.replace(applicationJarPrefix.concat(JAR_NAME_PARTS_DELIMITER), "")).trim();
+                applicationJarRelease = applicationJarRelease.isEmpty() ? null : applicationJarRelease;
                 metadataConfig.setJarName(Toolkit.getApplicationJarName());
+                metadataConfig.setJarPrefix(applicationJarPrefix);
+                metadataConfig.setJarRelease(applicationJarRelease);
             } catch (Exception e) {
                 throw new IOException(e);
             }
