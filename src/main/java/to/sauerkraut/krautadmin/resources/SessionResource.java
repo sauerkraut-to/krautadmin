@@ -16,11 +16,9 @@
  */
 package to.sauerkraut.krautadmin.resources;
 
-import javax.ws.rs.FormParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.secnod.shiro.jaxrs.Auth;
@@ -38,7 +36,6 @@ public class SessionResource {
     public void login(@FormParam("username") final String username, @FormParam("password") final String password, 
             @Auth final Subject subject) {
         subject.login(new UsernamePasswordToken(username, password));
-        //return username;
     }
     
     @POST

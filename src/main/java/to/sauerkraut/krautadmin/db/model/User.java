@@ -22,7 +22,9 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
 /**
@@ -35,9 +37,10 @@ public class User {
     private String id;
     @Version
     private Long version;
-    @NotEmpty
+    @NotBlank
     private String username;
-    @NotEmpty
+    @NotBlank
+    @JsonIgnore
     private String password;
     @NotNull
     @Valid

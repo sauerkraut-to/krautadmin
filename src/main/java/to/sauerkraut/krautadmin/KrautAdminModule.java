@@ -24,6 +24,7 @@ import com.google.inject.matcher.Matchers;
 import com.palominolabs.metrics.guice.MetricsInstrumentationModule;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.glassfish.jersey.server.ResourceConfig;
 import ru.vyarus.dropwizard.guice.module.support.BootstrapAwareModule;
 import ru.vyarus.dropwizard.guice.module.support.ConfigurationAwareModule;
 import ru.vyarus.dropwizard.guice.module.support.EnvironmentAwareModule;
@@ -35,13 +36,18 @@ import ru.vyarus.guice.validator.ImplicitValidationModule;
 
 import javax.validation.ValidatorFactory;
 import javax.ws.rs.Path;
+import javax.ws.rs.ext.ExceptionMapper;
 import java.lang.reflect.AnnotatedElement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.shiro.crypto.hash.ConfigurableHashService;
 import org.eclipse.jetty.server.session.SessionHandler;
-import org.secnod.shiro.jaxrs.ShiroExceptionMapper;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
 import to.sauerkraut.krautadmin.auth.PasswordService;
 import to.sauerkraut.krautadmin.db.DataStructureEnhancerAndFixturesLoader;
+import to.sauerkraut.krautadmin.jersey.GenericExceptionMapper;
 import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
 import to.sauerkraut.krautadmin.job.SchedulerModule;
 
@@ -49,7 +55,7 @@ import to.sauerkraut.krautadmin.job.SchedulerModule;
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-@SuppressWarnings("checkstyle:classdataabstractioncoupling")
+@SuppressWarnings({"checkstyle:classdataabstractioncoupling", "checkstyle:classfanoutcomplexity"})
 public class KrautAdminModule extends AbstractModule implements
         EnvironmentAwareModule,
         BootstrapAwareModule<KrautAdminConfiguration>,
@@ -77,7 +83,7 @@ public class KrautAdminModule extends AbstractModule implements
     @Override
     protected void configure() {
         enableSessions();
-        registerShiroExceptionMapper();
+        registerCustomExceptionMapper();
         bindPasswordService();
         bindSupplement();
         bindDb();
@@ -90,8 +96,25 @@ public class KrautAdminModule extends AbstractModule implements
         bind(ValidatorFactory.class).toInstance(bootstrap.getValidatorFactory());
     }
     
-    private void registerShiroExceptionMapper() {
-        environment.jersey().register(new ShiroExceptionMapper());
+    private void registerCustomExceptionMapper() {
+        // Remove all of Dropwizard's custom ExceptionMappers
+        final ResourceConfig jrConfig = environment.jersey().getResourceConfig();
+        final Set<Object> dwSingletons = jrConfig.getSingletons();
+        final List<Object> singletonsToRemove = new ArrayList<>();
+
+        for (Object s : dwSingletons) {
+            if (s instanceof ExceptionMapper && s.getClass().getName().startsWith("io.dropwizard.jersey.")) {
+                singletonsToRemove.add(s);
+            }
+        }
+
+        for (Object s : singletonsToRemove) {
+            jrConfig.getSingletons().remove(s);
+        }
+
+        // Register the custom ExceptionMapper(s)
+        environment.jersey().register(new GenericExceptionMapper());
+        //environment.jersey().register(new ShiroExceptionMapper());
     }
     
     private void enableSessions() {
