@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.security.CodeSource;
 import java.util.ArrayList;
@@ -140,23 +141,27 @@ public final class Toolkit {
      *
      * @return null, if the application is not delivered as a fat .jar
      */
-    public static String getApplicationJarName() throws Exception {
+    public static String getApplicationJarName() throws IOException {
         final File possibleJarFile = getPossibleApplicationJarFile(KrautAdminApplication.class);
 
-        if (possibleJarFile.getName().toUpperCase().endsWith(".JAR")) {
+        if (possibleJarFile != null && possibleJarFile.getName().toUpperCase().endsWith(".JAR")) {
             return possibleJarFile.getName();
         } else {
             return null;
         }
     }
 
-    private static File getPossibleApplicationJarFile(final Class aClass) throws Exception {
+    private static File getPossibleApplicationJarFile(final Class aClass) throws IOException {
         final CodeSource codeSource = aClass.getProtectionDomain().getCodeSource();
 
         File jarFile;
 
         if (codeSource.getLocation() != null) {
-            jarFile = new File(codeSource.getLocation().toURI());
+            try {
+                jarFile = new File(codeSource.getLocation().toURI());
+            } catch (URISyntaxException e) {
+                return null;
+            }
         } else {
             final String path = aClass.getResource(aClass.getSimpleName() + ".class").getPath();
             String jarFilePath = path.substring(path.indexOf(':') + 1, path.indexOf('!'));

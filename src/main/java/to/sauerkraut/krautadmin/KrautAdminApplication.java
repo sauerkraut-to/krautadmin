@@ -111,7 +111,10 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
                     + "more JD statics - app start is going to fail", e);
         }
         try {
-            Toolkit.clearLinkCheckers();
+            // do not clear link checker classes on each application start in dev mode
+            if (Toolkit.getApplicationJarName() != null) {
+                Toolkit.clearLinkCheckers();
+            }
         } catch (IOException e) {
             LOG.error("Could not delete 'jd' directory, JD plugins won't be loaded freshly on application start", e);
         }
