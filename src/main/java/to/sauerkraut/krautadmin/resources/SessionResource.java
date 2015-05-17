@@ -34,8 +34,8 @@ public class SessionResource {
     @POST
     @Path("/login")
     public void login(@FormParam("username") final String username, @FormParam("password") final String password, 
-            @Auth final Subject subject) {
-        subject.login(new UsernamePasswordToken(username, password));
+            @FormParam("rememberMe") final boolean rememberMe, @Auth final Subject subject) {
+        subject.login(new UsernamePasswordToken(username, password, rememberMe));
     }
     
     @POST
