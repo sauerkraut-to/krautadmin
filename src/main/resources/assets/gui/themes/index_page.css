@@ -1,0 +1,53 @@
+body {
+    background: #222222 url('./default/images/subtlepatterns/woven.png');
+}
+
+#content {
+	background-color: #FFFFFC;
+	width: 400px;
+	height: 400px;
+	margin: -200px 0 0 -200px;
+	border: 1px solid transparent;
+	border-radius: 5px;
+	top: 50%;
+	left: 50%;
+	position: absolute;
+}
+
+.login-container {
+  height: 352px;
+  width: 352px;
+  background: transparent url('./default/images/sauerkrautlogo.png');
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  position: absolute;
+  margin: -184px 0 0 -176px;
+  left: 50%;
+  top: 50%;
+}
+
+.login-container > .panel {
+	margin-top: 259px;
+}
+
+.login-container .panel-body {
+	text-align: center;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.login-table {
+	width: 100%;
+}
+
+.login-table td {
+	width: 100%;
+}
+
+.login-table td > * {
+	width: 95%;
+}
+
+.button-login {
+	margin-top: 10px;
+}

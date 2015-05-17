@@ -1,9 +1,6 @@
 ## KrautAdmin Configuration.
 ---
 
-server:
-  rootPath: '/rest/*'
-
 db:
   uri: 'plocal:$APP/databases/krautadmin'
   user: admin
@@ -137,3 +134,8 @@ security:
 
 assets:
   cacheSpec: 'maximumSize=100'
+
+server:
+  rootPath: '/rest/*'
+  gzip:
+    enabled: true

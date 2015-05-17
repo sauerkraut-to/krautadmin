@@ -2,10 +2,37 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>KrautAdmin - Index</title>
+    <link rel="stylesheet" type="text/css" href="gui/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="gui/themes/icon.css" />
+    <link rel="stylesheet" type="text/css" href="gui/themes/index_page.css" />
+    <script type="text/javascript" src="gui/jquery.min.js"></script>
+    <script type="text/javascript" src="gui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="gui/locale/easyui-lang-de.js"></script>
+    <script type="text/javascript" src="gui/index_page.js"></script>
 </head>
 <body>
-<h1>It works!</h1>
-<a href="/rest/sample">sample get: /rest/sample/</a>
+    <div id="content">
+        <div class="login-container">
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-title">Anmeldung<span class="right live-clock"></span></div>
+                </div>
+                <div class="panel-description">
+                    ... für Mitglieder der Bruderschaft
+                </div>
+                <div class="panel-body">
+                    <table class="login-table">
+                        <tr>
+                            <td><input class="easyui-textbox username" type="text" data-options="required:true, prompt:'Benutzername'" /></td>
+                        </tr>
+                        <tr>
+                            <td><input class="easyui-textbox password" type="text" data-options="required:true, prompt:'Kennwort'" /></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
