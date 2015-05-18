@@ -1,17 +1,5 @@
-*{
-	font-size:12px;
-}
 body {
-    font-family:tahoma;
-    padding:20px;
-    font-size:8pt;
-    margin:0;
-}
-h2 {
-    font-size:18px;
-    font-weight:bold;
-    margin:0;
-    margin-bottom:15px;
+	padding: 20px;
 }
 .demo-info{
 	padding:0 0 12px 0;

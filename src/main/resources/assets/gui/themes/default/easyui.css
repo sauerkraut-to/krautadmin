@@ -1,9 +1,11 @@
 * {
-  font-size:12px;
+  font-size:10pt;
 }
 html {
-  font-family:tahoma;
-  font-size:8pt;
+  /*font-family: 'Segoe UI', Frutiger, 'Frutiger Linotype', 'Dejavu Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-family: Tahoma, Verdana, Segoe, sans-serif;*/
+  font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+  font-size:9pt;
 }
 .panel {
   overflow: hidden;
@@ -22,7 +24,7 @@ html {
 .panel-header {
   padding: 1px 3px 0px 3px;
   position: relative;
-  height: 16px;
+  height: 17px;
 }
 .panel-title {
   background: url('images/blank.gif') no-repeat;
@@ -51,7 +53,7 @@ html {
 .panel-tool {
   position: absolute;
   top: 0%;
-  height: 16px;
+  height: 17px;
   overflow: hidden;
 }
 .panel-icon {
@@ -68,7 +70,7 @@ html {
   height: 16px;
   /*opacity: 0.6;
   filter: alpha(opacity=60);*/
-  margin: 0 0 0 2px;
+  margin: 1px 0 0 2px;
   vertical-align: top;
   cursor: pointer;
 }
@@ -122,10 +124,11 @@ html {
 }
 .panel-header {
   background-color: #4481AE;
-  background: url('images/tab.gif') repeat-x;
+  background: url('images/tab.gif') repeat;
+  height: 17px;
 }
 .panel-description {
-  font-size: 7pt;
+  font-size: 8pt;
   background-color: #F3F3F3;
   border-color: #59667A;
   border-style: solid;
@@ -135,19 +138,20 @@ html {
 .panel-body {
   background-color: #F3F3F3;
   color: #000;
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .panel-title {
-  font-size: 8pt;
-  font-weight: bold;
+  font-size: 9pt;
   color: #FFFFFC;
-  height: 16px;
-  line-height: 16px;
+  height: 17px;
+  line-height: 17px;
+  letter-spacing: 1px;
 }
 .panel-title > .right {
   float:right; 
-  font-weight: normal; 
-  font-size: 8pt
+  font-weight: normal;
+  font-size: 9pt;
+  letter-spacing: normal;
 }
 .panel-footer {
   border: 1px solid #59667A;
@@ -190,8 +194,8 @@ html {
 }
 .accordion .accordion-header {
   background: #4481AE;
-  background: url('images/tab.gif') repeat-x;
-  height: 16px;
+  background: url('images/tab.gif') repeat;
+  height: 17px;
   filter: none;
 }
 .accordion .accordion-header-selected {
@@ -344,7 +348,7 @@ html {
   vertical-align: top;
   width: auto;
   line-height: 24px;
-  font-size: 8pt;
+  font-size: 9pt;
   padding: 0;
   margin: 0 4px;
 }
@@ -521,7 +525,7 @@ html {
   border-radius: 0px 0px 0px 0px;
 }
 .textbox .textbox-text {
-  font-size: 8pt;
+  font-size: 9pt;
   border: 0;
   margin: 0;
   padding: 4px;
@@ -534,7 +538,7 @@ html {
   border-radius: 0px 0px 0px 0px;
 }
 .textbox .textbox-prompt {
-  font-size: 8pt;
+  font-size: 9pt;
   color: #aaa;
 }
 .textbox .textbox-button,
@@ -623,7 +627,7 @@ html {
   vertical-align: middle;
 }
 .combo .combo-text {
-  font-size: 8pt;
+  font-size: 9pt;
   border: 0px;
   margin: 0;
   padding: 0px 2px;
@@ -674,7 +678,7 @@ html {
 }
 .combobox-item,
 .combobox-group {
-  font-size: 8pt;
+  font-size: 9pt;
   padding: 3px;
   padding-right: 0px;
 }
@@ -935,6 +939,7 @@ html {
 }
 .tabs-title {
   font-size: 8pt;
+  letter-spacing: 1px;
 }
 .tabs-closable {
   padding-right: 8px;
@@ -1125,8 +1130,8 @@ html {
 .tabs-header,
 .tabs-tool {
   background-color: #4481AE;
-  height: 16px;
-  background: url('images/tab.gif') repeat-x;
+  height: 17px;
+  background: url('images/tab.gif') repeat;
 }
 .tabs-header-plain {
   background: transparent;
@@ -1266,13 +1271,13 @@ html {
   overflow: hidden;
   height: 18px;
   line-height: 18px;
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .datagrid-header .datagrid-cell {
   height: auto;
 }
 .datagrid-header .datagrid-cell span {
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .datagrid-cell-group {
   text-align: center;
@@ -1349,7 +1354,7 @@ html {
   margin: 0;
   padding: 2px 4px;
   border: 1px solid #59667A;
-  font-size: 8pt;
+  font-size: 9pt;
   outline-style: none;
   -moz-border-radius: 0 0 0 0;
   -webkit-border-radius: 0 0 0 0;
@@ -1590,10 +1595,10 @@ html {
   padding: 0;
   height: 30px;
   line-height: 30px;
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .pagination span {
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .pagination-link .l-btn-text {
   width: 24px;
@@ -1631,13 +1636,13 @@ html {
 .calendar table {
   table-layout: fixed;
   border-collapse: separate;
-  font-size: 8pt;
+  font-size: 9pt;
   width: 100%;
   height: 100%;
 }
 .calendar table td,
 .calendar table th {
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .calendar-noborder {
   border: 0;
@@ -1648,21 +1653,21 @@ html {
   border-style: solid;
   padding: 1px 3px 0px 3px;
   position: relative;
-  height: 16px;
+  height: 17px;
 }
 .calendar-title {
   text-align: center;
-  color: #FFFFFC;
-  font-weight: bold;
-  height: 16px;
+  color: #FFFFFC;  
+  height: 17px;
 }
 .calendar-title span {
   position: relative;
   display: inline-block;
   padding: 0 3px;
-  height: 16px;
-  line-height: 16px;
-  font-size: 8pt;
+  height: 17px;
+  line-height: 17px;
+  font-size: 9pt;
+  letter-spacing: 1px;
   cursor: pointer;
   -moz-border-radius: 0px 0px 0px 0px;
   -webkit-border-radius: 0px 0px 0px 0px;
@@ -1730,7 +1735,7 @@ html {
   width: 180px;
   height: 150px;
   padding: 5px;
-  font-size: 8pt;
+  font-size: 9pt;
   display: none;
   overflow: hidden;
 }
@@ -1746,7 +1751,7 @@ html {
   margin: 0;
   padding: 2px;
   font-weight: bold;
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .calendar-menu-prev,
 .calendar-menu-next {
@@ -1799,7 +1804,8 @@ html {
 }
 .calendar-header {
   background: #4481AE;
-  background: url('images/tab.gif') repeat-x;
+  background: url('images/tab.gif') repeat;
+  height: 17px;
 }
 .calendar-body,
 .calendar-menu {
@@ -1834,7 +1840,7 @@ html {
   text-align: center;
 }
 .datebox-button a {
-  font-size: 8pt;
+  font-size: 9pt;
   font-weight: bold;
   text-decoration: none;
   opacity: 0.6;
@@ -1872,7 +1878,7 @@ html {
   vertical-align: middle;
 }
 .spinner .spinner-text {
-  font-size: 8pt;
+  font-size: 9pt;
   border: 0px;
   margin: 0;
   padding: 0 2px;
@@ -1941,8 +1947,9 @@ html {
   border-radius: 0px 0px 0px 0px;
   overflow: hidden;
   position: relative;
-  max-height: 17px;
+  height: 17px;
   line-height: 17px;
+  max-height: 17px;
 }
 .progressbar-text {
   text-align: center;
@@ -1959,17 +1966,17 @@ html {
 .progressbar {
   border-color: #59667A;
   background-color: #4481AE;
-  background: url('images/tabgrau.gif') repeat-x;
+  background: url('images/tabgrau.gif') repeat;
 }
 .progressbar-text {
   color: #FFFFFC;
-  font-weight: bold;
-  font-size: 8pt;
+  font-size: 9pt;
+  letter-spacing: 1px;
 }
 .progressbar-value .progressbar-text {
   background-color: #4481AE;
-  background: url('images/tab.gif') repeat-x;
-  font-weight: bold;
+  background: url('images/tab.gif') repeat;
+  height: 17px;
   color: #FFFFFC;
 }
 .searchbox {
@@ -1983,14 +1990,14 @@ html {
   vertical-align: middle;
 }
 .searchbox .searchbox-text {
-  font-size: 8pt;
+  font-size: 9pt;
   border: 0;
   margin: 0;
   padding: 0 2px;
   vertical-align: top;
 }
 .searchbox .searchbox-prompt {
-  font-size: 8pt;
+  font-size: 9pt;
   color: #ccc;
 }
 .searchbox-button {
@@ -2094,7 +2101,7 @@ html {
   position: absolute;
   display: inline-block;
   line-height: 12px;
-  font-size: 8pt;
+  font-size: 9pt;
   white-space: nowrap;
   top: -22px;
 }
@@ -2117,7 +2124,7 @@ html {
 .slider-rulelabel span {
   position: absolute;
   display: inline-block;
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .slider-v .slider-inner {
   width: 6px;
@@ -2236,7 +2243,7 @@ html {
 }
 .menu-text,
 .menu-text span {
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .menu-shadow {
   position: absolute;
@@ -2520,7 +2527,7 @@ html {
   background: url('images/tree_icons.png') no-repeat -240px -18px;
 }
 .tree-title {
-  font-size: 8pt;
+  font-size: 9pt;
   display: inline-block;
   text-decoration: none;
   vertical-align: top;
@@ -2530,7 +2537,7 @@ html {
   line-height: 18px;
 }
 .tree-node-proxy {
-  font-size: 8pt;
+  font-size: 9pt;
   line-height: 20px;
   padding: 0 2px 0 20px;
   border-width: 1px;
@@ -2563,7 +2570,7 @@ html {
 }
 .tree-editor {
   border: 1px solid #ccc;
-  font-size: 8pt;
+  font-size: 9pt;
   height: 14px !important;
   height: 18px;
   line-height: 14px;
@@ -2609,7 +2616,7 @@ html {
   border-radius: 0px 0px 0px 0px;
 }
 .tooltip-content {
-  font-size: 8pt;
+  font-size: 9pt;
 }
 .tooltip-arrow-outer,
 .tooltip-arrow {
