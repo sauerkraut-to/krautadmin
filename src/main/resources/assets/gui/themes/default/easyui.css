@@ -268,6 +268,9 @@ html {
   box-shadow: 2px 2px 3px #cccccc;
   filter: progid:DXImageTransform.Microsoft.Blur(pixelRadius=2,MakeShadow=false,ShadowOpacity=0.2);
 }
+.window .panel-body {
+  background-color: #FFFFFC;
+}
 .window,
 .window .window-body {
   border-color: #59667A;
