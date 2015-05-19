@@ -22,14 +22,16 @@
                     ... für Mitglieder der Bruderschaft
                 </div>
                 <div class="panel-body">
-                    <table class="login-table">
-                        <tr>
-                            <td><input class="easyui-textbox username" type="text" data-options="required:true, prompt:'Deckname'" /></td>
-                        </tr>
-                        <tr>
-                            <td><input class="easyui-textbox password" type="password" data-options="required:true, prompt:'Codewort'" /></td>
-                        </tr>
-                    </table>
+                    <form id="form-login" method="post">
+                        <table class="login-table">
+                            <tr>
+                                <td><input class="easyui-textbox username" type="text" name="username" data-options="required:true, prompt:'Deckname'" /></td>
+                            </tr>
+                            <tr>
+                                <td><input class="easyui-textbox password" type="password" name="password" data-options="required:true, prompt:'Codewort'" /></td>
+                            </tr>
+                        </table>
+                    </form>
                 </div>
             </div>
         </div>

@@ -18,4 +18,40 @@ function withLeadingZero(number) {
 $(document).ready(function() {
     updateClock();
     setInterval('updateClock()', 1000);
+    $('input.textbox-text').first().focus();
+
+    $('#form-login').form({
+        url: '/rest/session/login',
+        onSubmit: function(){
+            var isValid = $(this).form('validate');
+            if (isValid){
+            	$.messager.progress({
+            	    'interval': 505
+            	});
+            }
+            return isValid;
+        },
+        success:function(response) {
+            $.messager.progress('close');
+
+            var response = eval('(' + response + ')');  // convert the JSON string to javascript object
+
+            if (!response.success) {
+                $.messager.alert({
+                	'title': 'Login nicht erfolgreich',
+                	'msg': response.exception.message,
+                	'icon': 'error',
+                	'fn': (function() {
+                	    $('input.textbox-text').first().focus();
+                	})
+                });
+            } else {
+                window.location.href('/mykraut/index.html');
+            }
+        }
+    }).keypress(function(e) {
+        if(e.which == 13) {
+            $(this).submit();
+        }
+    });
 });

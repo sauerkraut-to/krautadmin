@@ -20,21 +20,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.AuthenticationException;
+import to.sauerkraut.krautadmin.client.dto.ExceptionDetails;
+import to.sauerkraut.krautadmin.client.dto.GenericResponse;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public class GenericExceptionMapper implements ExceptionMapper<Exception> {
     private static final ObjectMapper MAPPER = new ObjectMapper();
-    private static final String EXCEPTION_NAME_KEY = "exceptionName";
-    private static final String EXCEPTION_MESSAGE_KEY = "message";
+
     @Override
     public Response toResponse(final Exception exception) {
         if (exception instanceof WebApplicationException) {
@@ -60,15 +59,13 @@ public class GenericExceptionMapper implements ExceptionMapper<Exception> {
     }
 
     private String defaultJSON(final Exception exception) {
-        final Map<String, String> responseMap = new HashMap<>();
-        responseMap.put(EXCEPTION_NAME_KEY, exception.getClass().getSimpleName());
-        responseMap.put(EXCEPTION_MESSAGE_KEY, exception.getMessage());
-
+        final ExceptionDetails exceptionDetails = new ExceptionDetails(
+                String.valueOf(exception.getMessage()).concat("."), exception.getClass().getSimpleName());
         try {
-            return MAPPER.writeValueAsString(responseMap);
+            return MAPPER.writeValueAsString(new GenericResponse<>(null, exceptionDetails));
         } catch (JsonProcessingException e) {
-            return "{\"" + EXCEPTION_NAME_KEY + "\":\"JsonProcessingException\", "
-                    + "\"" + EXCEPTION_MESSAGE_KEY + "\":\"An internal error occurred\"}";
+            return "{\"success\": false, \"exception\": {\"exceptionName\": \"JsonProcessingException\", "
+                    + "\"message\": \"Entschuldigung, ein interner Fehler ist aufgetreten.\"}, \"payload\": null}";
         }
     }
 }
