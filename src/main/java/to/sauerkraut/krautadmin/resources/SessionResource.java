@@ -85,14 +85,16 @@ public class SessionResource {
                     if (null != loginAttemptTooSoon) {
                         asyncResponse.resume(new AuthenticationException("Gleichzeitige Login-Versuche "
                                 + "von derselben IP sind nicht erlaubt (IPs werden nicht gespeichert, sondern nur "
-                                + "deren Hash-Werte und diese nur kurzfristig)"));
+                                + "deren Hash-Werte und diese nur kurzfristig und nur, "
+                                + "wenn die Login-Versuche erfolglos bleiben)"));
                     } else if (null != loginAttemptLimitExceeded) {
                         asyncResponse.resume(new AuthenticationException("Es sind nicht mehr als "
                                 + maximumFailedAttempts
                                 + " fehlerhafte Versuche pro IP und innerhalb einer Ban-Periode ("
                                 + banDays + " Tag" + (banDays != 1 ? "e" : "") + ") "
                                 + "erlaubt (IPs werden nicht gespeichert, sondern nur deren Hash-Werte "
-                                + "und diese nur kurzfristig). Der letze fehlerhafte Versuch fand statt am "
+                                + "und diese nur kurzfristig und nur, wenn die Login-Versuche erfolglos bleiben). "
+                                + "Der letze fehlerhafte Versuch fand statt am "
                                 + (new SimpleDateFormat("dd.MM.yyyy 'um' HH:mm")
                                 .format(loginAttemptLimitExceeded.getLastAttempt()) + " Uhr (Serverzeit)")
                         ));
