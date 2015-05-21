@@ -51,7 +51,7 @@ import java.util.concurrent.Executors;
 public class SessionResource {
 
     private static final ExecutorService TASK_EXECUTOR = Executors.newCachedThreadPool();
-    private static final int SLEEP_TIME_IN_MILLISECONDS = 5000;
+    private static final long SLEEP_TIME_IN_MILLISECONDS = 3000;
 
     @Log
     private static Logger logger;
@@ -62,7 +62,7 @@ public class SessionResource {
     @POST
     @Path("/login")
     @ManagedAsync
-    @SuppressWarnings("checkstyle:anoninnerlength")
+    @SuppressWarnings({"checkstyle:anoninnerlength", "checkstyle:cyclomaticcomplexity"})
     public void login(@FormParam("username") final String username, @FormParam("password") final String password,
             @FormParam("rememberMe") final boolean rememberMe, @Auth final Subject subject,
                       @Suspended final AsyncResponse asyncResponse, @Context final HttpServletRequest request) {
@@ -76,35 +76,30 @@ public class SessionResource {
                     hashedIp = DigestUtils.md5Hex(request.getRemoteAddr());
                     final int banDays = 1;
                     final int maximumFailedAttempts = 3;
-                    final LoginAttempt loginAttemptTooSoon = loginAttemptRepository
-                            .findByHashedIpAndNewerThan(hashedIp,
-                                    System.currentTimeMillis() - SLEEP_TIME_IN_MILLISECONDS);
-                    final LoginAttempt loginAttemptLimitExceeded = loginAttemptRepository
-                            .findByHashedIpAndLimitExceeded(hashedIp, maximumFailedAttempts);
+                    final LoginAttempt loginAttempt = loginAttemptRepository.findByHashedIp(hashedIp);
 
-                    if (null != loginAttemptTooSoon) {
+                    if (loginAttempt != null && loginAttempt.getLastAttempt().after(
+                            new Date(System.currentTimeMillis() - SLEEP_TIME_IN_MILLISECONDS))) {
                         asyncResponse.resume(new AuthenticationException("Gleichzeitige Login-Versuche "
                                 + "von derselben IP sind nicht erlaubt (IPs werden nicht gespeichert, sondern nur "
                                 + "deren Hash-Werte und diese nur kurzfristig und nur, "
-                                + "wenn die Login-Versuche erfolglos bleiben)"));
-                    } else if (null != loginAttemptLimitExceeded) {
+                                + "wenn die Login-Versuche erfolglos bleiben - bei erfolgreichem Login wird "
+                                + "weder IP noch Hash gespeichert!)"));
+                    } else if (loginAttempt != null && loginAttempt.getFailedAttempts() >= maximumFailedAttempts) {
                         asyncResponse.resume(new AuthenticationException("Es sind nicht mehr als "
                                 + maximumFailedAttempts
                                 + " fehlerhafte Versuche pro IP und innerhalb einer Ban-Periode ("
                                 + banDays + " Tag" + (banDays != 1 ? "e" : "") + ") "
                                 + "erlaubt (IPs werden nicht gespeichert, sondern nur deren Hash-Werte "
-                                + "und diese nur kurzfristig und nur, wenn die Login-Versuche erfolglos bleiben). "
+                                + "und diese nur kurzfristig und nur, wenn die Login-Versuche erfolglos bleiben - "
+                                + "bei erfolgreichem Login wird weder IP noch Hash gespeichert!). "
                                 + "Der letze fehlerhafte Versuch fand statt am "
                                 + (new SimpleDateFormat("dd.MM.yyyy 'um' HH:mm")
-                                .format(loginAttemptLimitExceeded.getLastAttempt()) + " Uhr (Serverzeit)")
+                                .format(loginAttempt.getLastAttempt()) + " Uhr (Serverzeit)")
                         ));
                     } else {
-                        loginAttemptRepository.upsert(hashedIp, new Date());
-                        Thread.sleep(SLEEP_TIME_IN_MILLISECONDS);
-                        subject.login(new UsernamePasswordToken(username, password, rememberMe));
-                        // after successful login delete hashed ip from LoginAttempts log
-                        loginAttemptRepository.deleteByHashedIp(hashedIp);
-                        asyncResponse.resume(new GenericResponse<>());
+                        login(hashedIp, subject, username, password, rememberMe, asyncResponse,
+                                SLEEP_TIME_IN_MILLISECONDS);
                     }
                 } catch (final InterruptedException ex) {
                     asyncResponse.cancel();
@@ -122,6 +117,27 @@ public class SessionResource {
                 }
             }
         });
+    }
+
+    private void login(final String hashedIp, final Subject subject, final String username,
+                       final String password, final boolean rememberMe,
+                       final AsyncResponse asyncResponse) throws Exception {
+        login(hashedIp, subject, username, password, rememberMe, asyncResponse, null);
+    }
+
+    private void login(final String hashedIp, final Subject subject, final String username,
+                       final String password, final boolean rememberMe,
+                       final AsyncResponse asyncResponse, final Long delay) throws Exception {
+        loginAttemptRepository.upsert(hashedIp, new Date());
+
+        if (delay != null) {
+            Thread.sleep(delay);
+        }
+
+        subject.login(new UsernamePasswordToken(username, password, rememberMe));
+        // after successful login delete hashed ip from LoginAttempts log
+        loginAttemptRepository.deleteByHashedIp(hashedIp);
+        asyncResponse.resume(new GenericResponse<>());
     }
     
     @POST

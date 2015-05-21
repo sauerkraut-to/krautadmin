@@ -26,7 +26,9 @@ $(document).ready(function() {
             var isValid = $(this).form('validate');
             if (isValid){
             	$.messager.progress({
-            	    'interval': 505
+            	    'interval': 310,
+            	    title:'Bitte einen Augenblick Geduld',
+                    msg:'Aus Sicherheitsgründen findet der Login verzögert statt...'
             	});
             }
             return isValid;

@@ -151,6 +151,10 @@ public final class Toolkit {
         }
     }
 
+    public static VirtualFile getVirtualFile(final String applicationRelativePath) {
+        return VirtualFile.fromApplicationRelativePath(applicationRelativePath);
+    }
+
     private static File getPossibleApplicationJarFile(final Class aClass) throws IOException {
         final CodeSource codeSource = aClass.getProtectionDomain().getCodeSource();
 

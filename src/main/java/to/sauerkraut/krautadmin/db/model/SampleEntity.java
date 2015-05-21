@@ -18,43 +18,22 @@ package to.sauerkraut.krautadmin.db.model;
 
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
-import javax.persistence.Id;
-import javax.persistence.Version;
-
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class SampleEntity {
+public class SampleEntity extends Model<SampleEntity> {
 
-    @Id
-    private String id;
-    @Version
-    private Long version;
     private String comment;
 
     public SampleEntity() {
+        
     }
 
     public SampleEntity(final String comment) {
+        this();
         this.comment = comment;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(final String id) {
-        this.id = id;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(final Long version) {
-        this.version = version;
     }
 
     public String getComment() {

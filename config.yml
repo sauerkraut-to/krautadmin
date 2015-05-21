@@ -7,117 +7,149 @@ db:
   pass: admin
   create: true
   dropInsecureUsersOnCreate: true
+  defaultDataModelPackage: to.sauerkraut.krautadmin.db.model
 
-orient-server:
-  files-path: $APP/
-
-  config:
-    users:
-      - name: root
-        password: root
-        resources: '*'
-      - name: guest
-        password: guest
-        resources: 'connect,server.listDatabases,server.dblist'
-
-    handlers:
-      - clazz: com.orientechnologies.lucene.OLuceneIndexPlugin
-    # enable below lines if graph version used and gremlin support required
-#      - clazz: com.orientechnologies.orient.graph.handler.OGraphServerHandler
+###############################
+# Uncomment the lines below, if you want to expose your embedded database to the OrientDB WebInterface,
+# which will run on <yourServer>:2480/studio/index.html
+#
+# You can think of it as a handy tool like PhpMyAdmin, but much more powerful and for the database integrated in this application.
+# It for example allows you to perform database backups from within your browser.
+#
+# Before you uncomment the lines, you have to
+# set secure passwords for your DB (admin-user, above) and for the Orient-Server (root-user, below),
+# and if your database already exists (which means it most likely has been generated with credentials "admin"/"admin"),
+# you need to set the new secure password in your database as well (and not only in this config file), which means
+# you need to access it via OrientDB Console (commandline) on your server and change the password for the admin user.
+#
+# (If you have started this application already at least once without changing the password for the "admin"-user
+# int the above db-section of this config file, it means that the database has already been generated using the
+# credentials "admin"/"admin")
+#
+# You can start OrientDB Console by starting this application NOT with java -jar server <pathToThisConfigFile>
+# but by starting it instead (shut it down in advance) with java -jar console <pathToThisConfigFile>
+#
+# Once you are in the OrientDB console via commandline, you can execute the following command for opening the
+# existing database of this application in the console (assuming the credentials "admin"/"admin"):
+# connect plocal:<PathToParentFolderOfApplicationJarFile>/databases/krautadmin admin admin
+#
+# After issuing the above command, you should be connected to the database of this application via commandline.
+# You then can change the password for the admin user and leave the OrientDB console by issuing "exit" after you are done.
+# The command for changing the password should be
+# UPDATE OUser SET password = 'mySuperStrongPassword' WHERE name = 'admin'
+#
+# If you have edited the user of your database and your database file is secured by a strong password,
+# then and ONLY then you can uncomment the lines below without risking giving access to your database to everyone
+# with HTTP access to your server. Don't forget to change the passwords for database and
+# Orient-Server(WebInterface) in this config file as well.
+#
+# Also you should only perform the described steps if you are an experienced user!
+###############################
+# Begin of OrientDB Server/WebInterface Configuration
+###############################
+#orient-server:
+#  files-path: $APP/
+#
+#  config:
+#    users:
+#      - name: root
+#        password: root
+#        resources: '*'
+#      - name: guest
+#        password: guest
+#        resources: 'connect,server.listDatabases,server.dblist'
+#
+#    handlers:
+#      - clazz: com.orientechnologies.lucene.OLuceneIndexPlugin
+#      - clazz: com.orientechnologies.orient.server.handler.OJMXPlugin
 #        parameters:
 #            - name: enabled
 #              value: true
-#            - name: graph.pool.max
-#              value: 50
-      - clazz: com.orientechnologies.orient.server.handler.OJMXPlugin
-        parameters:
-            - name: enabled
-              value: true
-            - name: profilerManaged
-              value: true
-      - clazz: com.orientechnologies.orient.server.handler.OAutomaticBackup
-        parameters:
-            - name: enabled
-              value: false
-            - name: delay
-              value: 4h
-            - name: target.directory
-              value: backup
-            - name: target.fileName
-              value: '${DBNAME}-${DATE:yyyyMMddHHmmss}.json'
-            - name: compressionLevel
-              value: 9
-            - name: bufferSize
-              value: 1048576
-            - name: db.include
-              value:
-            - name: db.exclude
-              value:
-      - clazz: com.orientechnologies.orient.server.handler.OServerSideScriptInterpreter
-        parameters:
-            - name: enabled
-              value: true
-            - name: allowedLanguages
-              value: SQL
-      - clazz: com.orientechnologies.orient.server.token.OrientTokenHandler
-        parameters:
-            - name: enabled
-              value: false
-            - name: oAuth2Key
-              value:
-            - name: sessionLength
-              value: 60
-            - name: encryptionAlgorithm
-              value: HmacSHA256
-
-    network:
-      protocols:
-        - name: binary
-          implementation: com.orientechnologies.orient.server.network.protocol.binary.ONetworkProtocolBinary
-        - name: http
-          implementation: com.orientechnologies.orient.server.network.protocol.http.ONetworkProtocolHttpDb
-      listeners:
-        - protocol: binary
-          ipAddress: 0.0.0.0
-          portRange: 2424-2430
-          socket: default
-        - protocol: http
-          ipAddress: 0.0.0.0
-          portRange: 2480-2490
-          socket: default
-          parameters:
-              - name: network.http.charset
-                value: utf-8
-          commands:
-              - pattern: 'GET|www GET|studio/ GET| GET|*.htm GET|*.html GET|*.xml GET|*.jpeg GET|*.jpg GET|*.png GET|*.gif GET|*.js GET|*.css GET|*.swf GET|*.ico GET|*.txt GET|*.otf GET|*.pjs GET|*.svg GET|*.json GET|*.woff GET|*.ttf GET|*.svgz'
-                implementation: com.orientechnologies.orient.server.network.protocol.http.command.get.OServerCommandGetStaticContent
-                parameters:
-                    - name: 'http.cache:*.htm *.html'
-                      value: 'Cache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache'
-                    - name: 'http.cache:default'
-                      value: 'Cache-Control: max-age=120'
-  # enable below lines if graph version used and gephi support required
-#              - pattern: 'GET|gephi/*'
-#                implementation: com.orientechnologies.orient.graph.server.command.OServerCommandGetGephi
-
-    properties:
-       #important for embedded mode, because in other case "no ORIENT_HOME" warnings will be in logs
-       - name: plugin.dynamic
-         value: false
-       - name: db.pool.min
-         value: 1
-       - name: db.pool.max
-         value: 50
-       - name: profiler.enabled
-         value: true
-         #configures the profiler as <seconds-for-snapshot>,<archive-snapshot-size>,<summary-size>
-       - name: profiler.config
-         value: '30,10,10'
-         #enable/Disable logging. Levels are: finer, fine, finest, info, warning
-       - name: log.console.level
-         value: info
-       - name: log.file.level
-         value: fine
+#            - name: profilerManaged
+#              value: true
+#      - clazz: com.orientechnologies.orient.server.handler.OAutomaticBackup
+#        parameters:
+#            - name: enabled
+#              value: false
+#            - name: delay
+#              value: 4h
+#            - name: target.directory
+#              value: backup
+#            - name: target.fileName
+#              value: '${DBNAME}-${DATE:yyyyMMddHHmmss}.json'
+#            - name: compressionLevel
+#              value: 9
+#            - name: bufferSize
+#              value: 1048576
+#            - name: db.include
+#              value:
+#            - name: db.exclude
+#              value:
+#      - clazz: com.orientechnologies.orient.server.handler.OServerSideScriptInterpreter
+#        parameters:
+#            - name: enabled
+#              value: true
+#            - name: allowedLanguages
+#              value: SQL
+#      - clazz: com.orientechnologies.orient.server.token.OrientTokenHandler
+#        parameters:
+#            - name: enabled
+#              value: false
+#            - name: oAuth2Key
+#              value:
+#            - name: sessionLength
+#              value: 60
+#            - name: encryptionAlgorithm
+#              value: HmacSHA256
+#
+#    network:
+#      protocols:
+#        - name: binary
+#          implementation: com.orientechnologies.orient.server.network.protocol.binary.ONetworkProtocolBinary
+#        - name: http
+#          implementation: com.orientechnologies.orient.server.network.protocol.http.ONetworkProtocolHttpDb
+#      listeners:
+#        - protocol: binary
+#          ipAddress: 0.0.0.0
+#          portRange: 2424-2430
+#          socket: default
+#        - protocol: http
+#          ipAddress: 0.0.0.0
+#          portRange: 2480-2490
+#          socket: default
+#          parameters:
+#              - name: network.http.charset
+#                value: utf-8
+#          commands:
+#              - pattern: 'GET|www GET|studio/ GET| GET|*.htm GET|*.html GET|*.xml GET|*.jpeg GET|*.jpg GET|*.png GET|*.gif GET|*.js GET|*.css GET|*.swf GET|*.ico GET|*.txt GET|*.otf GET|*.pjs GET|*.svg GET|*.json GET|*.woff GET|*.ttf GET|*.svgz'
+#                implementation: com.orientechnologies.orient.server.network.protocol.http.command.get.OServerCommandGetStaticContent
+#                parameters:
+#                    - name: 'http.cache:*.htm *.html'
+#                      value: 'Cache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache'
+#                    - name: 'http.cache:default'
+#                      value: 'Cache-Control: max-age=120'
+#
+#    properties:
+#       #important for embedded mode, because in other case "no ORIENT_HOME" warnings will be in logs
+#       - name: plugin.dynamic
+#         value: false
+#       - name: db.pool.min
+#         value: 1
+#       - name: db.pool.max
+#         value: 50
+#       - name: profiler.enabled
+#         value: true
+#         #configures the profiler as <seconds-for-snapshot>,<archive-snapshot-size>,<summary-size>
+#       - name: profiler.config
+#         value: '30,10,10'
+#         #enable/Disable logging. Levels are: finer, fine, finest, info, warning
+#       - name: log.console.level
+#         value: info
+#       - name: log.file.level
+#         value: fine
+###############################
+# End of OrientDB Server/WebInterface Configuration
+###############################
 
 scheduler:
   basePackage: to.sauerkraut.krautadmin.job

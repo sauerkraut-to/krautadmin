@@ -16,8 +16,6 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
-import javax.persistence.Id;
-import javax.persistence.Version;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
 /**
@@ -25,17 +23,6 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class ReferenceLink {
-    @Id
-    private String id;
-    @Version
-    private Long version;
+public class ReferenceLink extends Model<ReferenceLink> {
 
-    public String getId() {
-        return id;
-    }
-
-    public Long getVersion() {
-        return version;
-    }
 }

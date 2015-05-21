@@ -38,9 +38,9 @@ import ru.vyarus.dropwizard.guice.GuiceBundle;
 import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import ru.vyarus.dropwizard.orient.OrientServerBundle;
 import to.sauerkraut.krautadmin.cli.MetadataAwareConfigurationFactoryFactory;
+import to.sauerkraut.krautadmin.db.model.Model;
 import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
 import to.sauerkraut.krautadmin.core.Toolkit;
-import to.sauerkraut.krautadmin.db.repository.UserRepository;
 import to.sauerkraut.krautadmin.resources.assets.ConfiguredAssetsBundle;
 
 import static javassist.ClassPool.getDefault;
@@ -128,7 +128,12 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
 
     @Override
     public void initialize(final Bootstrap<KrautAdminConfiguration> bootstrap) {
-        final Application<KrautAdminConfiguration> app = this;
+        final Application app = this;
+        try {
+            Toolkit.setFinalStaticField(Model.class.getDeclaredField("APP"), app);
+        } catch (Exception e) {
+            throw new WTFException("could not set app instance in data model", e);
+        }
         bootstrap.setConfigurationFactoryFactory(
                 new MetadataAwareConfigurationFactoryFactory<KrautAdminConfiguration>());
         bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/", "index.html", "client"));
@@ -154,7 +159,7 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
                 hashedCredentialsMatcher.setStoredCredentialsHexEncoded(false);
                 final to.sauerkraut.krautadmin.auth.Realm r = 
                         new to.sauerkraut.krautadmin.auth.Realm(hashedCredentialsMatcher);
-                r.setUserRepository(InjectorLookup.getInjector(app).get().getInstance(UserRepository.class));
+                InjectorLookup.getInjector(app).get().injectMembers(r);
                 return Collections.singleton((Realm) r);
             }
         });

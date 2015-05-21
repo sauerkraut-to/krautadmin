@@ -18,8 +18,6 @@ package to.sauerkraut.krautadmin.db.model;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Id;
-import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -32,11 +30,8 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class User {
-    @Id
-    private String id;
-    @Version
-    private Long version;
+public class User extends Model<User> {
+
     @NotBlank
     private String username;
     @NotBlank
@@ -57,14 +52,6 @@ public class User {
         this();
         this.username = username;
         this.password = password;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Long getVersion() {
-        return version;
     }
 
     public String getUsername() {

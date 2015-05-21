@@ -18,6 +18,8 @@ package to.sauerkraut.krautadmin.auth;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import com.google.inject.Inject;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -43,6 +45,8 @@ import to.sauerkraut.krautadmin.db.repository.UserRepository;
 public class Realm extends AuthorizingRealm {
     public static final String ERROR_USERNAME_NOT_PROVIDED = "Es wurde kein Benutzername angegeben";
     public static final String ERROR_USER_NOT_EXISTS = "Dieser Benutzer existiert nicht";
+
+    @Inject
     private UserRepository userRepository;
     
     public Realm() {
@@ -70,7 +74,7 @@ public class Realm extends AuthorizingRealm {
         if (username == null) {
             throw new UnknownAccountException(ERROR_USERNAME_NOT_PROVIDED);
         }
-        final User user = getUserRepository().findByUsernameAndActive(username, true);
+        final User user = userRepository.findByUsernameAndActive(username, true);
         if (user == null) {
             throw new UnknownAccountException(ERROR_USER_NOT_EXISTS);
         }
@@ -83,7 +87,7 @@ public class Realm extends AuthorizingRealm {
             final PrincipalCollection principals) {
         // retrieve role names and permission names
         final String username = (String) principals.getPrimaryPrincipal();
-        final User user = getUserRepository().findByUsernameAndActive(username, true);
+        final User user = userRepository.findByUsernameAndActive(username, true);
         if (user == null) {
             throw new UnknownAccountException(ERROR_USER_NOT_EXISTS);
         }
@@ -101,13 +105,5 @@ public class Realm extends AuthorizingRealm {
         final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
         info.setStringPermissions(permissionNames);
         return info;
-    }
-
-    public UserRepository getUserRepository() {
-        return userRepository;
-    }
-
-    public void setUserRepository(final UserRepository userRepository) {
-        this.userRepository = userRepository;
     }
 }

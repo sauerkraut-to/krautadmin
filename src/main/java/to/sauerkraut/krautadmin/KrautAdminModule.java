@@ -46,7 +46,7 @@ import org.apache.shiro.crypto.hash.ConfigurableHashService;
 import org.eclipse.jetty.server.session.SessionHandler;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
 import to.sauerkraut.krautadmin.auth.PasswordService;
-import to.sauerkraut.krautadmin.db.DataStructureEnhancerAndFixturesLoader;
+import to.sauerkraut.krautadmin.db.ApplicationUpgradeManagerAndFixturesLoader;
 import to.sauerkraut.krautadmin.jersey.GenericExceptionMapper;
 import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
 import to.sauerkraut.krautadmin.job.SchedulerModule;
@@ -114,6 +114,7 @@ public class KrautAdminModule extends AbstractModule implements
 
         // Register the custom ExceptionMapper(s)
         environment.jersey().register(new GenericExceptionMapper());
+        // the following is currently not needed, as we handle ShiroExceptions in the GenericExceptionMapper as well
         //environment.jersey().register(new ShiroExceptionMapper());
     }
     
@@ -151,7 +152,7 @@ public class KrautAdminModule extends AbstractModule implements
         install(new RepositoryModule());
 
         // not required, but using this feature of persist-orient to fill database
-        bind(DataInitializer.class).to(DataStructureEnhancerAndFixturesLoader.class);
+        bind(DataInitializer.class).to(ApplicationUpgradeManagerAndFixturesLoader.class);
     }
 
     private void bindSupplement() {

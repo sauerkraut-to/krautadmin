@@ -49,6 +49,9 @@ public interface LoginAttemptRepository extends ObjectCrud<LoginAttempt> {
     @Query("delete from LoginAttempt where hashedIp = ? limit 1")
     int deleteByHashedIp(String hashedIp);
 
+    @Query("select from LoginAttempt where hashedIp = ? limit 1")
+    LoginAttempt findByHashedIp(String hashedIp);
+
     @Query("select from LoginAttempt where hashedIp = ? and (failedAttempts >= ? or lastAttempt > ?) limit 1")
     LoginAttempt findByHashedIpAndLimitExceededOrNewerThan(String hashedIp, int maximumFailedAttempts, long timeBefore);
 

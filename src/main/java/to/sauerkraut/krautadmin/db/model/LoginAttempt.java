@@ -19,8 +19,6 @@ package to.sauerkraut.krautadmin.db.model;
 import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
-import javax.persistence.Id;
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 /**
@@ -28,11 +26,7 @@ import java.util.Date;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class LoginAttempt {
-    @Id
-    private String id;
-    @Version
-    private Long version;
+public class LoginAttempt extends Model<LoginAttempt> {
 
     //TODO: create a unique index on this field
     @NotBlank
@@ -49,14 +43,6 @@ public class LoginAttempt {
         this();
         this.setHashedIp(hashedIp);
         this.setLastAttempt(lastAttempt);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Long getVersion() {
-        return version;
     }
 
     public String getHashedIp() {

@@ -17,8 +17,6 @@
 package to.sauerkraut.krautadmin.db.model;
 
 import java.util.Date;
-import javax.persistence.Id;
-import javax.persistence.Version;
 import org.hibernate.validator.constraints.NotEmpty;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
@@ -27,11 +25,8 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class FrontendDataMirror {
-    @Id
-    private String id;
-    @Version
-    private Long version;
+public class FrontendDataMirror extends Model<FrontendDataMirror> {
+
     private String name;
     @NotEmpty
     private String ftpServer;
@@ -48,13 +43,45 @@ public class FrontendDataMirror {
     private boolean active; 
     private Date syncedUntil;
     private Date lastFailedSync;
+    private boolean isImplicit;
+    private SecureProtocol secureProtocol;
     
     public FrontendDataMirror() {
-        this.syncedUntil = new Date(Long.MIN_VALUE);
+        this.syncedUntil = new Date(0);
         this.ftpPort = 21;
         this.visible = false;
         this.active = false;
         this.ftpBasePath = "/";
+    }
+
+    public FrontendDataMirror(final SecureProtocol secureProtocol) {
+        this(secureProtocol, false);
+    }
+
+    public FrontendDataMirror(final SecureProtocol secureProtocol, final boolean isImplicit) {
+        this();
+        this.secureProtocol = secureProtocol;
+        this.isImplicit = isImplicit;
+    }
+
+    public boolean isSecure() {
+        return secureProtocol != null;
+    }
+
+    public boolean isIsImplicit() {
+        return isImplicit;
+    }
+
+    public void setIsImplicit(final boolean isImplicit) {
+        this.isImplicit = isImplicit;
+    }
+
+    public SecureProtocol getSecureProtocol() {
+        return secureProtocol;
+    }
+
+    public void setSecureProtocol(final SecureProtocol secureProtocol) {
+        this.secureProtocol = secureProtocol;
     }
 
     /**
@@ -79,14 +106,6 @@ public class FrontendDataMirror {
 
     public void setActive(final boolean active) {
         this.active = active;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Long getVersion() {
-        return version;
     }
 
     public Date getLastFailedSync() {
@@ -159,5 +178,13 @@ public class FrontendDataMirror {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    /**
+     *
+     * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
+     */
+    public enum SecureProtocol {
+        SSL, TLS
     }
 }

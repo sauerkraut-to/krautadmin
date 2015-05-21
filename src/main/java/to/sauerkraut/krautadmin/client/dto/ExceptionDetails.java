@@ -16,11 +16,15 @@
  */
 package to.sauerkraut.krautadmin.client.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public final class ExceptionDetails {
+    @JsonProperty
     private String message;
+    @JsonProperty
     private String exceptionName;
 
     public ExceptionDetails(final String message) {

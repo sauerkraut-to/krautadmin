@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class GenericResponse<T> {
     @JsonProperty("exception")
     private ExceptionDetails exceptionDetails;
+    @JsonProperty
     private T payload;
 
     public GenericResponse() {

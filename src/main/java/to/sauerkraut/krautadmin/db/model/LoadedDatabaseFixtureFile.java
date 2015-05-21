@@ -16,7 +16,6 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
-import org.hibernate.validator.constraints.NotEmpty;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
 /**
@@ -24,34 +23,22 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class Permission extends Model<Permission> {
-
-    @NotEmpty
-    private String name;
-    private String description;
+public class LoadedDatabaseFixtureFile extends Model<LoadedDatabaseFixtureFile> {
+    private long number;
     
-    public Permission() {
+    public LoadedDatabaseFixtureFile() {
         
     }
     
-    public Permission(final String name) {
-        this();
-        this.name = name;
+    public LoadedDatabaseFixtureFile(final long number) {
+        this.number =  number;
     }
 
-    public String getName() {
-        return name;
+    public long getNumber() {
+        return number;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
+    public void setNumber(final long number) {
+        this.number = number;
     }
 }

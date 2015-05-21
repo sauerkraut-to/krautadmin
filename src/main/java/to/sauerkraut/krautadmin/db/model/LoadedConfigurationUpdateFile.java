@@ -16,8 +16,6 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
-import javax.persistence.Id;
-import javax.persistence.Version;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
 /**
@@ -25,27 +23,15 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class ExecutedUpdateScript {
-    @Id
-    private String id;
-    @Version
-    private Long version;
+public class LoadedConfigurationUpdateFile extends Model<LoadedConfigurationUpdateFile> {
     private long number;
-    
-    public ExecutedUpdateScript() {
-        
+
+    public LoadedConfigurationUpdateFile() {
+
     }
-    
-    public ExecutedUpdateScript(final long number) {
+
+    public LoadedConfigurationUpdateFile(final long number) {
         this.number =  number;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Long getVersion() {
-        return version;
     }
 
     public long getNumber() {
