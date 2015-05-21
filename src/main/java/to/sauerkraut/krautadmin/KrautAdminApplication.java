@@ -38,7 +38,6 @@ import ru.vyarus.dropwizard.guice.GuiceBundle;
 import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import ru.vyarus.dropwizard.orient.OrientServerBundle;
 import to.sauerkraut.krautadmin.cli.MetadataAwareConfigurationFactoryFactory;
-import to.sauerkraut.krautadmin.db.model.Model;
 import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.resources.assets.ConfiguredAssetsBundle;
@@ -128,19 +127,14 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
 
     @Override
     public void initialize(final Bootstrap<KrautAdminConfiguration> bootstrap) {
-        final Application app = this;
-        try {
-            Toolkit.setFinalStaticField(Model.class.getDeclaredField("APP"), app);
-        } catch (Exception e) {
-            throw new WTFException("could not set app instance in data model", e);
-        }
+        final Application application = this;
         bootstrap.setConfigurationFactoryFactory(
                 new MetadataAwareConfigurationFactoryFactory<KrautAdminConfiguration>());
         bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/", "index.html", "client"));
         bootstrap.addBundle(new DatabaseAutoCreationBundle());
         bootstrap.addBundle(new OrientServerBundle(getConfigurationClass()));
         bootstrap.addBundle(GuiceBundle.<KrautAdminConfiguration>builder()
-                .modules(new KrautAdminModule())
+                .modules(new KrautAdminModule(application))
                 .enableAutoConfig(getClass().getPackage().getName())
                 .searchCommands(true)
                 .build());
@@ -159,7 +153,7 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
                 hashedCredentialsMatcher.setStoredCredentialsHexEncoded(false);
                 final to.sauerkraut.krautadmin.auth.Realm r = 
                         new to.sauerkraut.krautadmin.auth.Realm(hashedCredentialsMatcher);
-                InjectorLookup.getInjector(app).get().injectMembers(r);
+                InjectorLookup.getInjector(application).get().injectMembers(r);
                 return Collections.singleton((Realm) r);
             }
         });

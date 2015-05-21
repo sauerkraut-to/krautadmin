@@ -35,7 +35,8 @@ import javax.persistence.Version;
 @Persistent
 public abstract class Model<T> {
 
-    private static final Application APP = null;
+    @Inject
+    private static Application application;
 
     @Inject
     private transient PersistentContext<OObjectDatabaseTx> context;
@@ -101,7 +102,7 @@ public abstract class Model<T> {
 
     private synchronized void injectDependenciesIfNecessary() {
         if (context == null) {
-            InjectorLookup.getInjector(APP).get().injectMembers(this);
+            InjectorLookup.getInjector(application).get().injectMembers(this);
         }
     }
 }

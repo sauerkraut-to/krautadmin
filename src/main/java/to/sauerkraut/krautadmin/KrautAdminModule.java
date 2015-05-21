@@ -22,6 +22,7 @@ import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
 import com.palominolabs.metrics.guice.MetricsInstrumentationModule;
+import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -47,6 +48,7 @@ import org.eclipse.jetty.server.session.SessionHandler;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
 import to.sauerkraut.krautadmin.auth.PasswordService;
 import to.sauerkraut.krautadmin.db.ApplicationUpgradeManagerAndFixturesLoader;
+import to.sauerkraut.krautadmin.db.model.Model;
 import to.sauerkraut.krautadmin.jersey.GenericExceptionMapper;
 import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
 import to.sauerkraut.krautadmin.job.SchedulerModule;
@@ -64,6 +66,12 @@ public class KrautAdminModule extends AbstractModule implements
     private KrautAdminConfiguration configuration;
     private Bootstrap<KrautAdminConfiguration> bootstrap;
     private Environment environment;
+    private Application application;
+
+    public KrautAdminModule(final Application application) {
+        super();
+        this.application = application;
+    }
 
     @Override
     public void setConfiguration(final KrautAdminConfiguration configuration) {
@@ -90,6 +98,12 @@ public class KrautAdminModule extends AbstractModule implements
         bindScheduler();
         bindConfiguration();
         bindValidatorFactory();
+        bindApplication();
+        requestStaticInjection(Model.class);
+    }
+
+    private void bindApplication() {
+        bind(Application.class).toInstance(application);
     }
 
     private void bindValidatorFactory() {
