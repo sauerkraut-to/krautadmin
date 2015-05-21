@@ -28,7 +28,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class Role extends Model<Role> {
+public class Role extends Model {
 
     @NotEmpty
     private String name;

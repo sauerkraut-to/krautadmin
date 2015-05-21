@@ -23,10 +23,14 @@ import org.apache.shiro.authc.AuthenticationException;
 import to.sauerkraut.krautadmin.client.dto.ExceptionDetails;
 import to.sauerkraut.krautadmin.client.dto.GenericResponse;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
@@ -50,6 +54,20 @@ public class GenericExceptionMapper implements ExceptionMapper<Exception> {
             return Response.status(Response.Status.FORBIDDEN)
                     .entity(defaultJSON(exception))
                     .type(MediaType.APPLICATION_JSON).build();
+        } else if (exception instanceof ConstraintViolationException) {
+            final ConstraintViolationException constraintViolationException = (ConstraintViolationException) exception;
+            final List<GenericResponse.ConstraintViolation> constraintViolations = new ArrayList<>();
+            for (ConstraintViolation violation : constraintViolationException.getConstraintViolations()) {
+                final String propertyPath = violation.getPropertyPath().toString();
+                final String message = violation.getMessage();
+                final String className = violation.getRootBeanClass().getCanonicalName();
+                final String classNameSimple = violation.getRootBeanClass().getSimpleName();
+                constraintViolations.add(
+                        new GenericResponse.ConstraintViolation(propertyPath, message, className, classNameSimple));
+            }
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(defaultJSON(exception, constraintViolations))
+                    .type(MediaType.APPLICATION_JSON).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(defaultJSON(exception))
@@ -59,8 +77,19 @@ public class GenericExceptionMapper implements ExceptionMapper<Exception> {
     }
 
     private String defaultJSON(final Exception exception) {
+        return defaultJSON(exception, null);
+    }
+
+    private String defaultJSON(final Exception exception,
+                               final List<GenericResponse.ConstraintViolation> constraintViolations) {
         final ExceptionDetails exceptionDetails = new ExceptionDetails(
                 String.valueOf(exception.getMessage()).concat("."), exception.getClass().getSimpleName());
+        final GenericResponse genericResponse = new GenericResponse<>(null, exceptionDetails);
+
+        if (constraintViolations != null) {
+            genericResponse.getConstraintViolations().addAll(constraintViolations);
+        }
+
         try {
             return MAPPER.writeValueAsString(new GenericResponse<>(null, exceptionDetails));
         } catch (JsonProcessingException e) {

@@ -70,6 +70,14 @@ public final class Toolkit {
     private Toolkit() {
         
     }
+
+    public static void setAssertionsEnabled(final boolean enabled) {
+        setAssertionsEnabled(enabled, ClassLoader.getSystemClassLoader());
+    }
+
+    public static void setAssertionsEnabled(final boolean enabled, final ClassLoader classLoader) {
+        classLoader.setDefaultAssertionStatus(enabled);
+    }
     
     public static void setFinalStaticField(final Field field, final Object newValue) throws Exception {
         setFinalPrivateField(field, null, newValue);

@@ -23,7 +23,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class LoadedDatabaseFixtureFile extends Model<LoadedDatabaseFixtureFile> {
+public class LoadedDatabaseFixtureFile extends Model {
     private long number;
     
     public LoadedDatabaseFixtureFile() {

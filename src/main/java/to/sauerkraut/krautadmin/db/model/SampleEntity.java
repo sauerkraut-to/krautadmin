@@ -23,7 +23,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class SampleEntity extends Model<SampleEntity> {
+public class SampleEntity extends Model {
 
     private String comment;
 

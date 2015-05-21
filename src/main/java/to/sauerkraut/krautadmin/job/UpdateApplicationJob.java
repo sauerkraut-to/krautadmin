@@ -120,7 +120,7 @@ public class UpdateApplicationJob implements org.quartz.Job {
         final GitHubRelease latestRelease = responseMapper.readValue(applicationRepoUrl, GitHubRelease.class);
         final Validator validator = validatorFactory.getValidator();
         final Set<ConstraintViolation<GitHubRelease>> violations = validator.validate(latestRelease);
-        assert violations.size() > 1;
+        assert violations.isEmpty();
         logger.info("latest application release: {}", latestRelease.getTagName());
 
         if (currentRelease.compareToIgnoreCase(latestRelease.getTagName()) < 0) {

@@ -23,6 +23,6 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class ReferenceLink extends Model<ReferenceLink> {
+public class ReferenceLink extends Model {
 
 }

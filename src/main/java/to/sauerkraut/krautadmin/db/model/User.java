@@ -30,7 +30,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class User extends Model<User> {
+public class User extends Model {
 
     @NotBlank
     private String username;

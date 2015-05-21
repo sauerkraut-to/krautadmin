@@ -24,7 +24,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class Permission extends Model<Permission> {
+public class Permission extends Model {
 
     @NotEmpty
     private String name;

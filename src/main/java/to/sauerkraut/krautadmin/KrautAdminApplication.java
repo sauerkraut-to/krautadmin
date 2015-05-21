@@ -64,6 +64,8 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
      * @throws Exception 
      */
     public static void main(final String[] args) throws Exception {
+        // we want to use Java's "assert"-keyword
+        Toolkit.setAssertionsEnabled(true);
         try {
             applicationContainingFolder = Toolkit.getApplicationContainingFolder();
             final CtClass jdUtilsMainClass = getDefault().get("org.appwork.utils.Application");

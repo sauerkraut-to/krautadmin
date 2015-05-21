@@ -23,7 +23,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class LoadedConfigurationUpdateFile extends Model<LoadedConfigurationUpdateFile> {
+public class LoadedConfigurationUpdateFile extends Model {
     private long number;
 
     public LoadedConfigurationUpdateFile() {

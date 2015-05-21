@@ -26,7 +26,7 @@ import java.util.Date;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class LoginAttempt extends Model<LoginAttempt> {
+public class LoginAttempt extends Model {
 
     //TODO: create a unique index on this field
     @NotBlank
