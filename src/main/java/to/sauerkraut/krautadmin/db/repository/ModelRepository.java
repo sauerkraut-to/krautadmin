@@ -19,7 +19,10 @@ package to.sauerkraut.krautadmin.db.repository;
 import com.google.inject.ProvidedBy;
 import com.google.inject.internal.DynamicSingletonProvider;
 import com.google.inject.persist.Transactional;
+import ru.vyarus.guice.persist.orient.repository.command.ext.dynamicparams.DynamicParams;
+import ru.vyarus.guice.persist.orient.repository.command.ext.elvar.ElVar;
 import ru.vyarus.guice.persist.orient.repository.command.query.Query;
+import ru.vyarus.guice.persist.orient.repository.command.script.Script;
 import ru.vyarus.guice.persist.orient.support.repository.mixin.crud.ObjectCrud;
 import to.sauerkraut.krautadmin.db.model.Model;
 
@@ -33,4 +36,9 @@ public interface ModelRepository extends ObjectCrud<Model> {
     
     @Query("delete from Model")
     void deleteAll();
+
+    @Script("begin\n"
+            + "${script}\n"
+            + "commit retry 100")
+    void executeSql(@ElVar("script") String sqlScript, @DynamicParams Object... params);
 }

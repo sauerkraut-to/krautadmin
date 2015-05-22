@@ -58,7 +58,9 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
     
     @Override
     public void initializeData() {
-        modelRepository.deleteAll();
+        //modelRepository.deleteAll();
+        // now we can execute nice sql scripts as well
+        modelRepository.executeSql("delete from Model");
 
         HashMap<String, Object> fixturesMap = null;
 
