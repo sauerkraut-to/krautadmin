@@ -63,7 +63,7 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
         HashMap<String, Object> fixturesMap = null;
 
         try {
-            fixturesMap = loadFixtures("/databaseFixtures/1.yml",
+            fixturesMap = loadFixtures("/databaseFixtures/fixtures.yml",
                     configuration.getDatabaseConfiguration().getDefaultDataModelPackage());
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
