@@ -16,29 +16,49 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
+import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class LoadedDatabaseFixtureFile extends Model {
-    private long number;
-    
-    public LoadedDatabaseFixtureFile() {
-        
-    }
-    
-    public LoadedDatabaseFixtureFile(final long number) {
-        this.number =  number;
+public class Section extends Model {
+
+    @NotBlank
+    private String name;
+    private String description;
+    private Set<Category> categories;
+
+    public Section() {
+        this.categories = new HashSet<>();
     }
 
-    public long getNumber() {
-        return number;
+    public String getName() {
+        return name;
     }
 
-    public void setNumber(final long number) {
-        this.number = number;
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(final Set<Category> categories) {
+        this.categories = categories;
     }
 }

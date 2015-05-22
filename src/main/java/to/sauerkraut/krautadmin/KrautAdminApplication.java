@@ -48,10 +48,15 @@ import static javassist.ClassPool.getDefault;
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-@SuppressWarnings("checkstyle:classdataabstractioncoupling")
+@SuppressWarnings({"checkstyle:classdataabstractioncoupling", "checkstyle:classfanoutcomplexity"})
 public class KrautAdminApplication extends Application<KrautAdminConfiguration> {
     private static String applicationContainingFolder;
+    private static ClassLoader classLoader;
     private static final Logger LOG = LoggerFactory.getLogger(KrautAdminApplication.class);
+
+    public static ClassLoader getClassLoader() {
+        return classLoader;
+    }
 
     public static String getApplicationContainingFolder() {
         return applicationContainingFolder;
@@ -65,7 +70,8 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
      */
     public static void main(final String[] args) throws Exception {
         // we want to use Java's "assert"-keyword
-        Toolkit.setAssertionsEnabled(true);
+        classLoader = ClassLoader.getSystemClassLoader();
+        Toolkit.setAssertionsEnabled(true, classLoader);
         try {
             applicationContainingFolder = Toolkit.getApplicationContainingFolder();
             final CtClass jdUtilsMainClass = getDefault().get("org.appwork.utils.Application");

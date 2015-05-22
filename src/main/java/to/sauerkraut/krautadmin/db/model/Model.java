@@ -19,8 +19,6 @@ package to.sauerkraut.krautadmin.db.model;
 import com.google.inject.Inject;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import com.orientechnologies.orient.object.enhancement.OObjectEntitySerializer;
-import io.dropwizard.Application;
-import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import ru.vyarus.guice.persist.orient.db.PersistentContext;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 import ru.vyarus.guice.persist.orient.db.transaction.template.TxAction;
@@ -31,8 +29,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,14 +37,13 @@ import java.util.Set;
 @Persistent
 public abstract class Model {
 
-    @Inject
-    private static Application application;
+    public static final String TEMPORARY_ID = "#-1:-1";
 
     @Inject
-    private transient ValidatorFactory validatorFactory;
+    private static ValidatorFactory validatorFactory;
 
     @Inject
-    private transient PersistentContext<OObjectDatabaseTx> context;
+    private static PersistentContext<OObjectDatabaseTx> context;
 
     @Id
     private String id;
@@ -65,7 +60,6 @@ public abstract class Model {
 
     @SuppressWarnings("unchecked")
     public <T extends Model> T save() {
-        injectDependenciesIfNecessary();
         final T that = (T) this;
         return context.doInTransaction(new TxAction<T>() {
             @Override
@@ -96,7 +90,6 @@ public abstract class Model {
 
     @SuppressWarnings("unchecked")
     public <T extends Model> Void delete() {
-        injectDependenciesIfNecessary();
         final T that = (T) this;
         return context.doInTransaction(new TxAction<Void>() {
             @Override
@@ -110,7 +103,6 @@ public abstract class Model {
 
     @SuppressWarnings("unchecked")
     public <T extends Model> T attach() {
-        injectDependenciesIfNecessary();
         final T that = (T) this;
         return context.doInTransaction(new TxAction<T>() {
             @Override
@@ -122,7 +114,6 @@ public abstract class Model {
 
     @SuppressWarnings("unchecked")
     public <T extends Model> T detach() {
-        injectDependenciesIfNecessary();
         final T that = (T) this;
         return context.doInTransaction(new TxAction<T>() {
             @Override
@@ -134,9 +125,8 @@ public abstract class Model {
 
     @SuppressWarnings("unchecked")
     public <T extends Model> boolean isManaged() {
-        injectDependenciesIfNecessary();
         final T that = (T) this;
-        return context.doWithoutTransaction(new TxAction<Boolean>() {
+        return context.doInTransaction(new TxAction<Boolean>() {
             @Override
             public Boolean execute() throws Throwable {
                 return context.getConnection().isManaged(that);
@@ -149,12 +139,20 @@ public abstract class Model {
      */
     @SuppressWarnings("unchecked")
     public <T extends Model> T refresh() {
-        injectDependenciesIfNecessary();
         final T that = (T) this;
-        return context.doWithoutTransaction(new TxAction<T>() {
+        return context.doInTransaction(new TxAction<T>() {
             @Override
             public T execute() throws Throwable {
                 return context.getConnection().reload(that);
+            }
+        });
+    }
+
+    public static <T extends Model> T newInstance(final Class<T> type) {
+        return context.doInTransaction(new TxAction<T>() {
+            @Override
+            public T execute() throws Throwable {
+                return context.getConnection().newInstance(type);
             }
         });
     }
@@ -170,7 +168,7 @@ public abstract class Model {
         if (!this.getClass().isAssignableFrom(other.getClass())) {
             return false;
         }
-        if (this.getId() == null) {
+        if (this.getId() == null || TEMPORARY_ID.equals(this.getId())) {
             return false;
         }
         return this.getId().equals(((Model) other).getId());
@@ -178,7 +176,7 @@ public abstract class Model {
 
     @Override
     public int hashCode() {
-        if (this.getId() == null) {
+        if (this.getId() == null || TEMPORARY_ID.equals(this.getId())) {
             return 0;
         }
         return this.getId().hashCode();
@@ -187,120 +185,5 @@ public abstract class Model {
     @Override
     public String toString() {
         return getClass().getSimpleName() + "[" + this.getId() == null ? "unmanaged" : this.getId() + "]";
-    }
-
-    private synchronized void injectDependenciesIfNecessary() {
-        if (context == null) {
-            InjectorLookup.getInjector(application).get().injectMembers(this);
-        }
-    }
-
-    /**
-     * Originating from play!framework v1.x, modified by sauerkraut.to.
-     */
-    public static class Property {
-        private String name;
-        private Class<?> type;
-        private Field field;
-        private boolean isSearchable;
-        private boolean isMultiple;
-        private boolean isRelation;
-        private boolean isGenerated;
-        private Class<?> relationType;
-        private Choices choices;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(final String name) {
-            this.name = name;
-        }
-
-        public Class<?> getType() {
-            return type;
-        }
-
-        public void setType(final Class<?> type) {
-            this.type = type;
-        }
-
-        public Field getField() {
-            return field;
-        }
-
-        public void setField(final Field field) {
-            this.field = field;
-        }
-
-        public boolean isSearchable() {
-            return isSearchable;
-        }
-
-        public void setIsSearchable(final boolean isSearchable) {
-            this.isSearchable = isSearchable;
-        }
-
-        public boolean isMultiple() {
-            return isMultiple;
-        }
-
-        public void setIsMultiple(final boolean isMultiple) {
-            this.isMultiple = isMultiple;
-        }
-
-        public boolean isRelation() {
-            return isRelation;
-        }
-
-        public void setIsRelation(final boolean isRelation) {
-            this.isRelation = isRelation;
-        }
-
-        public boolean isGenerated() {
-            return isGenerated;
-        }
-
-        public void setIsGenerated(final boolean isGenerated) {
-            this.isGenerated = isGenerated;
-        }
-
-        public Class<?> getRelationType() {
-            return relationType;
-        }
-
-        public void setRelationType(final Class<?> relationType) {
-            this.relationType = relationType;
-        }
-
-        public Choices getChoices() {
-            return choices;
-        }
-
-        public void setChoices(final Choices choices) {
-            this.choices = choices;
-        }
-    }
-
-    /**
-     * Originating from play!framework v1.x, modified by sauerkraut.to.
-     */
-    public interface Factory {
-        String keyName();
-        Class<?> keyType();
-        Object keyValue(Model m);
-        Model findById(Object id);
-        List<Model> fetch(int offset, int length, String orderBy, String orderDirection,
-                                 List<String> properties, String keywords, String where);
-        Long count(List<String> properties, String keywords, String where);
-        void deleteAll();
-        List<Model.Property> listProperties();
-    }
-
-    /**
-     * Originating from play!framework v1.x, modified by sauerkraut.to.
-     */
-    public interface Choices {
-        List<Object> list();
     }
 }

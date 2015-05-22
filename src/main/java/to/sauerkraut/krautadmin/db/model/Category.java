@@ -16,6 +16,7 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
+import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
 /**
@@ -23,6 +24,29 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class AlterableSettings extends Model {
+public class Category extends Model {
 
+    @NotBlank
+    private String name;
+    private String description;
+
+    public Category() {
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
 }

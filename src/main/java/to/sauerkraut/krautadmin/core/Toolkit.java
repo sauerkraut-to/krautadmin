@@ -26,7 +26,9 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.security.CodeSource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -73,6 +75,33 @@ public final class Toolkit {
 
     public static void setAssertionsEnabled(final boolean enabled) {
         setAssertionsEnabled(enabled, ClassLoader.getSystemClassLoader());
+    }
+
+    public static <T> String join(final Iterable<T> values, final String separator) {
+        if (values == null) {
+            return "";
+        }
+        final Iterator<T> iter = values.iterator();
+        if (!iter.hasNext()) {
+            return "";
+        }
+        final StringBuffer toReturn = new StringBuffer(String.valueOf(iter.next()));
+        while (iter.hasNext()) {
+            toReturn.append(separator + String.valueOf(iter.next()));
+        }
+        return toReturn.toString();
+    }
+
+    public static String join(final String[] values, final String separator) {
+        return (values == null) ? "" : join(Arrays.asList(values), separator);
+    }
+
+    public static void kill(final String pid) throws Exception {
+        final String os = System.getProperty("os.name");
+        final String command = (os.startsWith("Windows"))
+                ? "taskkill /F /PID " + pid
+                : "kill " + pid;
+        Runtime.getRuntime().exec(command).waitFor();
     }
 
     public static void setAssertionsEnabled(final boolean enabled, final ClassLoader classLoader) {
