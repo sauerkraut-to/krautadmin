@@ -255,10 +255,6 @@ public class KrautAdminConfiguration extends Configuration
         @JsonProperty
         private boolean dropInsecureUsersOnCreate;
 
-        @NotBlank
-        @JsonProperty
-        private String defaultDataModelPackage;
-
         public String getUri() {
             return uri;
         }
@@ -297,14 +293,6 @@ public class KrautAdminConfiguration extends Configuration
 
         public void setDropInsecureUsersOnCreate(final boolean dropInsecureUsersOnCreate) {
             this.dropInsecureUsersOnCreate = dropInsecureUsersOnCreate;
-        }
-
-        public String getDefaultDataModelPackage() {
-            return defaultDataModelPackage;
-        }
-
-        public void setDefaultDataModelPackage(final String defaultDataModelPackage) {
-            this.defaultDataModelPackage = defaultDataModelPackage;
         }
     }
 

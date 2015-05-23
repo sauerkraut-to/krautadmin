@@ -7,7 +7,6 @@ db:
   pass: admin
   create: true
   dropInsecureUsersOnCreate: true
-  defaultDataModelPackage: to.sauerkraut.krautadmin.db.model
 
 ###############################
 # Uncomment the lines below, if you want to expose your embedded database to the OrientDB WebInterface,

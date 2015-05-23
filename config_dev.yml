@@ -7,7 +7,6 @@ db:
   pass: admin
   create: true
   dropInsecureUsersOnCreate: true
-  defaultDataModelPackage: to.sauerkraut.krautadmin.db.model
 
 orient-server:
   files-path: $APP/

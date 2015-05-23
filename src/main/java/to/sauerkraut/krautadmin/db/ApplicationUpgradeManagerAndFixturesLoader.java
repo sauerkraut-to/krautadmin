@@ -27,7 +27,6 @@ import javax.inject.Singleton;
 
 import to.sauerkraut.binding.yamlbeans.YamlReader;
 import to.sauerkraut.krautadmin.KrautAdminApplication;
-import to.sauerkraut.krautadmin.KrautAdminConfiguration;
 import to.sauerkraut.krautadmin.core.IO;
 import to.sauerkraut.krautadmin.db.model.*;
 import to.sauerkraut.krautadmin.db.repository.FrontendDataMirrorRepository;
@@ -53,8 +52,6 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
     private ModelRepository modelRepository;
     @Inject
     private FrontendDataMirrorRepository frontendDataMirrorRepository;
-    @Inject
-    private KrautAdminConfiguration configuration;
     
     @Override
     public void initializeData() {
@@ -65,8 +62,7 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
         HashMap<String, Object> fixturesMap = null;
 
         try {
-            fixturesMap = loadFixtures("/databaseFixtures/fixtures.yml",
-                    configuration.getDatabaseConfiguration().getDefaultDataModelPackage());
+            fixturesMap = loadFixtures("/databaseFixtures/fixtures.yml");
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
             throw new RuntimeException("loading fixtures failed");
@@ -95,17 +91,18 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
         //TODO: at the end execute update scripts in right order and only if not executed yet
     }
 
-    public static HashMap<String, Object> loadFixtures(final String classpathFilePath,
-                                                       final String defaultDataModelPackage) throws IOException {
+    public static HashMap<String, Object> loadFixtures(final String classpathFilePath) throws IOException {
         final YamlReader reader = new YamlReader(IO.readContentAsString(
                 ApplicationUpgradeManagerAndFixturesLoader.class
                         .getResourceAsStream(classpathFilePath)));
 
         for (final ClassPath.ClassInfo info
-                : ClassPath.from(KrautAdminApplication.getClassLoader()).getTopLevelClasses()) {
-            if (info.getName().startsWith(defaultDataModelPackage.concat("."))) {
+                : ClassPath.from(KrautAdminApplication.getClassLoader()).getTopLevelClassesRecursive("to.sauerkraut")) {
+            if (info.getName().contains(".model.")) {
                 final Class<?> clazz = info.load();
-                reader.getConfig().setClassTag(clazz.getSimpleName(), clazz);
+                if (Model.class.isAssignableFrom(clazz)) {
+                    reader.getConfig().setClassTag(clazz.getSimpleName(), clazz);
+                }
             }
         }
 
