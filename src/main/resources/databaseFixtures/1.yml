@@ -7,920 +7,1301 @@
 # boc = books category
 # joc = journal category
 # mac = mobile app category
+# dos = desktop operating systems and distributions category
 
 categories:
   - &mac1 !Category
+    shortName: mac1
     name: "Bücher & Nachschlagewerke"
 
   - &mac2 !Category
+    shortName: mac2
     name: "Geschäftliche Anwendungen"
 
   - &mac3 !Category
+    shortName: mac3
     name: "Comics"
 
   - &mac4 !Category
+    shortName: mac4
     name: "Kommunikation"
 
   - &mac5 !Category
+    shortName: mac5
     name: "Bildung & Fortbildung"
 
   - &mac6 !Category
+    shortName: mac6
     name: "Unterhaltung"
 
   - &mac7 !Category
+    shortName: mac7
     name: "Finanzen & Geld"
 
   - &mac8 !Category
+    shortName: mac8
     name: "Gesundheit & Fitness"
 
   - &mac9 !Category
+    shortName: mac9
     name: "Erweiterungen / Libraries"
 
   - &mac10 !Category
+    shortName: mac10
     name: "Lifestyle"
 
   - &mac11 !Category
+    shortName: mac11
     name: "Media & Video"
 
   - &mac12 !Category
+    shortName: mac12
     name: "Medizinisches"
 
   - &mac13 !Category
+    shortName: mac13
     name: "Musik & Audio"
 
   - &mac14 !Category
+    shortName: mac14
     name: "Nachrichten & Magazine"
 
   - &mac15 !Category
+    shortName: mac15
     name: "Personalisierung"
 
   - &mac16 !Category
+    shortName: mac16
     name: "Bildbearbeitung & Fotografie"
 
   - &mac17 !Category
+    shortName: mac17
     name: "Produktivität"
 
   - &mac18 !Category
+    shortName: mac18
     name: "Einkauf"
 
   - &mac19 !Category
+    shortName: mac19
     name: "Soziales & Netzwerken"
 
   - &mac20 !Category
+    shortName: mac20
     name: "Sport"
 
   - &mac21 !Category
+    shortName: mac21
     name: "Nützliche Werkzeuge"
 
   - &mac22 !Category
+    shortName: mac22
     name: "Beförderung & Personentransport"
 
   - &mac23 !Category
+    shortName: mac23
     name: "Routenplanung, Navigation, Reisen"
 
   - &mac24 !Category
+    shortName: mac24
     name: "Standortbezogene Dienste & Erweiterte Realität"
     description: "Erweiterte Realität = Augmented Reality"
 
   - &mac25 !Category
+    shortName: mac25
     name: "Wetter"
 
   - &joc1 !Category
+    shortName: joc1
     name: "Gartenbauzeitschriften"
 
   - &joc2 !Category
+    shortName: joc2
     name: "Handelszeitschriften"
 
   - &joc3 !Category
+    shortName: joc3
     name: "Wissenschaftliche Zeitschriften"
 
   - &joc4 !Category
+    shortName: joc4
     name: "Agrarzeitschriften"
     description: "Landwirtschaft, Forst, Pflanzenbau, Weinbau, Bienenzucht..."
 
   - &joc5 !Category
+    shortName: joc5
     name: "Comicmagazine"
 
   - &joc6 !Category
+    shortName: joc6
     name: "EDV-, Technik- und Computerzeitschriften"
 
   - &joc7 !Category
+    shortName: joc7
     name: "Elektro-/Eletronikzeitschriften"
 
   - &joc8 !Category
+    shortName: joc8
     name: "Esoterische Zeitschriften"
 
   - &joc9 !Category
+    shortName: joc9
     name: "Familienzeitschriften"
 
   - &joc10 !Category
+    shortName: joc10
     name: "Finanzen-Zeitschriften"
 
   - &joc11 !Category
+    shortName: joc11
     name: "Fotografiezeitschriften"
 
   - &joc12 !Category
+    shortName: joc12
     name: "Frauenzeitschriften"
 
   - &joc13 !Category
+    shortName: joc13
     name: "Gesundheitszeitschriften"
 
   - &joc14 !Category
+    shortName: joc14
     name: "Fachzeitschriften"
 
   - &joc15 !Category
+    shortName: joc15
     name: "Sachzeitschriften"
 
   - &joc16 !Category
+    shortName: joc16
     name: "Jugendzeitschriften"
 
   - &joc17 !Category
+    shortName: joc17
     name: "Kulturzeitschriften"
 
   - &joc18 !Category
+    shortName: joc18
     name: "Kunstzeitschriften"
 
   - &joc19 !Category
+    shortName: joc19
     name: "Literaturzeitschriften"
 
   - &joc20 !Category
+    shortName: joc20
     name: "Männermagazine"
 
   - &joc21 !Category
+    shortName: joc21
     name: "Erotikmagazine"
 
   - &joc22 !Category
+    shortName: joc22
     name: "Medizinische Zeitschriften"
 
   - &joc23 !Category
+    shortName: joc23
     name: "Militärische Zeitschriften"
 
   - &joc24 !Category
+    shortName: joc24
     name: "Modezeitschriften"
 
   - &joc25 !Category
+    shortName: joc25
     name: "Motorpresse"
     description: "Auto, Motorrad & co."
 
   - &joc26 !Category
+    shortName: joc26
     name: "Musikzeitschriften"
 
   - &joc27 !Category
+    shortName: joc27
     name: "Nachrichtenmagazine"
 
   - &joc28 !Category
+    shortName: joc28
     name: "Bau- & Architekturzeitschriften"
 
   - &joc29 !Category
+    shortName: joc29
     name: "Pädagogische Zeitschriften"
 
   - &joc30 !Category
+    shortName: joc30
     name: "Politische Zeitschriften"
 
   - &joc31 !Category
+    shortName: joc31
     name: "Religiöse Zeitschriften"
 
   - &joc32 !Category
+    shortName: joc32
     name: "Satirezeitschriften"
 
   - &joc33 !Category
+    shortName: joc33
     name: "Spielezeitschriften"
 
   - &joc34 !Category
+    shortName: joc34
     name: "Sportzeitschriften"
 
   - &joc35 !Category
+    shortName: joc35
     name: "Wirtschaftsmagazine"
 
   - &joc36 !Category
+    shortName: joc36
     name: "Kulinarische Zeitschriften"
 
   - &joc37 !Category
+    shortName: joc37
     name: "Natur- & Tierzeitschriften"
 
   - &joc38 !Category
+    shortName: joc38
     name: "Unterhaltungs- und Freizeitzeitschriften"
 
   - &boc1 !Category
+    shortName: boc1
     name: "Romane & Erzählungen"
     description: "Heimatromane besitzen eine eigene Kategorie!"
 
   - &boc2 !Category
+    shortName: boc2
     name: "Kurzgeschichten"
 
   - &boc3 !Category
+    shortName: boc3
     name: "Horror, Vampire, Übersinnliches"
 
   - &boc4 !Category
+    shortName: boc4
     name: "Biografien & Erinnerungen"
 
   - &boc5 !Category
+    shortName: boc5
     name: "Lyrik"
 
   - &boc6 !Category
+    shortName: boc6
     name: "Dramatik"
 
   - &boc7 !Category
+    shortName: boc7
     name: "Heimatromane"
 
   - &boc8 !Category
+    shortName: boc8
     name: "Poesie"
 
   - &boc9 !Category
+    shortName: boc9
     name: "Reise & Abenteuer"
 
   - &boc10 !Category
+    shortName: boc10
     name: "Ratgeber & Freizeit"
 
   - &boc11 !Category
+    shortName: boc11
     name: "Lernen & Fortbildung"
 
   - &boc12 !Category
+    shortName: boc12
     name: "Film, Kunst & Kultur"
 
   - &boc13 !Category
+    shortName: boc13
     name: "Historische Romane"
 
   - &boc14 !Category
+    shortName: boc14
     name: "Anthologien"
     description: "Eine Anthologie ist eine Sammlung ausgewählter Texte oder Textauszüge in Buchform"
 
   - &boc15 !Category
+    shortName: boc15
     name: "Zeitgenössische Literatur"
 
   - &boc16 !Category
+    shortName: boc16
     name: "Junge Literatur"
 
   - &boc17 !Category
+    shortName: boc17
     name: "Unterhaltungsliteratur"
     description: "Unterhaltungsliteratur ist für den schnellen und leichten Konsum bestimmte Literatur"
 
   - &boc18 !Category
+    shortName: boc18
     name: "Liebesromane"
 
   - &boc19 !Category
+    shortName: boc19
     name: "Geschlechterspezifische Werke"
 
   - &boc20 !Category
+    shortName: boc20
     name: "Erotik"
 
   - &boc21 !Category
+    shortName: boc21
     name: "Krimis & Thriller"
 
   - &boc22 !Category
+    shortName: boc22
     name: "Horror"
 
   - &boc23 !Category
+    shortName: boc23
     name: "Scienece Fiction"
 
   - &boc24 !Category
+    shortName: boc24
     name: "Fantasy & Magie"
 
   - &boc25 !Category
+    shortName: boc25
     name: "Humor"
 
   - &boc26 !Category
+    shortName: boc26
     name: "Satire"
 
   - &boc27 !Category
+    shortName: boc27
     name: "Geschäft, Karriere & Geld"
 
   - &boc28 !Category
+    shortName: boc28
     name: "Kabarett"
 
   - &boc29 !Category
+    shortName: boc29
     name: "Comics & Cartoons"
     description: "Mangas besitzen eine eigene Kategorie!"
 
   - &boc30 !Category
+    shortName: boc30
     name: "Mangas"
     description: "Manga bezeichnet im fachwissenschaftlichen Sinne ausschließlich aus Japan stammende Comics, anderweitig wird der Begriff aber auch zur Bezeichnung von nichtjapanischen Comics mit Manga-Stilelementen verwendet"
 
   - &boc31 !Category
+    shortName: boc31
     name: "Märchen"
 
   - &boc32 !Category
+    shortName: boc32
     name: "Sagen"
 
   - &boc33 !Category
+    shortName: boc33
     name: "Kochen & Backen"
 
 #  - &boc34 !Category
 #    name: "Englischsprachige Bücher"
 
-  - &boc35 !Category
-    name: "Nicht-englische Fremdsprachige Bücher"
-    description: "Englischsprachige Bücher können in den normalen Kategorien eingetragen werden!"
+#  - &boc35 !Category
+#    name: "Nicht-englische Fremdsprachige Bücher"
+#    description: "Englischsprachige Bücher können in den normalen Kategorien eingetragen werden!"
 
   - &boc36 !Category
+    shortName: boc36
     name: "Religion & Glaube"
 
   - &boc37 !Category
+    shortName: boc37
     name: "Esoterik & alternatives Wissen"
 
   - &boc38 !Category
+    shortName: boc38
     name: "Politik & Geschichte"
 
   - &boc39 !Category
+    shortName: boc39
     name: "Gesellschaft"
 
   - &boc40 !Category
+    shortName: boc40
     name: "Sachbücher & Sonstige"
     description: "Sachbuch ist die deutschsprachige Bezeichnung für ein Buch, das ein bestimmtes Sachthema für ein Laienpublikum darstellt"
 
   - &boc41 !Category
+    shortName: boc41
     name: "Kinderbücher"
 
   - &boc42 !Category
+    shortName: boc42
     name: "Jugendbücher"
 
   - &boc43 !Category
+    shortName: boc43
     name: "IT-Fachbücher"
 
   - &boc44 !Category
+    shortName: boc44
     name: "Nicht-IT-Fachbücher"
     description: "Ein Fachbuch richtet sich an die Spezialisten eines bestimmten wissenschaftlichen oder auch etwa handwerklichen Faches"
 
   - &gac1 !Category
+    shortName: gac1
     name: "Action"
 
   - &gac2 !Category
+    shortName: gac2
     name: "Abenteuer"
 
   - &gac3 !Category
+    shortName: gac3
     name: "Indie"
 
   - &gac4 !Category
+    shortName: gac4
     name: "Prügelei & Kampfsport"
 
   - &gac5 !Category
+    shortName: gac5
     name: "Brettspiel"
 
   - &gac6 !Category
+    shortName: gac6
     name: "Denkspiel"
 
   - &gac7 !Category
+    shortName: gac7
     name: "Ego-Shooter"
 
   - &gac8 !Category
+    shortName: gac8
     name: "Erotik"
 
   - &gac9 !Category
+    shortName: gac9
     name: "Geschicklichkeit"
 
   - &gac10 !Category
+    shortName: gac10
     name: "Jump 'n' Run"
 
   - &gac11 !Category
+    shortName: gac11
     name: "Lernspiel"
 
   - &gac12 !Category
+    shortName: gac12
     name: "Labyrinth"
 
   - &gac13 !Category
+    shortName: gac13
     name: "Massen-Mehrspieler-Online-Gemeinschaftsspiel"
 
   - &gac14 !Category
+    shortName: gac14
     name: "Musikspiel"
 
   - &gac15 !Category
+    shortName: gac15
     name: "Rennspiel"
 
   - &gac16 !Category
+    shortName: gac16
     name: "Rollenspiel"
 
   - &gac17 !Category
+    shortName: gac17
     name: "Ballerspiel"
 
   - &gac18 !Category
+    shortName: gac18
     name: "Simulation"
 
   - &gac19 !Category
+    shortName: gac19
     name: "Strategie"
 
   - &gac20 !Category
+    shortName: gac20
     name: "Horror & Überlebens-Horror"
 
   - &gac21 !Category
+    shortName: gac21
     name: "Taktik-Shooter"
 
   - &gac22 !Category
+    shortName: gac22
     name: "Third-Person-Shooter"
 
   - &gac23 !Category
+    shortName: gac23
     name: "Sport"
 
   - &gac24 !Category
+    shortName: gac24
     name: "Wimmelbild"
 
   - &gac25 !Category
+    shortName: gac25
     name: "Gelegenheitsspiel"
 
   - &gac26 !Category
+    shortName: gac26
     name: "Puzzle"
 
   - &gac27 !Category
+    shortName: gac27
     name: "Weltraum"
 
   - &gac28 !Category
+    shortName: gac28
     name: "Kartenspiel"
 
   - &gac29 !Category
+    shortName: gac29
     name: "Kinderspiel"
 
   - &gac30 !Category
+    shortName: gac30
     name: "Arcade-Spiel"
 
   - &gac31 !Category
+    shortName: gac31
     name: "Glücksspiel & Casino"
 
   - &auc1 !Category
+    shortName: auc1
     name: "Rock"
     description: "The Beatles, Paul McCartney, Queen, U2, Carlos Santana, Michael Jackson, Bob Seger"
 
   - &auc2 !Category
+    shortName: auc2
     name: "Alternative Rock"
     description: "R.E.M., Nirvana, Pearl Jam, Red Hot Chili Peppers, Linkin Park, Green Day, Duran Duran"
 
   - &auc3 !Category
+    shortName: auc3
     name: "Klassik"
 
   - &auc4 !Category
+    shortName: auc4
     name: "Jazz"
     description: "Kenny G, Nat King Cole, Ray Charles, Frank Sinatra, Miles Davis, Antonio Carlos Jobim, Diana Krall"
 
   - &auc5 !Category
+    shortName: auc5
     name: "Blues"
 
   - &auc6 !Category
+    shortName: auc6
     name: "Heavy Metal"
     description: "Metallica, Black Sabbath, Iron Maiden, Judas Priest, Alice Cooper, Kiss, Nazareth"
 
   - &auc7 !Category
+    shortName: auc7
     name: "Classic Rock"
 
   - &auc8 !Category
+    shortName: auc8
     name: "Folk"
     description: "Bob Dylan, Alison Krauss, Joni Mitchell, The Byrds, Simon & Garfunkel, Peter, Paul & Mary, James Taylor"
 
   - &auc9 !Category
+    shortName: auc9
     name: "Country"
     description: "Garth Brooks, Alan Jackson, George Strait, Shania Twain, Dolly Parton, Kenny Rogers, Willie Nelson"
 
   - &auc10 !Category
+    shortName: auc10
     name: "Dance / Electronica"
 
   - &auc11 !Category
+    shortName: auc11
     name: "Progressive Rock"
     description: "Pink Floyd, Genesis, Rush, King Crimson, Dream Theater, Jethro Tull, Emerson Lake & Palmer"
 
   - &auc12 !Category
+    shortName: auc12
     name: "Filmmusik & Titellieder"
 
   - &auc13 !Category
+    shortName: auc13
     name: "Pop"
     description: "The Beatles, Elvis Presley, Michael Jackson, ABBA, Celine Dion, Madonna, Elton John"
 
   - &auc14 !Category
+    shortName: auc14
     name: "Indie Rock"
 
   - &auc15 !Category
+    shortName: auc15
     name: "Oldies"
 
   - &auc16 !Category
+    shortName: auc16
     name: "Rap / Hip-Hop"
     description: "Eminem, Jay-Z, Tupac Shakur, Ludacris, B.o.B, Drake, Run-D.M.C., Public Enemy, NWA, Nas, Outkast"
 
   - &auc17 !Category
+    shortName: auc17
     name: "Punk Rock"
 
   - &auc18 !Category
+    shortName: auc18
     name: "Soul / Funk"
     description: "Stevie Wonder, Barry White, Earth, Wind & Fire, The Four Tops, Roberta Flack, Aretha Franklin, Carole King"
 
   - &auc19 !Category
+    shortName: auc19
     name: "Grunge"
     description: "Pearl Jam, Soundgarden, Nirvana, Alice in Chains, Stone Temple Pilots, Hole, Mudhoney, Screaming Trees"
 
   - &auc20 !Category
+    shortName: auc20
     name: "House"
 
   - &auc21 !Category
+    shortName: auc21
     name: "Dubstep"
 
   - &auc22 !Category
+    shortName: auc22
     name: "Volkslieder"
 
   - &auc23 !Category
+    shortName: auc23
     name: "Austropop"
 
   - &auc24 !Category
+    shortName: auc24
     name: "Religiöse Musik"
 
   - &auc25 !Category
+    shortName: auc25
     name: "Punk"
 
   - &auc26 !Category
+    shortName: auc26
     name: "Industrial"
 
   - &auc27 !Category
+    shortName: auc27
     name: "Hardcore"
 
   - &auc28 !Category
+    shortName: auc28
     name: "Kindermusik"
 
   - &auc29 !Category
+    shortName: auc29
     name: "Comedy"
 
   - &auc30 !Category
+    shortName: auc30
     name: "Easy Listening"
     description: "Jim Brickman, Richard Clayderman, Nana Mouskouri, Ray Conniff, Barry Manilow, Stephen Bishop"
 
   - &auc31 !Category
+    shortName: auc31
     name: "Reggae"
     description: "UB40, Bob Marley & the Wailers, Jimmy Cliff, Desmond Dekker & the Aces, Dennis Brown, Toots & the Maytals"
 
   - &auc32 !Category
+    shortName: auc32
     name: "Gesang / Chöre"
 
   - &auc33 !Category
+    shortName: auc33
     name: "Hard Rock"
     description: "AC/DC, Led Zeppelin, Aerosmith, Bon Jovi, Deep Purple, Guns N' Roses, Van Halen"
 
   - &auc34 !Category
+    shortName: auc34
     name: "R&B"
     description: "Mariah Carey, Lionel Richie, Whitney Houston, Janet Jackson, Stevie Wonder, Boyz II Men"
 
   - &auc35 !Category
+    shortName: auc35
     name: "New Wave"
     description: "Eurythmics, The Police, Duran Duran, Depeche Mode, A-ha, The Cure, Culture Club, China Crisis"
 
   - &auc36 !Category
+    shortName: auc36
     name: "Synthpop"
     description: "Modern Talking, Pet Shop Boys, Baltimora, Berlin, Fiction Factory, A Flock of Seagulls, Giorgio Moroder"
 
   - &auc37 !Category
+    shortName: auc37
     name: "Rock & Roll"
     description: "Elvis Presley, Tina Turner, David Bowie, Elton John, Elvis Costello, The Rolling Stones"
 
   - &auc38 !Category
+    shortName: auc38
     name: "Disco"
     description: "Abba, Rick Astley, Bee Gees, Boney M, Cher, The Jackson 5, Michael Jackson, Kool and the Gang"
 
   - &auc39 !Category
+    shortName: auc39
     name: "Pop Rock"
     description: "Elton John, Billy Joel, Neil Diamond, Chicago, Genesis, Fleetwood Mac, Rod Stewart"
 
   - &pfc1 !Category
+    shortName: pfc1
     name: "Softcore"
 
   - &pfc2 !Category
+    shortName: pfc2
     name: "Teasing"
 
   - &pfc3 !Category
+    shortName: pfc3
     name: "Amateure"
 
   - &pfc4 !Category
+    shortName: pfc4
     name: "Hardcore"
 
   - &pfc5 !Category
+    shortName: pfc5
     name: "Anal"
 
   - &pfc6 !Category
+    shortName: pfc6
     name: "Asiatisch"
 
   - &pfc7 !Category
+    shortName: pfc7
     name: "Große Brüste"
 
   - &pfc8 !Category
+    shortName: pfc8
     name: "Amateure"
 
   - &pfc9 !Category
+    shortName: pfc9
     name: "Gemischtrassig"
 
   - &pfc10 !Category
+    shortName: pfc10
     name: "Blowjob / Handjob"
 
   - &pfc11 !Category
+    shortName: pfc11
     name: "Deutsch"
 
   - &pfc12 !Category
+    shortName: pfc12
     name: "Fetisch"
 
   - &pfc13 !Category
+    shortName: pfc13
     name: "Gruppensex"
 
   - &pfc14 !Category
+    shortName: pfc14
     name: "Homosexuell (Frauen)"
 
   - &pfc15 !Category
+    shortName: pfc15
     name: "Homosexuell (Männer)"
 
   - &pfc16 !Category
+    shortName: pfc16
     name: "Bisexuell"
 
   - &pfc17 !Category
+    shortName: pfc17
     name: "Masturbation"
 
   - &pfc18 !Category
+    shortName: pfc18
     name: "Teens"
 
   - &pfc19 !Category
+    shortName: pfc19
     name: "Hentai"
 
   - &pfc20 !Category
+    shortName: pfc20
     name: "Party"
 
   - &pfc21 !Category
+    shortName: pfc21
     name: "Transsexuell"
 
   - &pfc22 !Category
+    shortName: pfc22
     name: "Altersunterschied / Generationsunterschied"
 
   - &pfc23 !Category
+    shortName: pfc23
     name: "Sadomasochismus"
 
   - &moc1 !Category
+    shortName: moc1
     name: "Action"
 
   - &moc2 !Category
+    shortName: moc2
     name: "Computer-Animation"
 
   - &moc3 !Category
+    shortName: moc3
     name: "Zeichentrick"
 
   - &moc4 !Category
+    shortName: moc4
     name: "Britischer Humor"
     description: "Einfach herrlich. Oder auch nicht."
 
   - &moc5 !Category
+    shortName: moc5
     name: "Bildung"
 
   - &moc6 !Category
+    shortName: moc6
     name: "Verschwörungstheorie & Systemkritik"
     description: "In jedem Gerücht steckt ein Funken Wahrheit. Oder ein Großbrand."
 
   - &moc7 !Category
+    shortName: moc7
     name: "Komödie"
 
   - &moc8 !Category
+    shortName: moc8
     name: "Dokumentation"
 
   - &moc9 !Category
+    shortName: moc9
     name: "Familie"
 
   - &moc10 !Category
+    shortName: moc10
     name: "Film-Noir"
 
   - &moc11 !Category
+    shortName: moc11
     name: "Horror"
 
   - &moc12 !Category
+    shortName: moc12
     name: "Musical"
 
   - &moc13 !Category
+    shortName: moc13
     name: "Romanze"
 
   - &moc14 !Category
+    shortName: moc14
     name: "Sport"
 
   - &moc15 !Category
+    shortName: moc15
     name: "Krieg"
 
   - &moc16 !Category
+    shortName: moc16
     name: "Abenteuer"
 
   - &moc17 !Category
+    shortName: moc17
     name: "Biografie"
 
   - &moc18 !Category
+    shortName: moc18
     name: "Krimi"
 
   - &moc19 !Category
+    shortName: moc19
     name: "Drama"
 
   - &moc20 !Category
+    shortName: moc20
     name: "Fantasy"
 
   - &moc21 !Category
+    shortName: moc21
     name: "Geschichte"
 
   - &moc22 !Category
+    shortName: moc22
     name: "Musik"
 
   - &moc23 !Category
+    shortName: moc23
     name: "Mystery"
 
   - &moc24 !Category
+    shortName: moc24
     name: "Science Fiction"
 
   - &moc25 !Category
+    shortName: moc25
     name: "Thriller"
 
   - &moc26 !Category
+    shortName: moc26
     name: "Western"
 
   - &moc27 !Category
+    shortName: moc27
     name: "Heimatfilm"
     description: "Heile Welt"
 
   - &moc28 !Category
+    shortName: moc28
     name: "Österreichischer Film"
     description: "In der Regel eine ganz besondere Art Film"
 
   - &moc29 !Category
+    shortName: moc29
     name: "Anime"
 
   - &moc30 !Category
+    shortName: moc30
     name: "Indie"
 
   - &moc31 !Category
+    shortName: moc31
     name: "Bollywood"
 
   - &moc32 !Category
+    shortName: moc32
     name: "Kampfkunst"
 
   - &sonstiges !Category
+    shortName: sonstiges
     name: "Sonstiges"
     description: "Alles was in keine andere Kategorie passt"
 
-  - &betriebssysteme !Category
-    name: "Betriebssysteme"
-    description: "Reine Glaubenssache"
+  - &dos1 !Category
+    shortName: dos1
+    name: "Leichte Bedienbarkeit"
+    description: "Benutzerfreundlichkeit schließt nicht professionelle Anwendbarkeit aus!"
+
+  - &dos2 !Category
+    shortName: dos2
+    name: "Cluster"
+
+  - &dos3 !Category
+    shortName: dos3
+    name: "Datenrettung"
+    description: "... ausführbar in der Regel von einem optischen Medium oder USB-Stick"
+
+  - &dos4 !Category
+    shortName: dos4
+    name: "Desktop"
+    description: "Traditionelle Desktop-Betriebssysteme und -Distributionen"
+
+  - &dos5 !Category
+    shortName: dos5
+    name: "Festplattenverwaltung"
+    description: "... ausführbar in der Regel von einem optischen Medium oder USB-Stick"
+
+  - &dos6 !Category
+    shortName: dos6
+    name: "Bildung & Schule"
+
+  - &dos7 !Category
+    shortName: dos7
+    name: "Firewall"
+
+  - &dos8 !Category
+    shortName: dos8
+    name: "Forensik"
+
+  - &dos9 !Category
+    shortName: dos9
+    name: "Open Source"
+    description: "Erkundungsausflug in die Welt der freien Software - jeder sollte es mal probiert haben!"
+
+  - &dos10 !Category
+    shortName: dos10
+    name: "Gaming"
+    description: "... besonders gut geeignet für leidenschaftliche Zocker"
+
+  - &dos11 !Category
+    shortName: dos11
+    name: "Schlank, performant und ressourcenschonend"
+    description: "Systeme mit Augenmerk auf besonders gute Performance - nicht immer ein Augenschmaus, dafür aber auch auf älterer Hardware schnell"
+
+  - &dos12 !Category
+    shortName: dos12
+    name: "Live Medium"
+    description: "Systeme, die auch ohne Installation auf einem optischen Medium oder USB-Stick getestet oder betrieben werden können"
+
+  - &dos13 !Category
+    shortName: dos13
+    name: "Multimedia"
+    description: "Systeme mit Fokus auf Multimedia - oft auch mit Fernseher-tauglicher Oberfläche"
+
+  - &dos14 !Category
+    shortName: dos14
+    name: "NAS"
+
+  - &dos15 !Category
+    shortName: dos15
+    name: "Tablet & Touch"
+    description: "Fingerabdrücke überall - es gibt kein Entrinnen!"
+
+  - &dos16 !Category
+    shortName: dos16
+    name: "Raspberry Pi"
+
+  - &dos17 !Category
+    shortName: dos17
+    name: "Banana Pi"
+
+  - &dos18 !Category
+    shortName: dos18
+    name: "Privatsphäre und Sicherheit"
+    description: "Systeme, die Edward Snowden ein Lächeln ins Gesicht zaubern"
+
+  - &dos19 !Category
+    shortName: dos19
+    name: "Wissenschaft"
+    description: "... angereichert mit speziellen Werkzeugen für Menschen, die Wissen schaffen"
+
+  - &dos20 !Category
+    shortName: dos20
+    name: "Server"
+    description: "Diese Systeme sind für den Einsatz auf Servern vorgesehen und werden zumeist ohne grafische Oberfläche installiert"
+
+  - &dos21 !Category
+    shortName: dos21
+    name: "Hacking und Systemtest"
+    description: "... zum Testen der Sicherheit vorhandener Systeme und Netze"
+
+  - &dos22 !Category
+    shortName: dos22
+    name: "Spezialisierung"
+    description: "Systeme, die sich auf ein Themengebiet spezialisieren, das nicht unbedingt von den anderen Kategorien abgedeckt wird"
+
+  - &dos23 !Category
+    shortName: dos23
+    name: "Embedded"
+
+  - &dos24 !Category
+    shortName: dos24
+    name: "Mobil"
+    description: "Systeme für mobile Geräte, wie zum Beispiel Smartphones"
 
   - &dac1 !Category
+    shortName: dac1
     name: "Brennen & Imageerstellung"
     description: "CDs, DVDs, Blu-Rays und digitale Abbilder verarbeiten und brennen"
 
   - &dac2 !Category
+    shortName: dac2
     name: "Anti-Virus"
     description: "Schutz vor Viren, Trojanern, und Würmern"
 
   - &dac3 !Category
+    shortName: dac3
     name: "Anti-Spyware"
     description: "Schutz vor Spionage - wirklungslos gegen Geheimdienste"
 
   - &dac4 !Category
+    shortName: dac4
     name: "Audio"
     description: "Tools zum Erstellen, Bearbeiten, Verwalten und Abspielen von Audio Files"
 
   - &dac5 !Category
+    shortName: dac5
     name: "Grafik & Design"
     description: "Gustostücke für Grafiker und jene, die welche werden wollen"
 
   - &dac6 !Category
+    shortName: dac6
     name: "Firewalls"
     description: "Schutz vor unbefugten externen Zugriffen"
 
   - &dac7 !Category
+    shortName: dac7
     name: "Notation"
     description: "Musikstücke kreieren"
 
   - &dac8 !Category
+    shortName: dac8
     name: "FTP-Transfer"
     description: "Wer gerne von oder auf FTPs große Datenmengen lädt, kommt um ein leistungsfähiges FTP-Programm nicht herum"
 
   - &dac9 !Category
+    shortName: dac9
     name: "Archivierung & Komprimierung"
     description: "Archive erstellen, bearbeiten und entpacken"
 
   - &dac10 !Category
+    shortName: dac10
     name: "Konverter & Ripper"
     description: "Alles zum Umwandeln und Rippen von Audio und Video"
 
   - &dac11 !Category
+    shortName: dac11
     name: "Präsentation"
     description: "Spezielle Tools zum Präsentieren von Projekten etc."
 
   - &dac12 !Category
+    shortName: dac12
     name: "GIS-Softwareprodukte"
     description: "Geographische Informationssysteme & Software für Daten mit räumlichem Bezug"
 
   - &dac13 !Category
+    shortName: dac13
     name: "Systemanalyse & Benchmark"
     description: "Benchmarking- und Analyse-Tools, die das Leben leichter machen"
 
   - &dac14 !Category
+    shortName: dac14
     name: "Office & Verwaltung"
     description: "Officeanwendungen, Dokumenten- & Dateimanagement"
 
   - &dac15 !Category
+    shortName: dac15
     name: "Systemtuning & -Optimierung"
     description: "Tools um das System zu optimieren und Feinanpassungen vorzunehmen"
 
   - &dac16 !Category
+    shortName: dac16
     name: "Cleaner & Säuberungstools"
     description: "Tools um das System von Müll und Schädlingen zu befreien"
 
   - &dac17 !Category
+    shortName: dac17
     name: "Datensicherung & -Wiederherstellung"
     description: "Regelmäßige Sicherungen beugen Kummer vor"
 
   - &dac18 !Category
+    shortName: dac18
     name: "Festplattenwerkzeuge"
     description: "Benchmarking, Partitionierung, Dateisysteme, Fehleranalyse, Komplettlöschung, Wiederherstellung gelöschter Daten"
 
   - &dac19 !Category
+    shortName: dac19
     name: "Sicherheits-Rundumschutz"
     description: "Sicherheits-Pakete welche mehrere Bereiche abdecken"
 
   - &dac20 !Category
+    shortName: dac20
     name: "Verschlüsselung, Sicherheit & Privatsphäre"
     description: "Alles zum Schutz der eigenen Daten und der Privatsphäre. Festplatten-/Text-/Datei-/etc.-Verschlüsselung, VPN-, DNS-, PGP-, Proxy-Tools, ..."
 
   - &dac21 !Category
-    name: "Verschlüsselung"
-    description: "Privatsphäre schützen."
+    shortName: dac21
+    name: "Verschlüsselte Kommunikation"
+    description: "Tools, die Edward Snowden ein Lächeln ins Gesicht zaubern"
 
   - &dac22 !Category
+    shortName: dac22
     name: "Kommunikation"
     description: "Spezielle Kommunikations-Tools und Instant-Messenger"
 
   - &dac23 !Category
+    shortName: dac23
     name: "Downloadmanager"
     description: "Oft vermisst: wiederaufnehmbare Downloads -> mit Downloadmanagern ist dieses Problem Geschichte"
 
   - &dac24 !Category
+    shortName: dac24
     name: "Video"
     description: "Erstellung, Bearbeitung, Schnitt und Wiedergabe von Video-Dateien"
 
   - &dac25 !Category
+    shortName: dac25
     name: "Multimedia-Player"
     description: "Einer für alles und alles in einem..."
 
   - &dac26 !Category
+    shortName: dac26
     name: "Desktoptools: Look & Feel"
     description: "Tools um das Aussehen des Systems zu verändern"
 
   - &dac27 !Category
+    shortName: dac27
     name: "Codecs & Codecpacks"
     description: "Wer einen bestimmten Audio/Videotyp nicht abspielen kann, ist hier richtig."
 
   - &dac28 !Category
+    shortName: dac28
     name: "Teamwork & Projektmanagement"
     description: "Gemeinsam sind wir stark. Tools zur Unterstützung diverser Teamwork- & Projektmanagement-Prozesse"
 
   - &dac29 !Category
+    shortName: dac29
     name: "Internet & Sharing"
     description: "Tools die den Umgang mit Internet erleichtern bzw. Filesharing ermöglichen"
 
 sections:
   - &sec1 !Section
+    shortName: 1
     name: "Desktop-Anwendungen [Windows]"
     description: "Allerlei nützliche Anwendungen für Windows-Nutzer"
     categories: [*sonstiges, *dac1, *dac2, *dac3, *dac4, *dac5, *dac6, *dac7, *dac8, *dac9, *dac10, *dac11, *dac12, *dac13, *dac14, *dac15, *dac16, *dac17, *dac18, *dac19, *dac20, *dac21, *dac22, *dac23, *dac24, *dac25, *dac26, *dac27, *dac28, *dac29]
 
   - &sec2 !Section
+    shortName: sec2
     name: "Desktop-Anwendungen [Mac OSX]"
     description: "Allerlei nützliche Anwendungen für Mac-Nutzer"
     categories: [*sonstiges, *dac1, *dac2, *dac3, *dac4, *dac5, *dac6, *dac7, *dac8, *dac9, *dac10, *dac11, *dac12, *dac13, *dac14, *dac15, *dac16, *dac17, *dac18, *dac19, *dac20, *dac21, *dac22, *dac23, *dac24, *dac25, *dac26, *dac27, *dac28, *dac29]
 
   - &sec3 !Section
+    shortName: sec3
     name: "Desktop-Anwendungen [Linux]"
     description: "Allerlei nützliche Anwendungen für Linux-Nutzer"
     categories: [*sonstiges, *dac1, *dac2, *dac3, *dac4, *dac5, *dac6, *dac7, *dac8, *dac9, *dac10, *dac11, *dac12, *dac13, *dac14, *dac15, *dac16, *dac17, *dac18, *dac19, *dac20, *dac21, *dac22, *dac23, *dac24, *dac25, *dac26, *dac27, *dac28, *dac29]
 
   - &sec4 !Section
+    shortName: sec4
     name: "Desktop-Anwendungen [Multiplattform]"
     description: "Plattformunabhängige oder zumindest auf mehreren Plattformen lauffähige Desktopanwendungen"
     categories: [*sonstiges, *dac1, *dac2, *dac3, *dac4, *dac5, *dac6, *dac7, *dac8, *dac9, *dac10, *dac11, *dac12, *dac13, *dac14, *dac15, *dac16, *dac17, *dac18, *dac19, *dac20, *dac21, *dac22, *dac23, *dac24, *dac25, *dac26, *dac27, *dac28, *dac29]
 
   - &sec5 !Section
+    shortName: sec5
     name: "Hörbuch-Serien"
     description: "Gestaffelte und ungestaffelte mehrteilige Hörbuch-Serien"
-    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc35, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
+    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
 
   - &sec6 !Section
+    shortName: sec6
     name: "Hörbücher"
     description: "Für alle, die ein gutes Buch dem Fernseher vorziehen und gerne zuhören"
-    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc35, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
+    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
 
   - &sec7 !Section
+    shortName: sec7
     name: "Erotikfilme"
     description: "Entspannung für Erwachsene. Ganze Filme, keine Clips."
     categories: [*pfc1, *pfc2, *pfc3, *pfc4, *pfc5, *pfc6, *pfc7, *pfc8, *pfc9, *pfc10, *pfc11, *pfc12, *pfc13, *pfc14, *pfc15, *pfc16, *pfc17, *pfc18, *pfc19, *pfc20, *pfc21, *pfc22, *pfc23]
 
   - &sec8 !Section
+    shortName: sec8
     name: "Audio-Einzelstücke"
     description: "Einzelne Musikstücke"
     categories: [*auc1, *auc2, *auc3, *auc4, *auc5, *auc6, *auc7, *auc8, *auc9, *auc10, *auc11, *auc12, *auc13, *auc14, *auc15, *auc16, *auc17, *auc18, *auc19, *auc20, *auc21, *auc22, *auc23, *auc24, *auc25, *auc26, *auc27, *auc28, *auc29, *auc30, *auc31, *auc32, *auc33, *auc34, *auc35, *auc36, *auc37, *auc38, *auc39]
 
   - &sec8 !Section
+    shortName: sec9
     name: "Audio-Alben"
     description: "... ein Ohrenschmaus!"
     categories: [*auc1, *auc2, *auc3, *auc4, *auc5, *auc6, *auc7, *auc8, *auc9, *auc10, *auc11, *auc12, *auc13, *auc14, *auc15, *auc16, *auc17, *auc18, *auc19, *auc20, *auc21, *auc22, *auc23, *auc24, *auc25, *auc26, *auc27, *auc28, *auc29, *auc30, *auc31, *auc32, *auc33, *auc34, *auc35, *auc36, *auc37, *auc38, *auc39]
 
   - &sec10 !Section
+    shortName: sec10
     name: "Filme"
     description: "... ganz großes Kino! Aber auch unbekanntere Exemplare sind herzlich willkommen."
     categories: [*moc1, *moc2, *moc3, *moc4, *moc5, *moc6, *moc7, *moc8, *moc9, *moc10, *moc11, *moc12, *moc13, *moc14, *moc15, *moc16, *moc17, *moc18, *moc19, *moc20, *moc21, *moc22, *moc23, *moc24, *moc25, *moc26, *moc27, *moc28, *moc29, *moc30, *moc31, *moc32]
 
   - &sec11 !Section
+    shortName: sec11
     name: "Fernsehserien"
     description: "Vorsicht, hohes Suchtpotential!"
     categories: [*moc1, *moc2, *moc3, *moc4, *moc5, *moc6, *moc7, *moc8, *moc9, *moc10, *moc11, *moc12, *moc13, *moc14, *moc15, *moc16, *moc17, *moc18, *moc19, *moc20, *moc21, *moc22, *moc23, *moc24, *moc25, *moc26, *moc27, *moc28, *moc29, *moc30, *moc31, *moc32]
 
   - &sec12 !Section
+    shortName: sec12
     name: "Entwickler- & Webentwickler-Ressourcen"
     description: "IT-Experten, die Elite von morgen. Lasst sie uns kräftig unterstützen mit allen nötigen Werkzeugen und Materialien!"
     categories: []
@@ -942,66 +1323,97 @@ sections:
 #    categories: []  
 
   - &sec13 !Section
+    shortName: sec13
     name: "Digitale Bücher"
     description: "Bücherwürmer, versammelt euch!"
-    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc35, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
+    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
 
   - &sec14 !Section
+    shortName: sec14
     name: "Digitale Buchreihen"
     description: "Für die Serienjunkies unter den Leseratten"
-    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc35, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
+    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
 
   - &sec15 !Section
+    shortName: sec15
     name: "Digitale Zeitschriften & Magazine"
     description: "Auch Fachzeitschriften und lesenswerte Zeitungsausgaben sind herzlich willkommen."
     categories: [*joc1, *joc2, *joc3, *joc4, *joc5, *joc6, *joc7, *joc8, *joc9, *joc10, *joc11, *joc12, *joc13, *joc14, *joc15, *joc16, *joc17, *joc18, *joc19, *joc20, *joc21, *joc22, *joc23, *joc24, *joc25, *joc26, *joc27, *joc28, *joc29, *joc30, *joc31, *joc32, *joc33, *joc34, *joc35, *joc36, *joc37, *joc38]
 
   - &sec16 !Section
+    shortName: sec16
     name: "Mobile Anwendungen [Android]"
     description: "... besser bekannt auch als 'Apps' - mobile Spiele besitzen eine eigene Sektion!"
     categories: [*mac1, *mac2, *mac3, *mac4, *mac5, *mac6, *mac7, *mac8, *mac9, *mac10, *mac11, *mac12, *mac13, *mac14, *mac15, *mac16, *mac17, *mac18, *mac19, *mac20, *mac21, *mac22, *mac23, *mac24, *mac25]
 
   - &sec17 !Section
+    shortName: sec17
     name: "Mobile Anwendungen [iOS]"
     description: "... besser bekannt auch als 'Apps' - mobile Spiele besitzen eine eigene Sektion!"
     categories: [*mac1, *mac2, *mac3, *mac4, *mac5, *mac6, *mac7, *mac8, *mac9, *mac10, *mac11, *mac12, *mac13, *mac14, *mac15, *mac16, *mac17, *mac18, *mac19, *mac20, *mac21, *mac22, *mac23, *mac24, *mac25]
 
   - &sec18 !Section
-    name: "Mobile Anwendungen [Blackberry 10]"
+    shortName: sec18
+    name: "Mobile Anwendungen [Blackberry]"
     description: "... besser bekannt auch als 'Apps' - mobile Spiele besitzen eine eigene Sektion!"
     categories: [*mac1, *mac2, *mac3, *mac4, *mac5, *mac6, *mac7, *mac8, *mac9, *mac10, *mac11, *mac12, *mac13, *mac14, *mac15, *mac16, *mac17, *mac18, *mac19, *mac20, *mac21, *mac22, *mac23, *mac24, *mac25]
 
   - &sec19 !Section
+    shortName: sec19
+    name: "Mobile Anwendungen [Windows Phone]"
+    description: "... besser bekannt auch als 'Apps' - mobile Spiele besitzen eine eigene Sektion!"
+    categories: [*mac1, *mac2, *mac3, *mac4, *mac5, *mac6, *mac7, *mac8, *mac9, *mac10, *mac11, *mac12, *mac13, *mac14, *mac15, *mac16, *mac17, *mac18, *mac19, *mac20, *mac21, *mac22, *mac23, *mac24, *mac25]
+
+  - &sec20 !Section
+    shortName: sec20
     name: "Mobile Spiele [Android]"
     description: "DER Zeitvertreib für Pausen, Bahnfahrten, einsame Nächte und ähnliche Situationen."
     categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
 
-  - &sec20 !Section
+  - &sec21 !Section
+    shortName: sec21
     name: "Mobile Spiele [iOS]"
     description: "DER Zeitvertreib für Pausen, Bahnfahrten, einsame Nächte und ähnliche Situationen."
     categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
 
-  - &sec21 !Section
-    name: "Mobile Spiele [Blackberry 10]"
+  - &sec22 !Section
+    shortName: sec22
+    name: "Mobile Spiele [Blackberry]"
     description: "DER Zeitvertreib für Pausen, Bahnfahrten, einsame Nächte und ähnliche Situationen."
     categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
 
-  - &sec22 !Section
+  - &sec23 !Section
+    shortName: sec23
+    name: "Mobile Spiele [Windows Phone]"
+    description: "DER Zeitvertreib für Pausen, Bahnfahrten, einsame Nächte und ähnliche Situationen."
+    categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
+
+  - &sec24 !Section
+    shortName: sec24
     name: "Desktop-Spiele [Windows]"
     description: "Wer braucht da noch Heizkörper?"
     categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
 
-  - &sec23 !Section
+  - &sec25 !Section
+    shortName: sec25
     name: "Desktop-Spiele [Linux]"
     description: "Wer braucht da noch Heizkörper?"
     categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
 
-  - &sec24 !Section
+  - &sec26 !Section
+    shortName: sec26
     name: "Desktop-Spiele [Mac OSX]"
     description: "Wer braucht da noch Heizkörper?"
     categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
 
-  - &sec25 !Section
+  - &sec27 !Section
+    shortName: sec27
     name: "Desktop-Spiele [Multiplattform]"
     description: "Betriebssystemunabhängige oder zumindest auf mehreren Plattformen lauffähige Spiele"
     categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
+
+  - &sec28 !Section
+    shortName: sec28
+    name: "Betriebssysteme und Distributionen"
+    description: "Windows ist nur eine Möglichkeit von vielen."
+    categories: [*dos1, *dos2, *dos3, *dos4, *dos5, *dos6, *dos7, *dos8, *dos9, *dos10, *dos11, *dos12, *dos13, *dos14, *dos15, *dos16, *dos17, *dos18, *dos19, *dos20, *dos21, *dos22, *dos23, *dos24]

@@ -23,14 +23,15 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class LoadedConfigurationUpdateFile extends Model {
+public class LoadedConfigurationUpdate extends Model {
     private long number;
 
-    public LoadedConfigurationUpdateFile() {
+    public LoadedConfigurationUpdate() {
 
     }
 
-    public LoadedConfigurationUpdateFile(final long number) {
+    public LoadedConfigurationUpdate(final long number) {
+        this();
         this.number =  number;
     }
 

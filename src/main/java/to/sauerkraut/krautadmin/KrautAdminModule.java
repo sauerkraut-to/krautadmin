@@ -99,7 +99,7 @@ public class KrautAdminModule extends AbstractModule implements
         bindConfiguration();
         bindValidatorFactory();
         bindApplication();
-        requestStaticInjection(Model.class);
+        requestStaticInjection(Model.class, ApplicationUpgradeManagerAndFixturesLoader.class);
     }
 
     private void bindApplication() {

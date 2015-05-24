@@ -1,11 +1,12 @@
 package to.sauerkraut.krautadmin.core;
 
+import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.appwork.exceptions.WTFException;
 import to.sauerkraut.krautadmin.core.util.OrderSafeProperties;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,7 +16,7 @@ import static org.apache.commons.io.IOUtils.closeQuietly;
  * IO utils, taken from play!framework v1.x and modified by sauerkraut.to.
  */
 public final class IO {
-    public static final String DEFAULT_ENCODING = "UTF-8";
+    public static final Charset DEFAULT_ENCODING = Charsets.UTF_8;
 
     private IO() {
 
@@ -38,6 +39,15 @@ public final class IO {
         }
     }
 
+    public static List<String> listFilenamesOfClasspathFolder(final String classpathFolderPath) {
+        return listFilenamesOfClasspathFolder(classpathFolderPath, DEFAULT_ENCODING);
+    }
+
+    public static List<String> listFilenamesOfClasspathFolder(final String classpathFolderPath,
+                                                              final Charset encoding) {
+        return readLines(IO.class.getResourceAsStream(classpathFolderPath), encoding);
+    }
+
     /**
      * Read the Stream content as a string (use utf-8).
      * @param is The stream to read
@@ -52,7 +62,7 @@ public final class IO {
      * @param is The stream to read
      * @return The String content
      */
-    public static String readContentAsString(final InputStream is, final String encoding) {
+    public static String readContentAsString(final InputStream is, final Charset encoding) {
         try {
             return IOUtils.toString(is, encoding);
         } catch (Exception e) {
@@ -73,29 +83,33 @@ public final class IO {
      * @param file The file to read
      * @return The String content
      */
-    public static String readContentAsString(final File file, final String encoding) {
+    public static String readContentAsString(final File file, final Charset encoding) {
         try {
             return FileUtils.readFileToString(file, encoding);
         } catch (IOException e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
-    public static List<String> readLines(final InputStream is) {
+    public static List<String> readLines(final InputStream is, final Charset encoding) {
         List<String> lines = null;
         try {
-            lines = IOUtils.readLines(is);
+            lines = IOUtils.readLines(is, encoding);
         } catch (IOException ex) {
-            throw new WTFException(ex);
+            throw new RuntimeException(ex);
         }
         return lines;
     }
 
-    public static List<String> readLines(final File file, final String encoding) {
+    public static List<String> readLines(final InputStream is) {
+        return readLines(is, DEFAULT_ENCODING);
+    }
+
+    public static List<String> readLines(final File file, final Charset encoding) {
         try {
             return FileUtils.readLines(file, encoding);
         } catch (IOException ex) {
-            throw new WTFException(ex);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -112,7 +126,7 @@ public final class IO {
         try {
             return FileUtils.readFileToByteArray(file);
         } catch (IOException e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -125,7 +139,7 @@ public final class IO {
         try {
             return IOUtils.toByteArray(is);
         } catch (IOException e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -143,11 +157,11 @@ public final class IO {
      * @param content The content to write
      * @param os The stream to write
      */
-    public static void writeContent(final CharSequence content, final OutputStream os, final String encoding) {
+    public static void writeContent(final CharSequence content, final OutputStream os, final Charset encoding) {
         try {
             IOUtils.write(content, os, encoding);
         } catch (IOException e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         } finally {
             closeQuietly(os);
         }
@@ -167,11 +181,11 @@ public final class IO {
      * @param content The content to write
      * @param file The file to write
      */
-    public static void writeContent(final CharSequence content, final File file, final String encoding) {
+    public static void writeContent(final CharSequence content, final File file, final Charset encoding) {
         try {
             FileUtils.write(file, content, encoding);
         } catch (IOException e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -184,7 +198,7 @@ public final class IO {
         try {
             FileUtils.writeByteArrayToFile(file, data);
         } catch (IOException e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -195,7 +209,7 @@ public final class IO {
         try {
             IOUtils.copyLarge(is, os);
         } catch (IOException e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         } finally {
             closeQuietly(is);
         }
@@ -208,7 +222,7 @@ public final class IO {
         try {
             IOUtils.copyLarge(is, os);
         } catch (IOException e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         } finally {
             closeQuietly(is);
             closeQuietly(os);
@@ -228,7 +242,7 @@ public final class IO {
                 closeQuietly(os);
             }
         } catch (IOException e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -245,7 +259,7 @@ public final class IO {
             try {
                 write(new FileInputStream(source),  new FileOutputStream(target));
             } catch (IOException e) {
-                throw new WTFException(e);
+                throw new RuntimeException(e);
             }
         }
     }

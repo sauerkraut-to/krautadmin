@@ -16,9 +16,12 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
+import com.orientechnologies.orient.core.metadata.schema.OClass;
 import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
 
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,7 +35,11 @@ public class Section extends Model {
     @NotBlank
     private String name;
     private String description;
+    @NotNull
     private Set<Category> categories;
+    @NotBlank
+    @Index(OClass.INDEX_TYPE.UNIQUE)
+    private String shortName;
 
     public Section() {
         this.categories = new HashSet<>();
@@ -60,5 +67,13 @@ public class Section extends Model {
 
     public void setCategories(final Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(final String shortName) {
+        this.shortName = shortName;
     }
 }

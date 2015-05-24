@@ -1,7 +1,6 @@
 package to.sauerkraut.krautadmin.core;
 
 import org.apache.commons.io.IOUtils;
-import org.appwork.exceptions.WTFException;
 import to.sauerkraut.krautadmin.KrautAdminApplication;
 
 import java.io.*;
@@ -82,7 +81,7 @@ public class VirtualFile {
         try {
             return new FileInputStream(realFile);
         } catch (Exception e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -90,7 +89,7 @@ public class VirtualFile {
         try {
             return new FileOutputStream(realFile);
         } catch (Exception e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -158,7 +157,7 @@ public class VirtualFile {
                 closeQuietly(is);
             }
         } catch (Exception e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -170,7 +169,7 @@ public class VirtualFile {
         try {
             IO.writeContent(string, outputstream());
         } catch (Exception e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -183,7 +182,7 @@ public class VirtualFile {
                 closeQuietly(is);
             }
         } catch (Exception e) {
-            throw new WTFException(e);
+            throw new RuntimeException(e);
         }
     }
 

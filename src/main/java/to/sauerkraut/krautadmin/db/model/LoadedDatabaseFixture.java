@@ -16,50 +16,30 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
-import com.orientechnologies.orient.core.metadata.schema.OClass;
-import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
-import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 @Persistent
-public class Category extends Model {
+public class LoadedDatabaseFixture extends Model {
+    private long number;
 
-    @NotBlank
-    private String name;
-    @NotBlank
-    @Index(OClass.INDEX_TYPE.UNIQUE)
-    private String shortName;
-    private String description;
-
-    public Category() {
+    public LoadedDatabaseFixture() {
 
     }
 
-    public String getName() {
-        return name;
+    public LoadedDatabaseFixture(final long number) {
+        this();
+        this.number =  number;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public long getNumber() {
+        return number;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(final String shortName) {
-        this.shortName = shortName;
+    public void setNumber(final long number) {
+        this.number = number;
     }
 }
