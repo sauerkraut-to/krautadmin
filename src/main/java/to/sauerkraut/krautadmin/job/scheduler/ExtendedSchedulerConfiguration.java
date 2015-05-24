@@ -14,30 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package to.sauerkraut.krautadmin.job;
+package to.sauerkraut.krautadmin.job.scheduler;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Provides;
-import javax.inject.Singleton;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.impl.StdSchedulerFactory;
+import com.fiestacabin.dropwizard.quartz.SchedulerConfiguration;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-public class SchedulerModule extends AbstractModule {
+public class ExtendedSchedulerConfiguration extends SchedulerConfiguration {
+    private int intervalInitialDelaySeconds;
 
-    @Override
-    protected void configure() {
-        
+    public int getIntervalInitialDelaySeconds() {
+        return intervalInitialDelaySeconds;
     }
 
-    @Provides
-    @Singleton
-    Scheduler provideScheduler() throws SchedulerException {
-        return StdSchedulerFactory.getDefaultScheduler();
+    public void setIntervalInitialDelaySeconds(final int intervalInitialDelaySeconds) {
+        this.intervalInitialDelaySeconds = intervalInitialDelaySeconds;
     }
-
 }

@@ -17,31 +17,33 @@
 package to.sauerkraut.krautadmin.resources;
 
 import javax.inject.Inject;
-import to.sauerkraut.krautadmin.db.model.SampleEntity;
-import to.sauerkraut.krautadmin.db.repository.SampleEntityRepository;
+import to.sauerkraut.krautadmin.KrautAdminConfiguration;
+import to.sauerkraut.krautadmin.client.dto.GenericResponse;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-@Path("/sample")
+@Path("/application")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class SampleEntityResource {
+public class ApplicationResource {
 
     @Inject
-    private SampleEntityRepository dao;
+    private KrautAdminConfiguration configuration;
 
     @GET
-    @Path("/list")
-    public List<SampleEntity> list() {
-        return dao.dontDoThat();
+    @Path("/loginDelayMilliseconds")
+    public GenericResponse<Long> getLoginDelayMilliseconds() {
+        return new GenericResponse<>(configuration.getSecurityConfiguration().getLoginDelayMilliseconds());
+    }
+
+    @POST
+    @Path("/keepAlive")
+    public GenericResponse<String> keepAlive() {
+        return new GenericResponse<>();
     }
 }

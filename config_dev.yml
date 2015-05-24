@@ -121,6 +121,9 @@ shiro:
 security:
   passwordHashFormat: 'SHA-256'
   passwordHashIterations: 500000
+  loginDelayMilliseconds: 0
+  maximumFailedAttempts: 3
+  banDays: 1
 
 assets:
   cacheSpec: 'maximumSize=0'

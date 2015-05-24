@@ -17,10 +17,11 @@
 package to.sauerkraut.krautadmin.job;
 
 import com.fiestacabin.dropwizard.quartz.Scheduled;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import to.sauerkraut.krautadmin.KrautAdminConfiguration;
 import to.sauerkraut.krautadmin.db.repository.LoginAttemptRepository;
 
 import java.util.Calendar;
@@ -36,10 +37,12 @@ public class DeleteOldLoginAttemptsJob implements org.quartz.Job {
 
     @Inject
     private LoginAttemptRepository loginAttemptRepository;
+    @Inject
+    private KrautAdminConfiguration configuration;
 
     @Override
     public void execute(final JobExecutionContext context) throws JobExecutionException {
-        final int banDays = 1;
+        final int banDays = configuration.getSecurityConfiguration().getBanDays();
         final Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -banDays);
         loginAttemptRepository.deleteOlderThan(cal.getTimeInMillis());

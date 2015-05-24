@@ -17,7 +17,7 @@
 package to.sauerkraut.krautadmin.job;
 
 import com.fiestacabin.dropwizard.quartz.Scheduled;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import java.util.concurrent.TimeUnit;
 import jd.plugins.PluginForHost;
 import org.jdownloader.plugins.controller.UpdateRequiredClassNotFoundException;

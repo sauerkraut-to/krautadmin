@@ -19,7 +19,7 @@ package to.sauerkraut.krautadmin.auth;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;

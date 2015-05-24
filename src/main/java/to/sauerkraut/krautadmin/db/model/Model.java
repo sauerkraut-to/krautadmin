@@ -16,7 +16,7 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import com.orientechnologies.orient.object.enhancement.OObjectEntitySerializer;
 import ru.vyarus.guice.persist.orient.db.PersistentContext;

@@ -17,7 +17,8 @@
 package to.sauerkraut.krautadmin.db;
 
 import com.google.common.reflect.ClassPath;
-import com.google.inject.Inject;
+import javax.inject.Inject;
+
 import com.google.inject.persist.Transactional;
 import org.slf4j.Logger;
 import ru.vyarus.guice.ext.log.Log;

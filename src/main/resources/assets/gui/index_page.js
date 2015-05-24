@@ -1,23 +1,16 @@
-function updateClock ( ) {
-    var dayNames = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
-    var currentTime = new Date ( );
-    var currentHours = withLeadingZero(currentTime.getHours());
-    var currentMinutes = withLeadingZero(currentTime.getMinutes());
-    var currentSeconds = withLeadingZero(currentTime.getSeconds());
-
-    // Compose the string for display
-    var currentTimeString = dayNames[currentTime.getDay()] + ", " + currentHours + ":" + currentMinutes + " Uhr";
-
-    $(".live-clock").html(currentTimeString);
-}
-
-function withLeadingZero(number) {
-    return (number < 10 ? "0" : "") + number;
-}
-
 $(document).ready(function() {
+    var defaultAdditionalClientSideDelayMilliseconds = 100;
+    var loginDelayMilliseconds = 3100;
     updateClock();
     setInterval('updateClock()', 1000);
+    setInterval('keepAlive()', 30000);
+
+    $.getJSON('/rest/application/loginDelayMilliseconds', function(response) {
+        if (response.success) {
+            loginDelayMilliseconds = response.payload + defaultAdditionalClientSideDelayMilliseconds;
+        }
+    });
+
     $('input.textbox-text').first().focus();
 
     $('#form-login').form({
@@ -26,9 +19,9 @@ $(document).ready(function() {
             var isValid = $(this).form('validate');
             if (isValid){
             	$.messager.progress({
-            	    'interval': 310,
-            	    title:'Bitte einen Augenblick Geduld',
-                    msg:'Aus Sicherheitsgründen findet der Login verzögert statt...'
+            	    'interval': (loginDelayMilliseconds / 10),
+            	    'title': 'Bitte einen Augenblick Geduld',
+                    'msg': 'Aus Sicherheitsgründen findet der Login verzögert statt...'
             	});
             }
             return isValid;

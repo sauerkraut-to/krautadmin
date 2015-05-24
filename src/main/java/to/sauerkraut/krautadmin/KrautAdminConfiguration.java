@@ -21,7 +21,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import com.google.inject.persist.PersistService;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -32,7 +32,7 @@ import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
 import to.sauerkraut.krautadmin.cli.MetadataAware;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.setup.HasDatabaseConfiguration;
-import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
+import to.sauerkraut.krautadmin.job.scheduler.ExtendedSchedulerConfiguration;
 import to.sauerkraut.krautadmin.resources.assets.ConfiguredAssetsBundle;
 import to.sauerkraut.krautadmin.resources.assets.HasAssetsConfiguration;
 
@@ -211,9 +211,14 @@ public class KrautAdminConfiguration extends Configuration
         @NotBlank
         @JsonProperty
         private String passwordHashFormat;
-        
         @JsonProperty
-        private int passwordHashIterations;
+        private int passwordHashIterations = 500000;
+        @JsonProperty
+        private long loginDelayMilliseconds = 3000;
+        @JsonProperty
+        private int maximumFailedAttempts = 3;
+        @JsonProperty
+        private int banDays = 1;
 
         public String getPasswordHashFormat() {
             return passwordHashFormat;
@@ -229,6 +234,30 @@ public class KrautAdminConfiguration extends Configuration
 
         public void setPasswordHashIterations(final int passwordHashIterations) {
             this.passwordHashIterations = passwordHashIterations;
+        }
+
+        public long getLoginDelayMilliseconds() {
+            return loginDelayMilliseconds;
+        }
+
+        public void setLoginDelayMilliseconds(final long loginDelayMilliseconds) {
+            this.loginDelayMilliseconds = loginDelayMilliseconds;
+        }
+
+        public int getMaximumFailedAttempts() {
+            return maximumFailedAttempts;
+        }
+
+        public void setMaximumFailedAttempts(final int maximumFailedAttempts) {
+            this.maximumFailedAttempts = maximumFailedAttempts;
+        }
+
+        public int getBanDays() {
+            return banDays;
+        }
+
+        public void setBanDays(final int banDays) {
+            this.banDays = banDays;
         }
     }
     

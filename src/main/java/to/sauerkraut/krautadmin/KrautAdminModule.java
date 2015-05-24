@@ -50,8 +50,8 @@ import to.sauerkraut.krautadmin.auth.PasswordService;
 import to.sauerkraut.krautadmin.db.ApplicationUpgradeManagerAndFixturesLoader;
 import to.sauerkraut.krautadmin.db.model.Model;
 import to.sauerkraut.krautadmin.jersey.GenericExceptionMapper;
-import to.sauerkraut.krautadmin.job.ExtendedSchedulerConfiguration;
-import to.sauerkraut.krautadmin.job.SchedulerModule;
+import to.sauerkraut.krautadmin.job.scheduler.ExtendedSchedulerConfiguration;
+import to.sauerkraut.krautadmin.job.scheduler.SchedulerModule;
 
 /**
  *

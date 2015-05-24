@@ -23,7 +23,7 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.AuthenticationException;
@@ -33,6 +33,7 @@ import org.glassfish.jersey.server.ManagedAsync;
 import org.secnod.shiro.jaxrs.Auth;
 import org.slf4j.Logger;
 import ru.vyarus.guice.ext.log.Log;
+import to.sauerkraut.krautadmin.KrautAdminConfiguration;
 import to.sauerkraut.krautadmin.client.dto.GenericResponse;
 import to.sauerkraut.krautadmin.db.model.LoginAttempt;
 import to.sauerkraut.krautadmin.db.repository.LoginAttemptRepository;
@@ -51,13 +52,14 @@ import java.util.concurrent.Executors;
 public class SessionResource {
 
     private static final ExecutorService TASK_EXECUTOR = Executors.newCachedThreadPool();
-    private static final long SLEEP_TIME_IN_MILLISECONDS = 3000;
 
     @Log
     private static Logger logger;
 
     @Inject
     private LoginAttemptRepository loginAttemptRepository;
+    @Inject
+    private KrautAdminConfiguration configuration;
     
     @POST
     @Path("/login")
@@ -67,6 +69,9 @@ public class SessionResource {
             @FormParam("rememberMe") final boolean rememberMe, @Auth final Subject subject,
                       @Suspended final AsyncResponse asyncResponse, @Context final HttpServletRequest request) {
 
+        final KrautAdminConfiguration.SecurityConfiguration securityConfiguration =
+                configuration.getSecurityConfiguration();
+
         TASK_EXECUTOR.submit(new Runnable() {
 
             @Override
@@ -74,12 +79,12 @@ public class SessionResource {
                 String hashedIp = null;
                 try {
                     hashedIp = DigestUtils.md5Hex(request.getRemoteAddr());
-                    final int banDays = 1;
-                    final int maximumFailedAttempts = 3;
+                    final int banDays = securityConfiguration.getBanDays();
+                    final int maximumFailedAttempts = securityConfiguration.getMaximumFailedAttempts();
                     final LoginAttempt loginAttempt = loginAttemptRepository.findByHashedIp(hashedIp);
 
                     if (loginAttempt != null && loginAttempt.getLastAttempt().after(
-                            new Date(System.currentTimeMillis() - SLEEP_TIME_IN_MILLISECONDS))) {
+                            new Date(System.currentTimeMillis() - securityConfiguration.getLoginDelayMilliseconds()))) {
                         asyncResponse.resume(new AuthenticationException("Gleichzeitige Login-Versuche "
                                 + "von derselben IP sind nicht erlaubt (IPs werden nicht gespeichert, sondern nur "
                                 + "deren Hash-Werte und diese nur kurzfristig und nur, "
@@ -99,7 +104,7 @@ public class SessionResource {
                         ));
                     } else {
                         login(hashedIp, subject, username, password, rememberMe, asyncResponse,
-                                SLEEP_TIME_IN_MILLISECONDS);
+                                securityConfiguration.getLoginDelayMilliseconds());
                     }
                 } catch (final InterruptedException ex) {
                     asyncResponse.cancel();
@@ -130,7 +135,7 @@ public class SessionResource {
                        final AsyncResponse asyncResponse, final Long delay) throws Exception {
         loginAttemptRepository.upsert(hashedIp, new Date());
 
-        if (delay != null) {
+        if (delay != null && delay > 0L) {
             Thread.sleep(delay);
         }
 
