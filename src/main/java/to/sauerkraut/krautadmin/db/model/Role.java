@@ -20,8 +20,11 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import com.orientechnologies.orient.core.metadata.schema.OClass;
 import org.hibernate.validator.constraints.NotEmpty;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
 
 /**
  *
@@ -30,6 +33,9 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 @Persistent
 public class Role extends Model {
 
+    @NotEmpty
+    @Index(OClass.INDEX_TYPE.UNIQUE)
+    private String shortName;
     @NotEmpty
     private String name;
     @Valid
@@ -41,17 +47,17 @@ public class Role extends Model {
         this.permissions = new HashSet<>();
     }
     
-    public Role(final String name) {
+    public Role(final String shortName) {
         this();
-        this.name = name;
+        this.shortName = shortName;
     }
 
-    public String getName() {
-        return name;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public void setShortName(final String shortName) {
+        this.shortName = shortName;
     }
 
     public Set<Permission> getPermissions() {
@@ -64,5 +70,13 @@ public class Role extends Model {
 
     public void setDescription(final String description) {
         this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 }

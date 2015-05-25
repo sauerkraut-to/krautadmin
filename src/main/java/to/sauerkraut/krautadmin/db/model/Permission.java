@@ -16,8 +16,10 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
+import com.orientechnologies.orient.core.metadata.schema.OClass;
 import org.hibernate.validator.constraints.NotEmpty;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
 
 /**
  *
@@ -27,6 +29,9 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 public class Permission extends Model {
 
     @NotEmpty
+    @Index(OClass.INDEX_TYPE.UNIQUE)
+    private String shortName;
+    @NotEmpty
     private String name;
     private String description;
     
@@ -34,17 +39,17 @@ public class Permission extends Model {
         
     }
     
-    public Permission(final String name) {
+    public Permission(final String shortName) {
         this();
-        this.name = name;
+        this.shortName = shortName;
     }
 
-    public String getName() {
-        return name;
+    public String getShortName() {
+        return shortName;
     }
 
-    public void setName(final String name) {
-        this.name = name;
+    public void setShortName(final String shortName) {
+        this.shortName = shortName;
     }
 
     public String getDescription() {
@@ -53,5 +58,13 @@ public class Permission extends Model {
 
     public void setDescription(final String description) {
         this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
     }
 }

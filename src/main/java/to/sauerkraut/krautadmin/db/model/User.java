@@ -22,8 +22,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.orientechnologies.orient.core.metadata.schema.OClass;
 import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
 
 /**
  *
@@ -33,6 +35,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 public class User extends Model {
 
     @NotBlank
+    @Index(OClass.INDEX_TYPE.UNIQUE)
     private String username;
     @NotBlank
     @JsonIgnore

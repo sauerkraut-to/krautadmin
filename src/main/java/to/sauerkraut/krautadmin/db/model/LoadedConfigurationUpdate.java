@@ -16,7 +16,9 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
+import com.orientechnologies.orient.core.metadata.schema.OClass;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
 
 /**
  *
@@ -24,6 +26,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  */
 @Persistent
 public class LoadedConfigurationUpdate extends Model {
+    @Index(OClass.INDEX_TYPE.UNIQUE)
     private long number;
 
     public LoadedConfigurationUpdate() {

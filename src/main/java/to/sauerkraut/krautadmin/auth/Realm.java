@@ -96,9 +96,9 @@ public class Realm extends AuthorizingRealm {
         final Set<String> permissionNames = new LinkedHashSet<>();
         if (totalRoles > 0) {
             for (Role role : user.getRoles()) {
-                roleNames.add(role.getName());
+                roleNames.add(role.getShortName());
                 for (Permission permission : role.getPermissions()) {
-                    permissionNames.add(permission.getName());
+                    permissionNames.add(permission.getShortName());
                 }
             }
         }

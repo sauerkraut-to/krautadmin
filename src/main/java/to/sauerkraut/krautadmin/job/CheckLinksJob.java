@@ -17,7 +17,6 @@
 package to.sauerkraut.krautadmin.job;
 
 import com.fiestacabin.dropwizard.quartz.Scheduled;
-import javax.inject.Inject;
 import java.util.concurrent.TimeUnit;
 import jd.plugins.PluginForHost;
 import org.jdownloader.plugins.controller.UpdateRequiredClassNotFoundException;
@@ -27,7 +26,6 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import ru.vyarus.guice.ext.log.Log;
 import to.sauerkraut.krautadmin.core.Toolkit;
-import to.sauerkraut.krautadmin.db.repository.SampleEntityRepository;
 
 /**
  *
@@ -39,12 +37,9 @@ public class CheckLinksJob implements org.quartz.Job {
     
     @Log
     private static Logger logger;
-    @Inject
-    private SampleEntityRepository repository;
 
     @Override
     public void execute(final JobExecutionContext context) throws JobExecutionException {
-        logger.info("repo count: " + repository.count());
         
         try {
             Toolkit.updateLinkCheckers();

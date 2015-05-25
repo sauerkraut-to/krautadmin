@@ -59,8 +59,6 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
     @Inject
     private static ModelRepository modelRepository;
     @Inject
-    private SampleEntityRepository repository;
-    @Inject
     private FrontendDataMirrorRepository frontendDataMirrorRepository;
     
     @Override

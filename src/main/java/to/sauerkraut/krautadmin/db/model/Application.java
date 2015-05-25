@@ -24,13 +24,5 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  */
 @Persistent
 public class Application extends Model {
-    private boolean initialFixturesLoaded;
 
-    public boolean isInitialFixturesLoaded() {
-        return initialFixturesLoaded;
-    }
-
-    public void setInitialFixturesLoaded(final boolean initialFixturesLoaded) {
-        this.initialFixturesLoaded = initialFixturesLoaded;
-    }
 }

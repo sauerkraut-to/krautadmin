@@ -16,8 +16,10 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
+import com.orientechnologies.orient.core.metadata.schema.OClass;
 import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -28,8 +30,8 @@ import java.util.Date;
 @Persistent
 public class LoginAttempt extends Model {
 
-    //TODO: create a unique index on this field
     @NotBlank
+    @Index(OClass.INDEX_TYPE.UNIQUE)
     private String hashedIp;
     @NotNull
     private Date lastAttempt;

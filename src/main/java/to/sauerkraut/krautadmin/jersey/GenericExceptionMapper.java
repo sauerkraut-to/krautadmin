@@ -20,6 +20,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.AuthenticationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import to.sauerkraut.krautadmin.client.dto.ExceptionDetails;
 import to.sauerkraut.krautadmin.client.dto.GenericResponse;
 
@@ -36,6 +38,7 @@ import java.util.List;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public class GenericExceptionMapper implements ExceptionMapper<Exception> {
+    private static final Logger LOG = LoggerFactory.getLogger(GenericExceptionMapper.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Override
@@ -69,6 +72,7 @@ public class GenericExceptionMapper implements ExceptionMapper<Exception> {
                     .entity(defaultJSON(exception, constraintViolations))
                     .type(MediaType.APPLICATION_JSON).build();
         } else {
+            LOG.error(exception.getMessage(), exception);
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(defaultJSON(exception))
                     .type(MediaType.APPLICATION_JSON).build();
