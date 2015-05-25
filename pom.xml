@@ -20,7 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.8.1</dropwizard.version>
-        <orient.version>2.0.9</orient.version>
+        <orient.version>2.1-rc3</orient.version>
         <mainClass>to.sauerkraut.krautadmin.KrautAdminApplication</mainClass>
     </properties>
 
