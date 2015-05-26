@@ -43,7 +43,7 @@ public class FrontendDataMirror extends Model {
     private boolean active; 
     private Date syncedUntil;
     private Date lastFailedSync;
-    private boolean isImplicit;
+    private boolean implicit;
     private SecureProtocol secureProtocol;
     
     public FrontendDataMirror() {
@@ -58,22 +58,22 @@ public class FrontendDataMirror extends Model {
         this(secureProtocol, false);
     }
 
-    public FrontendDataMirror(final SecureProtocol secureProtocol, final boolean isImplicit) {
+    public FrontendDataMirror(final SecureProtocol secureProtocol, final boolean implicit) {
         this();
         this.secureProtocol = secureProtocol;
-        this.isImplicit = isImplicit;
+        this.implicit = implicit;
     }
 
-    public boolean isSecure() {
+    public boolean getSecure() {
         return secureProtocol != null;
     }
 
-    public boolean isIsImplicit() {
-        return isImplicit;
+    public boolean getImplicit() {
+        return implicit;
     }
 
-    public void setIsImplicit(final boolean isImplicit) {
-        this.isImplicit = isImplicit;
+    public void setImplicit(final boolean implicit) {
+        this.implicit = implicit;
     }
 
     public SecureProtocol getSecureProtocol() {
@@ -88,7 +88,7 @@ public class FrontendDataMirror extends Model {
      * 
      * @return true, if this FrontendDataMirror is publicly visible
      */
-    public boolean isVisible() {
+    public boolean getVisible() {
         return visible;
     }
 
@@ -100,7 +100,7 @@ public class FrontendDataMirror extends Model {
      * 
      * @return true, if this FrontendDataMirror will be deployed to on ReferenceLink-updates
      */
-    public boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 

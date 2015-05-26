@@ -18,7 +18,6 @@ package to.sauerkraut.krautadmin.db.model;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.orientechnologies.orient.core.metadata.schema.OClass;
@@ -38,10 +37,10 @@ public class Role extends Model {
     private String shortName;
     @NotEmpty
     private String name;
-    @Valid
     @NotNull
-    private final Set<Permission> permissions;
+    private Set<Permission> permissions;
     private String description;
+    private int weight;
     
     public Role() {
         this.permissions = new HashSet<>();
@@ -78,5 +77,17 @@ public class Role extends Model {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(final int weight) {
+        this.weight = weight;
+    }
+
+    public void setPermissions(final Set<Permission> permissions) {
+        this.permissions = permissions;
     }
 }

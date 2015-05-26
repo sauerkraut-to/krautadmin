@@ -72,12 +72,13 @@ public class GenericExceptionMapper implements ExceptionMapper<Exception> {
                     .entity(defaultJSON(exception, constraintViolations))
                     .type(MediaType.APPLICATION_JSON).build();
         } else {
-            LOG.error(exception.getMessage(), exception);
+            LOG.debug(exception.getMessage(), exception);
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(defaultJSON(exception))
                     .type(MediaType.APPLICATION_JSON).build();
         }
         //TODO: handle lack of permissions exception
+        //TODO: render NotFoundException as HTML
     }
 
     private String defaultJSON(final Exception exception) {

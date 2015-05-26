@@ -35,7 +35,6 @@ import ru.vyarus.guice.persist.orient.RepositoryModule;
 import ru.vyarus.guice.persist.orient.support.AutoScanSchemeModule;
 import ru.vyarus.guice.validator.ImplicitValidationModule;
 
-import javax.validation.ValidatorFactory;
 import javax.ws.rs.Path;
 import javax.ws.rs.ext.ExceptionMapper;
 import java.lang.reflect.AnnotatedElement;
@@ -96,18 +95,12 @@ public class KrautAdminModule extends AbstractModule implements
         bindSupplement();
         bindDb();
         bindScheduler();
-        bindConfiguration();
-        bindValidatorFactory();
         bindApplication();
         requestStaticInjection(Model.class, ApplicationUpgradeManagerAndFixturesLoader.class);
     }
 
     private void bindApplication() {
         bind(Application.class).toInstance(application);
-    }
-
-    private void bindValidatorFactory() {
-        bind(ValidatorFactory.class).toInstance(bootstrap.getValidatorFactory());
     }
     
     private void registerCustomExceptionMapper() {
@@ -144,10 +137,6 @@ public class KrautAdminModule extends AbstractModule implements
         hashService.setHashAlgorithmName(securityConfiguration.getPasswordHashFormat());
         hashService.setHashIterations(securityConfiguration.getPasswordHashIterations());
         bind(PasswordService.class).toInstance(passwordService);
-    }
-
-    private void bindConfiguration() {
-        bind(KrautAdminConfiguration.class).toInstance(configuration);
     }
     
     private void bindScheduler() {

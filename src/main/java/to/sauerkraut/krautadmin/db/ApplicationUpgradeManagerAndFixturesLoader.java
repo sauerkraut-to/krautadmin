@@ -25,9 +25,12 @@ import ru.vyarus.guice.ext.log.Log;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
 
 import javax.inject.Singleton;
+import javax.validation.ConstraintViolationException;
 
 import to.sauerkraut.binding.yamlbeans.YamlReader;
 import to.sauerkraut.krautadmin.KrautAdminApplication;
+import to.sauerkraut.krautadmin.KrautAdminConfiguration;
+import to.sauerkraut.krautadmin.auth.PasswordService;
 import to.sauerkraut.krautadmin.core.IO;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.model.*;
@@ -60,6 +63,10 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
     private static ModelRepository modelRepository;
     @Inject
     private FrontendDataMirrorRepository frontendDataMirrorRepository;
+    @Inject
+    private PasswordService passwordService;
+    @Inject
+    private KrautAdminConfiguration configuration;
     
     @Override
     public void initializeData() {
@@ -68,18 +75,18 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
         boolean hasConfigurationUpdateChanges;
 
         try {
-            hasDatabaseFixtureChanges =
-                    applyDatabaseFixtureFiles(listAvailableUpdateFiles(CLASSPATH_PATH_TO_DATABASE_FIXTURES));
-        } catch (RuntimeException e) {
-            logger.error("applying database fixture(s) failed, application upgrade aborted", e);
-            throw e;
-        }
-
-        try {
             hasDatabaseUpdateChanges =
                     applyDatabaseUpdateFiles(listAvailableUpdateFiles(CLASSPATH_PATH_TO_DATABASE_UPDATES));
         } catch (RuntimeException e) {
             logger.error("applying database update(s) failed, application upgrade aborted", e);
+            throw e;
+        }
+
+        try {
+            hasDatabaseFixtureChanges =
+                    applyDatabaseFixtureFiles(listAvailableUpdateFiles(CLASSPATH_PATH_TO_DATABASE_FIXTURES));
+        } catch (RuntimeException e) {
+            logger.error("applying database fixture(s) failed, application upgrade aborted", e);
             throw e;
         }
 
@@ -92,11 +99,12 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
         }
 
         if (hasConfigurationUpdateChanges) {
-            try {
+            configuration.setUpdatePending(true);
+            /*try {
                 Toolkit.restartApplication();
             } catch (Exception e) {
                 logger.error("failed to restart application - updates pending, please restart manually");
-            }
+            }*/
         }
     }
 
@@ -251,7 +259,12 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
                 for (Object possibleModelInstance : modelsCollection) {
                     if (Model.class.isAssignableFrom(possibleModelInstance.getClass())) {
                         final Model modelInstance = (Model) possibleModelInstance;
-                        modelInstance.validateAndSave();
+                        try {
+                            modelInstance.validateAndSave();
+                        } catch (ConstraintViolationException e) {
+                            Toolkit.logConstraintViolations(e.getConstraintViolations());
+                            throw e;
+                        }
                     }
                 }
             }

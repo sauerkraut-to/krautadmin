@@ -55,6 +55,8 @@ import to.sauerkraut.jgitclone.api.commands.GitCloneOptions;
 import to.sauerkraut.jgitclone.utilities.UrlUtilities;
 import to.sauerkraut.krautadmin.KrautAdminApplication;
 
+import javax.validation.ConstraintViolation;
+
 /**
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
@@ -118,6 +120,16 @@ public final class Toolkit {
         modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
 
         field.set(instance, newValue);
+    }
+
+    public static void logConstraintViolations(final Set<ConstraintViolation<?>> constraintViolations) {
+        for (ConstraintViolation violation : constraintViolations) {
+            final String propertyPath = violation.getPropertyPath().toString();
+            final String message = violation.getMessage();
+            final String className = violation.getRootBeanClass().getCanonicalName();
+            LOG.error("fixture constraint violation - propertyPath: {} "
+                    + "- message: {} - className: {}", propertyPath, message, className);
+        }
     }
 
     public static synchronized void restartApplication() throws Exception {

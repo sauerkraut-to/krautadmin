@@ -17,6 +17,8 @@
 package to.sauerkraut.krautadmin.auth;
 
 import javax.inject.Singleton;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.shiro.crypto.hash.ConfigurableHashService;
 import org.apache.shiro.crypto.hash.DefaultHashService;
 import org.apache.shiro.crypto.hash.Hash;
@@ -44,7 +46,7 @@ public class PasswordService {
     public HashResult hashPassword(final String plainTextPassword) {
         final Hash computedHash = configurableHashService.computeHash(
                 new SimpleHashRequest(null, ByteSource.Util.bytes(plainTextPassword), null, -1));
-        return new HashResult(computedHash.toBase64(), computedHash.getSalt().getBytes());
+        return new HashResult(computedHash.toBase64(), Base64.encodeBase64String(computedHash.getSalt().getBytes()));
     }
     
     /**
@@ -53,19 +55,19 @@ public class PasswordService {
     */
     public static class HashResult {
         private final String hashedPasswordBase64;
-        private final byte[] passwordSalt;
+        private final String passwordSaltBase64;
         
-        public HashResult(final String hashedPasswordBase64, final byte[] passwordSalt) {
+        public HashResult(final String hashedPasswordBase64, final String passwordSaltBase64) {
             this.hashedPasswordBase64 = hashedPasswordBase64;
-            this.passwordSalt = passwordSalt;
+            this.passwordSaltBase64 = passwordSaltBase64;
         }
 
         public String getHashedPasswordBase64() {
             return hashedPasswordBase64;
         }
 
-        public byte[] getPasswordSalt() {
-            return passwordSalt;
+        public String getPasswordSaltBase64() {
+            return passwordSaltBase64;
         }
     }
 }

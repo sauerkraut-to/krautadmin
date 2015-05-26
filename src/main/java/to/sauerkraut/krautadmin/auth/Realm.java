@@ -20,6 +20,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.inject.Inject;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -33,6 +35,10 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.slf4j.Logger;
+import ru.vyarus.guice.ext.log.Log;
+import ru.vyarus.guice.persist.orient.db.transaction.template.TxAction;
+import to.sauerkraut.krautadmin.db.model.Model;
 import to.sauerkraut.krautadmin.db.model.Permission;
 import to.sauerkraut.krautadmin.db.model.Role;
 import to.sauerkraut.krautadmin.db.model.User;
@@ -48,6 +54,8 @@ public class Realm extends AuthorizingRealm {
 
     @Inject
     private UserRepository userRepository;
+    @Log
+    private Logger logger;
     
     public Realm() {
         super(null, null);
@@ -66,44 +74,59 @@ public class Realm extends AuthorizingRealm {
     }
 
     @Override
+    @SuppressWarnings("checkstyle:anoninnerlength")
     protected AuthenticationInfo doGetAuthenticationInfo(
             final AuthenticationToken token)
             throws AuthenticationException {
-        final UsernamePasswordToken credentials = (UsernamePasswordToken) token;
-        final String username = credentials.getUsername();
-        if (username == null) {
-            throw new UnknownAccountException(ERROR_USERNAME_NOT_PROVIDED);
-        }
-        final User user = userRepository.findByUsernameAndActive(username, true);
-        if (user == null) {
-            throw new UnknownAccountException(ERROR_USER_NOT_EXISTS);
-        }
-        return new SimpleAuthenticationInfo(username, user.getPassword().toCharArray(),
-                ByteSource.Util.bytes(user.getPasswordSalt()), getName());
+
+        return Model.getContext().doWithoutTransaction(new TxAction<SimpleAuthenticationInfo>() {
+            @Override
+            public SimpleAuthenticationInfo execute() throws Throwable {
+
+                final UsernamePasswordToken credentials = (UsernamePasswordToken) token;
+                final String username = credentials.getUsername();
+                if (username == null) {
+                    throw new UnknownAccountException(ERROR_USERNAME_NOT_PROVIDED);
+                }
+                final User user = userRepository.findActiveByUsername(username);
+                if (user == null) {
+                    throw new UnknownAccountException(ERROR_USER_NOT_EXISTS);
+                }
+                return new SimpleAuthenticationInfo(username, user.getPasswordHash().toCharArray(),
+                        ByteSource.Util.bytes(Base64.decodeBase64(user.getPasswordSalt())), getName());
+            }
+        });
     }
 
     @Override
+    @SuppressWarnings("checkstyle:anoninnerlength")
     protected AuthorizationInfo doGetAuthorizationInfo(
             final PrincipalCollection principals) {
-        // retrieve role names and permission names
-        final String username = (String) principals.getPrimaryPrincipal();
-        final User user = userRepository.findByUsernameAndActive(username, true);
-        if (user == null) {
-            throw new UnknownAccountException(ERROR_USER_NOT_EXISTS);
-        }
-        final int totalRoles = user.getRoles().size();
-        final Set<String> roleNames = new LinkedHashSet<>(totalRoles);
-        final Set<String> permissionNames = new LinkedHashSet<>();
-        if (totalRoles > 0) {
-            for (Role role : user.getRoles()) {
-                roleNames.add(role.getShortName());
-                for (Permission permission : role.getPermissions()) {
-                    permissionNames.add(permission.getShortName());
+
+        return Model.getContext().doWithoutTransaction(new TxAction<SimpleAuthorizationInfo>() {
+            @Override
+            public SimpleAuthorizationInfo execute() throws Throwable {
+                // retrieve role names and permission names
+                final String username = (String) principals.getPrimaryPrincipal();
+                final User user = userRepository.findActiveByUsername(username);
+                if (user == null) {
+                    throw new UnknownAccountException(ERROR_USER_NOT_EXISTS);
                 }
+                final int totalRoles = user.getRoles().size();
+                final Set<String> roleNames = new LinkedHashSet<>(totalRoles);
+                final Set<String> permissionNames = new LinkedHashSet<>();
+                if (totalRoles > 0) {
+                    for (Role role : user.getRoles()) {
+                        roleNames.add(role.getShortName());
+                        for (Permission permission : role.getPermissions()) {
+                            permissionNames.add(permission.getShortName());
+                        }
+                    }
+                }
+                final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
+                info.setStringPermissions(permissionNames);
+                return info;
             }
-        }
-        final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
-        info.setStringPermissions(permissionNames);
-        return info;
+        });
     }
 }

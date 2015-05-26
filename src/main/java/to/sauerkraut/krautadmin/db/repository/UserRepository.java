@@ -38,9 +38,9 @@ public interface UserRepository extends ObjectCrud<User> {
     @Query("select count(*) from User")
     int count();
     
-    @Query("select from User where username=? and active=? limit 1")
-    User findByUsernameAndActive(String username, boolean active);
+    @Query("select from User where username = ? and active = true limit 1")
+    User findActiveByUsername(String username);
     
-    @Query("select from User where username=? limit 1")
+    @Query("select from User where username = ? limit 1")
     User findByUsername(String username);
 }

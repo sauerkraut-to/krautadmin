@@ -207,7 +207,7 @@ public class UpdateApplicationJob implements org.quartz.Job {
         } catch (IOException e) {
             logger.error("failed to write latest application .jar name to text file", e);
         }
-        attemptApplicationRestart();
+        //attemptApplicationRestart();
     }
 
     private synchronized void writeLatestReleaseTextFile(final String latestReleaseTextFilePath,
@@ -219,7 +219,7 @@ public class UpdateApplicationJob implements org.quartz.Job {
                 "UTF-8");
     }
 
-    private static synchronized void attemptApplicationRestart() {
+    /*private static synchronized void attemptApplicationRestart() {
         logger.info("attempting to restart the application (might fail) - "
                 + "on failure please restart it manually");
 
@@ -228,7 +228,7 @@ public class UpdateApplicationJob implements org.quartz.Job {
         } catch (Exception e) {
             logger.error("automatic application restart failed", e);
         }
-    }
+    }*/
 
     private boolean validateApplicationUpdateSize(final int expectedSize, final int actualSize) {
         if (actualSize < 1) {

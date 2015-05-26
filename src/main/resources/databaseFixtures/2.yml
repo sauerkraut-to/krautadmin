@@ -1,0 +1,46 @@
+permissions:
+  - &per1 !Permission
+    shortName: "viewMemberArea"
+    name: "Interna"
+    description: "Zugang zum internen Bereich der Bruderschaft"
+
+  - &per2 !Permission
+    shortName: "viewAdminArea"
+    name: "Allerheiligstes"
+    description: "Zugang zum Allerheiligsten"
+
+  - &per3 !Permission
+    shortName: "communicateToPublic"
+    name: "Kommunikation"
+    description: "Zugang zur Kommunikationsschnittstelle mit der Öffentlichkeit"
+
+roles:
+  - &rol1 !Role
+    shortName: "brother"
+    name: "Bruder"
+    description: "Geschätztes Mitglied der Bruderschaft"
+    permissions: [*per1]
+    weight: 10
+
+  - &rol2 !Role
+    shortName: "councilman"
+    name: "Ratsherr"
+    description: "Mitglied des erlesenen Kreises der Ratsherren"
+    permissions: [*per3]
+    weight: 100
+
+  - &rol3 !Role
+    shortName: "patriarch"
+    name: "Ältester"
+    description: "Entscheidungen tragendes Mitglied in verantwortungsvoller Position"
+    permissions: [*per2]
+    weight: 1000
+
+users:
+  - &usr1 !User
+    username: "hofrat"
+    passwordHash: "2IMDq6izkORW/NqGALp42Oj0aJnIii1YqNFJmoE+Y2M="
+    passwordSalt: "9bW2liELg8TvlBwGpYGVrA=="
+    active: true
+    passwordChangeNeeded: true
+    roles: [*rol1, *rol2, *rol3]

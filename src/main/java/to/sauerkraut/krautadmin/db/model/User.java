@@ -18,7 +18,6 @@ package to.sauerkraut.krautadmin.db.model;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,22 +38,24 @@ public class User extends Model {
     private String username;
     @NotBlank
     @JsonIgnore
-    private String password;
+    private String passwordHash;
     @NotNull
-    @Valid
-    private final Set<Role> roles;
+    private Set<Role> roles;
     private boolean active;
-    private byte[] passwordSalt;
+    @NotBlank
+    @JsonIgnore
+    private String passwordSalt;
+    private boolean passwordChangeNeeded;
     
     public User() {
         this.roles = new HashSet<>();
         this.active = true;
     }
     
-    public User(final String username, final String password) {
+    public User(final String username, final String passwordHash) {
         this();
         this.username = username;
-        this.password = password;
+        this.passwordHash = passwordHash;
     }
 
     public String getUsername() {
@@ -65,15 +66,15 @@ public class User extends Model {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(final String password) {
-        this.password = password;
+    public void setPasswordHash(final String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
-    public boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 
@@ -85,11 +86,23 @@ public class User extends Model {
         return roles;
     }
 
-    public byte[] getPasswordSalt() {
+    public String getPasswordSalt() {
         return passwordSalt;
     }
 
-    public void setPasswordSalt(final byte[] passwordSalt) {
+    public void setPasswordSalt(final String passwordSalt) {
         this.passwordSalt = passwordSalt;
+    }
+
+    public boolean getPasswordChangeNeeded() {
+        return passwordChangeNeeded;
+    }
+
+    public void setPasswordChangeNeeded(final boolean passwordChangeNeeded) {
+        this.passwordChangeNeeded = passwordChangeNeeded;
+    }
+
+    public void setRoles(final Set<Role> roles) {
+        this.roles = roles;
     }
 }

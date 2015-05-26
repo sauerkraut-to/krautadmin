@@ -41,7 +41,7 @@ $(document).ready(function() {
                 	})
                 });
             } else {
-                window.location.href('/mykraut/index.html');
+                location.href = '/mykraut/index.html';
             }
         }
     }).keypress(function(e) {

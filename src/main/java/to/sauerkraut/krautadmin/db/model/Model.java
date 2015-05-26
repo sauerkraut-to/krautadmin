@@ -40,15 +40,23 @@ public abstract class Model {
     public static final String TEMPORARY_ID = "#-1:-1";
 
     @Inject
-    private static ValidatorFactory validatorFactory;
+    private static PersistentContext<OObjectDatabaseTx> context;
 
     @Inject
-    private static PersistentContext<OObjectDatabaseTx> context;
+    private static ValidatorFactory validatorFactory;
 
     @Id
     private String id;
     @Version
     private Long version;
+
+    public static PersistentContext<OObjectDatabaseTx> getContext() {
+        return context;
+    }
+
+    public static ValidatorFactory getValidatorFactory() {
+        return validatorFactory;
+    }
 
     public String getId() {
         return id;
