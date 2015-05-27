@@ -11,25 +11,32 @@ permissions:
 
   - &per3 !Permission
     shortName: "communicateToPublic"
-    name: "Kommunikation"
+    name: "Öffentliche Kommunikation"
     description: "Zugang zur Kommunikationsschnittstelle mit der Öffentlichkeit"
 
 roles:
   - &rol1 !Role
+    shortName: "outcast"
+    name: "Verbannter"
+    description: "Unwürdiges, ehemaliges Mitglied der Bruderschaft"
+    permissions: []
+    weight: 0
+
+  - &rol2 !Role
     shortName: "brother"
     name: "Bruder"
     description: "Geschätztes Mitglied der Bruderschaft"
     permissions: [*per1]
     weight: 10
 
-  - &rol2 !Role
+  - &rol3 !Role
     shortName: "councilman"
     name: "Ratsherr"
     description: "Mitglied des erlesenen Kreises der Ratsherren"
     permissions: [*per3]
     weight: 100
 
-  - &rol3 !Role
+  - &rol4 !Role
     shortName: "patriarch"
     name: "Ältester"
     description: "Entscheidungen tragendes Mitglied in verantwortungsvoller Position"
@@ -43,4 +50,4 @@ users:
     passwordSalt: "9bW2liELg8TvlBwGpYGVrA=="
     active: true
     passwordChangeNeeded: true
-    roles: [*rol1, *rol2, *rol3]
+    roles: [*rol2, *rol3, *rol4]
