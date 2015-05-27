@@ -165,6 +165,16 @@ security:
   loginDelayMilliseconds: 3000
   maximumFailedAttempts: 3
   banDays: 1
+  # remember-me-cookie:
+  # If you want to your users never to be remembered longer than the current browser session, set maxAgeSeconds to -1
+  # Also, you can set the fields "domain", "path", "version" and "name" if you need to.
+  # By default, the cookie lasts for 1 year (31536000 seconds).
+  # Also, by default, if secure is true and NO https connection is used, user will not be remembered longer than
+  # the current browser session.
+  remember-me-cookie:
+    maxAgeSeconds: 31536000
+    secure: true
+    httpOnly: true
 
 assets:
   cacheSpec: 'maximumSize=100'

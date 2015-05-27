@@ -20,8 +20,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import to.sauerkraut.krautadmin.auth.Realm;
 import to.sauerkraut.krautadmin.client.dto.ExceptionDetails;
 import to.sauerkraut.krautadmin.client.dto.GenericResponse;
 
@@ -50,8 +52,12 @@ public class GenericExceptionMapper implements ExceptionMapper<Exception> {
                     .entity(defaultJSON(webApplicationException))
                     .type(MediaType.APPLICATION_JSON).build();
         } else if (exception instanceof AuthenticationException) {
+            Exception translatedException = exception;
+            if (exception instanceof IncorrectCredentialsException) {
+                translatedException = new IncorrectCredentialsException(Realm.ERROR_WRONG_CREDENTIALS);
+            }
             return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(defaultJSON(exception))
+                    .entity(defaultJSON(translatedException))
                     .type(MediaType.APPLICATION_JSON).build();
         } else if (exception instanceof ShiroException) {
             return Response.status(Response.Status.FORBIDDEN)

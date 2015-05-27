@@ -66,9 +66,12 @@ public class SessionResource {
     @ManagedAsync
     @SuppressWarnings({"checkstyle:anoninnerlength", "checkstyle:cyclomaticcomplexity"})
     public void login(@FormParam("username") final String username, @FormParam("password") final String password,
-            @FormParam("rememberMe") final boolean rememberMe, @Auth final Subject subject,
-                      @Suspended final AsyncResponse asyncResponse, @Context final HttpServletRequest request) {
+                      @Auth final Subject subject, @Suspended final AsyncResponse asyncResponse,
+                      @Context final HttpServletRequest request) {
 
+        // do not set a rememberMe-cookie on non-encrypted connections
+        final boolean rememberMe = !(!request.isSecure()
+                && configuration.getSecurityConfiguration().getRememberMeCookieConfiguration().isSecure());
         final KrautAdminConfiguration.SecurityConfiguration securityConfiguration =
                 configuration.getSecurityConfiguration();
 

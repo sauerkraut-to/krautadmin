@@ -1,5 +1,14 @@
-body {
+body, #full-body-overlay {
     background: #222222 url('./default/images/subtlepatterns/woven.png');
+}
+
+#full-body-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999999;
 }
 
 #content {

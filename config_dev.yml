@@ -124,6 +124,8 @@ security:
   loginDelayMilliseconds: 0
   maximumFailedAttempts: 3
   banDays: 1
+  remember-me-cookie:
+      secure: false
 
 assets:
   cacheSpec: 'maximumSize=0'

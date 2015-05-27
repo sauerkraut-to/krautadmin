@@ -51,6 +51,7 @@ import to.sauerkraut.krautadmin.db.repository.UserRepository;
 public class Realm extends AuthorizingRealm {
     public static final String ERROR_USERNAME_NOT_PROVIDED = "Es wurde kein Benutzername angegeben";
     public static final String ERROR_USER_NOT_EXISTS = "Dieser Benutzer existiert nicht";
+    public static final String ERROR_WRONG_CREDENTIALS = "Das eingegebene Codewort stimmt nicht";
 
     @Inject
     private UserRepository userRepository;

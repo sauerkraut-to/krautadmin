@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    redirectIfSessionAvailableElseDisplayBody();
     var defaultAdditionalClientSideDelayMilliseconds = 100;
     var loginDelayMilliseconds = 3100;
     updateClock();
@@ -50,3 +51,11 @@ $(document).ready(function() {
         }
     });
 });
+
+function redirectIfSessionAvailableElseDisplayBody() {
+    $.getJSON('/rest/application/hasSession', function(response) {
+        location.href = '/mykraut/index.html';
+    }).fail(function() {
+        showBody();
+    });
+}

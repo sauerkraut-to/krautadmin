@@ -1,6 +1,6 @@
 function updateClock ( ) {
     var dayNames = ["Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag"];
-    var currentTime = new Date ( );
+    var currentTime = new Date();
     var currentHours = withLeadingZero(currentTime.getHours());
     var currentMinutes = withLeadingZero(currentTime.getMinutes());
     var currentSeconds = withLeadingZero(currentTime.getSeconds());
@@ -25,4 +25,8 @@ function keepAlive() {
 
 function reloadPage() {
     location.reload(true);
+}
+
+function showBody() {
+    $('#full-body-overlay').hide();
 }

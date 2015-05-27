@@ -46,4 +46,11 @@ public class ApplicationResource {
     public GenericResponse<String> keepAlive() {
         return new GenericResponse<>();
     }
+
+    @GET
+    @Path("/hasSession")
+    public GenericResponse<String> hasSession() {
+        // return a default response, because the HTTP response code will be enough to determine the correct answer
+        return new GenericResponse<>();
+    }
 }

@@ -25,6 +25,7 @@ import javax.inject.Inject;
 import com.google.inject.persist.PersistService;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+
 import org.hibernate.validator.constraints.NotBlank;
 import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.HasOrientServerConfiguration;
@@ -219,6 +220,9 @@ public class KrautAdminConfiguration extends Configuration
         private int maximumFailedAttempts = 3;
         @JsonProperty
         private int banDays = 1;
+        @Valid
+        @JsonProperty("remember-me-cookie")
+        private RememberMeCookieConfiguration rememberMeCookieConfiguration = new RememberMeCookieConfiguration();
 
         public String getPasswordHashFormat() {
             return passwordHashFormat;
@@ -258,6 +262,97 @@ public class KrautAdminConfiguration extends Configuration
 
         public void setBanDays(final int banDays) {
             this.banDays = banDays;
+        }
+
+        public RememberMeCookieConfiguration getRememberMeCookieConfiguration() {
+            return rememberMeCookieConfiguration;
+        }
+
+        public void setRememberMeCookieConfiguration(
+                final RememberMeCookieConfiguration rememberMeCookieConfiguration) {
+            this.rememberMeCookieConfiguration = rememberMeCookieConfiguration;
+        }
+
+        /**
+         *
+         * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
+         */
+        public static class RememberMeCookieConfiguration {
+            public static final String DEFAULT_NAME = "goldkeks";
+            public static final int DEFAULT_VERSION = -1;
+            public static final int DEFAULT_MAX_AGE = 60 * 60 * 24 * 365;
+
+            @JsonProperty
+            private int maxAgeSeconds = DEFAULT_MAX_AGE;
+            @JsonProperty
+            private int version = DEFAULT_VERSION;
+            @JsonProperty
+            private boolean secure = true;
+            @JsonProperty
+            private boolean httpOnly = true;
+            @JsonProperty
+            @NotBlank
+            private String name = DEFAULT_NAME;
+            @JsonProperty
+            private String domain;
+            @JsonProperty
+            private String path;
+
+            public int getMaxAgeSeconds() {
+                return maxAgeSeconds;
+            }
+
+            public void setMaxAgeSeconds(final int maxAgeSeconds) {
+                this.maxAgeSeconds = maxAgeSeconds;
+            }
+
+            public int getVersion() {
+                return version;
+            }
+
+            public void setVersion(final int version) {
+                this.version = version;
+            }
+
+            public boolean isSecure() {
+                return secure;
+            }
+
+            public void setSecure(final boolean secure) {
+                this.secure = secure;
+            }
+
+            public boolean isHttpOnly() {
+                return httpOnly;
+            }
+
+            public void setHttpOnly(final boolean httpOnly) {
+                this.httpOnly = httpOnly;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(final String name) {
+                this.name = name;
+            }
+
+            public String getDomain() {
+                return domain;
+            }
+
+            public void setDomain(final String domain) {
+                this.domain = domain;
+            }
+
+            public String getPath() {
+                return path;
+            }
+
+            public void setPath(final String path) {
+                this.path = path;
+            }
         }
     }
     
