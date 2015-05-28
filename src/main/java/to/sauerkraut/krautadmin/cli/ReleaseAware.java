@@ -19,7 +19,7 @@ package to.sauerkraut.krautadmin.cli;
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-public interface JarReleaseAware {
-    String getJarRelease();
-    void setJarRelease(final String jarRelease);
+public interface ReleaseAware {
+    String getRelease();
+    void setRelease(final String release);
 }

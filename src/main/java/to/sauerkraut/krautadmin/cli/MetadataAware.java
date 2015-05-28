@@ -20,6 +20,6 @@ package to.sauerkraut.krautadmin.cli;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public interface MetadataAware extends JarNameAware, ApplicationLocationAware, ConfigurationPathAware,
-        JarPrefixAware, JarReleaseAware {
+        ArtifactNameAware, ReleaseAware {
 
 }

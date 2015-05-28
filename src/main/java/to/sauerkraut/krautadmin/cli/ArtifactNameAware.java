@@ -19,7 +19,7 @@ package to.sauerkraut.krautadmin.cli;
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-public interface JarPrefixAware {
-    String getJarPrefix();
-    void setJarPrefix(final String jarPrefix);
+public interface ArtifactNameAware {
+    String getArtifactName();
+    void setArtifactName(final String artifactName);
 }

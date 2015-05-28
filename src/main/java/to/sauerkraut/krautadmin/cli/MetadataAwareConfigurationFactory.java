@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.configuration.ConfigurationException;
 import io.dropwizard.configuration.ConfigurationFactory;
 import io.dropwizard.configuration.ConfigurationSourceProvider;
-import org.apache.commons.io.FilenameUtils;
 import to.sauerkraut.krautadmin.core.Toolkit;
 
 import javax.validation.Validator;
@@ -55,6 +54,10 @@ public class MetadataAwareConfigurationFactory<T> extends ConfigurationFactory<T
 
         if (config instanceof MetadataAware) {
             final MetadataAware metadataConfig = (MetadataAware) config;
+            final Package currentPackage = getClass().getPackage();
+            metadataConfig.setArtifactName(currentPackage.getImplementationTitle());
+            metadataConfig.setRelease(currentPackage.getImplementationVersion() == null
+                    ? null : "v".concat(currentPackage.getImplementationVersion()));
             try {
                 final File configFile = new File(path);
                 if (!configFile.isAbsolute()) {
@@ -69,21 +72,6 @@ public class MetadataAwareConfigurationFactory<T> extends ConfigurationFactory<T
                     final String[] splitApplicationJarName = applicationJarName.split(JAR_NAME_PARTS_DELIMITER);
 
                     metadataConfig.setJarName(applicationJarName);
-
-                    if (splitApplicationJarName.length == 1) {
-                        metadataConfig.setJarPrefix(FilenameUtils.removeExtension(applicationJarName));
-                        metadataConfig.setJarRelease(null);
-                    } else {
-                        final String applicationJarPrefix = splitApplicationJarName[0].trim();
-                        String applicationJarRelease = FilenameUtils.removeExtension(applicationJarName.replace(
-                                applicationJarPrefix.concat(JAR_NAME_PARTS_DELIMITER), "")).trim();
-                        applicationJarRelease = applicationJarRelease.isEmpty() ? null : applicationJarRelease;
-                        metadataConfig.setJarPrefix(applicationJarPrefix);
-                        metadataConfig.setJarRelease(applicationJarRelease);
-                    }
-                } else {
-                    metadataConfig.setJarPrefix(null);
-                    metadataConfig.setJarRelease(null);
                 }
             } catch (Exception e) {
                 throw new IOException(e);

@@ -74,15 +74,15 @@ public class UpdateApplicationJob implements org.quartz.Job {
     @Inject
     private ValidatorFactory validatorFactory;
     private String jarName;
-    private String jarPrefix;
+    private String artifactName;
     private String currentRelease;
     private String applicationLocation;
 
     @Override
     public void execute(final JobExecutionContext context) throws JobExecutionException {
         jarName = configuration.getJarName();
-        jarPrefix = configuration.getJarPrefix();
-        currentRelease = configuration.getJarRelease();
+        artifactName = configuration.getArtifactName();
+        currentRelease = configuration.getRelease();
         applicationLocation = configuration.getApplicationLocation();
 
         if (configuration.isUpdatePending()) {
@@ -125,7 +125,7 @@ public class UpdateApplicationJob implements org.quartz.Job {
 
         if (currentRelease.compareToIgnoreCase(latestRelease.getTagName()) < 0) {
             final String applicationUpdateJarName =
-                    jarPrefix.concat("-").concat(latestRelease.getTagName()).concat(".jar");
+                    artifactName.concat("-").concat(latestRelease.getTagName()).concat(".jar");
             final String applicationUpdateJarPath = applicationLocation.concat(File.separator).
                     concat(applicationUpdateJarName);
 

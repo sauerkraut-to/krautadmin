@@ -18,15 +18,19 @@ package to.sauerkraut.krautadmin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.inject.Inject;
 import com.google.inject.persist.PersistService;
+
+import javax.servlet.DispatcherType;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.HasOrientServerConfiguration;
 import ru.vyarus.dropwizard.orient.configuration.OrientServerConfiguration;
@@ -37,6 +41,7 @@ import to.sauerkraut.krautadmin.job.scheduler.ExtendedSchedulerConfiguration;
 import to.sauerkraut.krautadmin.resources.assets.ConfiguredAssetsBundle;
 import to.sauerkraut.krautadmin.resources.assets.HasAssetsConfiguration;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,9 +58,9 @@ public class KrautAdminConfiguration extends Configuration
     @JsonIgnore
     private String jarName;
     @JsonIgnore
-    private String jarPrefix;
+    private String release;
     @JsonIgnore
-    private String jarRelease;
+    private String artifactName;
     @JsonIgnore
     private boolean updatePending;
     
@@ -68,6 +73,10 @@ public class KrautAdminConfiguration extends Configuration
     @Valid
     @JsonProperty("assets")
     private AssetsConfiguration assetsConfiguration;
+
+    @Valid
+    @JsonProperty
+    private List<ResponseCachingConfiguration> responseCachingConfigurations = Lists.newArrayList();
     
     @NotNull
     @Valid
@@ -188,20 +197,33 @@ public class KrautAdminConfiguration extends Configuration
         this.updatePending = updatePending;
     }
 
-    public String getJarPrefix() {
-        return jarPrefix;
+    public List<ResponseCachingConfiguration> getResponseCachingConfigurations() {
+        return responseCachingConfigurations;
     }
 
-    public void setJarPrefix(final String jarPrefix) {
-        this.jarPrefix = jarPrefix;
+    public void setResponseCachingConfigurations(
+            final List<ResponseCachingConfiguration> responseCachingConfigurations) {
+        this.responseCachingConfigurations = responseCachingConfigurations;
     }
 
-    public String getJarRelease() {
-        return jarRelease;
+    @Override
+    public String getRelease() {
+        return release;
     }
 
-    public void setJarRelease(final String jarRelease) {
-        this.jarRelease = jarRelease;
+    @Override
+    public void setRelease(final String release) {
+        this.release = release;
+    }
+
+    @Override
+    public String getArtifactName() {
+        return artifactName;
+    }
+
+    @Override
+    public void setArtifactName(final String artifactName) {
+        this.artifactName = artifactName;
     }
 
     /**
@@ -424,7 +446,59 @@ public class KrautAdminConfiguration extends Configuration
      *
      * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
      */
-    public class AssetsConfiguration {
+    public static class ResponseCachingConfiguration {
+        @NotNull
+        @JsonProperty
+        private Map<String, String> initParameters = Maps.newHashMap();
+        @JsonProperty
+        @NotBlank
+        private String filterName;
+        @JsonProperty
+        @NotBlank
+        private String filterPath;
+        @NotNull
+        @NotEmpty
+        @JsonProperty
+        private List<DispatcherType> dispatcherTypes = Lists.newArrayList();
+
+        public Map<String, String> getInitParameters() {
+            return initParameters;
+        }
+
+        public void setInitParameters(final Map<String, String> initParameters) {
+            this.initParameters = initParameters;
+        }
+
+        public String getFilterName() {
+            return filterName;
+        }
+
+        public void setFilterName(final String filterName) {
+            this.filterName = filterName;
+        }
+
+        public String getFilterPath() {
+            return filterPath;
+        }
+
+        public void setFilterPath(final String filterPath) {
+            this.filterPath = filterPath;
+        }
+
+        public List<DispatcherType> getDispatcherTypes() {
+            return dispatcherTypes;
+        }
+
+        public void setDispatcherTypes(final List<DispatcherType> dispatcherTypes) {
+            this.dispatcherTypes = dispatcherTypes;
+        }
+    }
+
+    /**
+     *
+     * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
+     */
+    public static class AssetsConfiguration {
         @NotNull
         @JsonProperty
         private String cacheSpec = ConfiguredAssetsBundle.DEFAULT_CACHE_SPEC.toParsableString();
@@ -467,7 +541,7 @@ public class KrautAdminConfiguration extends Configuration
          *
          * @param filesPath path to store database files.
          */
-        @JsonProperty("files-path")
+        @JsonProperty
         @Override
         public void setFilesPath(final String filesPath) {
             super.setFilesPath(Toolkit.parseDbPath(filesPath));

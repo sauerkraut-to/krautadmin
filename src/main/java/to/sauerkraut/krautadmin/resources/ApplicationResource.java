@@ -17,6 +17,8 @@
 package to.sauerkraut.krautadmin.resources;
 
 import javax.inject.Inject;
+
+import io.dropwizard.jersey.caching.CacheControl;
 import to.sauerkraut.krautadmin.KrautAdminConfiguration;
 import to.sauerkraut.krautadmin.client.dto.GenericResponse;
 
@@ -37,6 +39,7 @@ public class ApplicationResource {
 
     @GET
     @Path("/loginDelayMilliseconds")
+    @CacheControl(maxAge = 60 * 60)
     public GenericResponse<Long> getLoginDelayMilliseconds() {
         return new GenericResponse<>(configuration.getSecurityConfiguration().getLoginDelayMilliseconds());
     }
@@ -52,5 +55,12 @@ public class ApplicationResource {
     public GenericResponse<String> hasSession() {
         // return a default response, because the HTTP response code will be enough to determine the correct answer
         return new GenericResponse<>();
+    }
+
+    @GET
+    @Path("/currentRelease")
+    public GenericResponse<String> currentRelease() {
+        final String implementationVersion = getClass().getPackage().getImplementationVersion();
+        return new GenericResponse<>(implementationVersion == null ? "development" : implementationVersion);
     }
 }

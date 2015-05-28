@@ -9,7 +9,7 @@ db:
   dropInsecureUsersOnCreate: true
 
 orient-server:
-  files-path: $APP/
+  filesPath: $APP/
 
   config:
     users:
@@ -24,44 +24,44 @@ orient-server:
       - clazz: com.orientechnologies.lucene.OLuceneIndexPlugin
       - clazz: com.orientechnologies.orient.server.handler.OJMXPlugin
         parameters:
-            - name: enabled
-              value: true
-            - name: profilerManaged
-              value: true
+          - name: enabled
+            value: true
+          - name: profilerManaged
+            value: true
       - clazz: com.orientechnologies.orient.server.handler.OAutomaticBackup
         parameters:
-            - name: enabled
-              value: false
-            - name: delay
-              value: 4h
-            - name: target.directory
-              value: backup
-            - name: target.fileName
-              value: '${DBNAME}-${DATE:yyyyMMddHHmmss}.json'
-            - name: compressionLevel
-              value: 9
-            - name: bufferSize
-              value: 1048576
-            - name: db.include
-              value:
-            - name: db.exclude
-              value:
+          - name: enabled
+            value: false
+          - name: delay
+            value: 4h
+          - name: target.directory
+            value: backup
+          - name: target.fileName
+            value: '${DBNAME}-${DATE:yyyyMMddHHmmss}.json'
+          - name: compressionLevel
+            value: 9
+          - name: bufferSize
+            value: 1048576
+          - name: db.include
+            value:
+          - name: db.exclude
+            value:
       - clazz: com.orientechnologies.orient.server.handler.OServerSideScriptInterpreter
         parameters:
-            - name: enabled
-              value: true
-            - name: allowedLanguages
-              value: SQL
+          - name: enabled
+            value: true
+          - name: allowedLanguages
+            value: SQL
       - clazz: com.orientechnologies.orient.server.token.OrientTokenHandler
         parameters:
-            - name: enabled
-              value: false
-            - name: oAuth2Key
-              value:
-            - name: sessionLength
-              value: 60
-            - name: encryptionAlgorithm
-              value: HmacSHA256
+          - name: enabled
+            value: false
+          - name: oAuth2Key
+            value:
+          - name: sessionLength
+            value: 60
+          - name: encryptionAlgorithm
+            value: HmacSHA256
 
     network:
       protocols:
@@ -79,35 +79,35 @@ orient-server:
           portRange: 2480-2490
           socket: default
           parameters:
-              - name: network.http.charset
-                value: utf-8
+            - name: network.http.charset
+              value: utf-8
           commands:
               - pattern: 'GET|www GET|studio/ GET| GET|*.htm GET|*.html GET|*.xml GET|*.jpeg GET|*.jpg GET|*.png GET|*.gif GET|*.js GET|*.css GET|*.swf GET|*.ico GET|*.txt GET|*.otf GET|*.pjs GET|*.svg GET|*.json GET|*.woff GET|*.ttf GET|*.svgz'
                 implementation: com.orientechnologies.orient.server.network.protocol.http.command.get.OServerCommandGetStaticContent
                 parameters:
-                    - name: 'http.cache:*.htm *.html'
-                      value: 'Cache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache'
-                    - name: 'http.cache:default'
-                      value: 'Cache-Control: max-age=120'
+                  - name: 'http.cache:*.htm *.html'
+                    value: 'Cache-Control: no-cache, no-store, max-age=0, must-revalidate\r\nPragma: no-cache'
+                  - name: 'http.cache:default'
+                    value: 'Cache-Control: max-age=120'
 
     properties:
        #important for embedded mode, because in other case "no ORIENT_HOME" warnings will be in logs
-       - name: plugin.dynamic
-         value: false
-       - name: db.pool.min
-         value: 1
-       - name: db.pool.max
-         value: 50
-       - name: profiler.enabled
-         value: true
-         #configures the profiler as <seconds-for-snapshot>,<archive-snapshot-size>,<summary-size>
-       - name: profiler.config
-         value: '30,10,10'
-         #enable/Disable logging. Levels are: finer, fine, finest, info, warning
-       - name: log.console.level
-         value: info
-       - name: log.file.level
-         value: fine
+      - name: plugin.dynamic
+        value: false
+      - name: db.pool.min
+        value: 1
+      - name: db.pool.max
+        value: 50
+      - name: profiler.enabled
+        value: true
+        #configures the profiler as <seconds-for-snapshot>,<archive-snapshot-size>,<summary-size>
+      - name: profiler.config
+        value: '30,10,10'
+        #enable/Disable logging. Levels are: finer, fine, finest, info, warning
+      - name: log.console.level
+        value: info
+      - name: log.file.level
+        value: fine
 
 scheduler:
   basePackage: to.sauerkraut.krautadmin.job
@@ -125,12 +125,12 @@ security:
   maximumFailedAttempts: 3
   banDays: 1
   remember-me-cookie:
-      secure: false
+    secure: false
 
 assets:
   cacheSpec: 'maximumSize=0'
   overrides:
-      /: src/main/resources/assets/
+    /: src/main/resources/assets/
 
 server:
   rootPath: '/rest/*'

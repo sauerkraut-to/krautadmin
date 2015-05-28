@@ -22,9 +22,14 @@ import com.google.inject.matcher.AbstractMatcher;
 import com.google.inject.matcher.Matcher;
 import com.google.inject.matcher.Matchers;
 import com.palominolabs.metrics.guice.MetricsInstrumentationModule;
+import com.samaxes.filter.CacheFilter;
+import com.samaxes.filter.NoCacheFilter;
+import com.samaxes.filter.NoETagFilter;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.jetty.server.session.HashSessionManager;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.glassfish.jersey.server.ResourceConfig;
 import ru.vyarus.dropwizard.guice.module.support.BootstrapAwareModule;
 import ru.vyarus.dropwizard.guice.module.support.ConfigurationAwareModule;
@@ -35,10 +40,13 @@ import ru.vyarus.guice.persist.orient.RepositoryModule;
 import ru.vyarus.guice.persist.orient.support.AutoScanSchemeModule;
 import ru.vyarus.guice.validator.ImplicitValidationModule;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
 import javax.ws.rs.Path;
 import javax.ws.rs.ext.ExceptionMapper;
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
@@ -62,6 +70,7 @@ public class KrautAdminModule extends AbstractModule implements
         BootstrapAwareModule<KrautAdminConfiguration>,
         ConfigurationAwareModule<KrautAdminConfiguration> {
 
+    private static final String PATH_MATCH_ALL = "/*";
     private KrautAdminConfiguration configuration;
     private Bootstrap<KrautAdminConfiguration> bootstrap;
     private Environment environment;
@@ -89,6 +98,11 @@ public class KrautAdminModule extends AbstractModule implements
 
     @Override
     protected void configure() {
+        disableResponseCaching();
+        disableResponseETag();
+        configureCustomResponseCaching();
+        // if needed, we could enable cross origin requests
+        //enableCrossOriginRequests();
         enableSessions();
         registerCustomExceptionMapper();
         bindPasswordService();
@@ -97,6 +111,38 @@ public class KrautAdminModule extends AbstractModule implements
         bindScheduler();
         bindApplication();
         requestStaticInjection(Model.class, ApplicationUpgradeManagerAndFixturesLoader.class);
+    }
+
+    private void configureCustomResponseCaching() {
+        final List<KrautAdminConfiguration.ResponseCachingConfiguration> cachingConfigurations =
+                configuration.getResponseCachingConfigurations();
+
+        for (KrautAdminConfiguration.ResponseCachingConfiguration guiCachingConfiguration : cachingConfigurations) {
+            final FilterRegistration.Dynamic guiCacheFilter =
+                    environment.servlets().addFilter(guiCachingConfiguration.getFilterName(), CacheFilter.class);
+            guiCacheFilter.setInitParameters(guiCachingConfiguration.getInitParameters());
+
+            guiCacheFilter.addMappingForUrlPatterns(EnumSet.copyOf(guiCachingConfiguration.getDispatcherTypes()),
+                    true, guiCachingConfiguration.getFilterPath());
+        }
+    }
+
+    private void disableResponseCaching() {
+        environment.servlets().addFilter("noCache",
+                NoCacheFilter.class).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true,
+                PATH_MATCH_ALL);
+    }
+
+    private void disableResponseETag() {
+        environment.servlets().addFilter("noETag",
+                NoETagFilter.class).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true,
+                PATH_MATCH_ALL);
+    }
+
+    private void enableCrossOriginRequests() {
+        environment.servlets().addFilter("crossOrigin",
+                CrossOriginFilter.class).addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true,
+                PATH_MATCH_ALL);
     }
 
     private void bindApplication() {
@@ -126,7 +172,9 @@ public class KrautAdminModule extends AbstractModule implements
     }
     
     private void enableSessions() {
-        environment.getApplicationContext().setSessionHandler(new SessionHandler());
+        final HashSessionManager hashSessionManager = new HashSessionManager();
+        hashSessionManager.setSessionIdPathParameterName("none");
+        environment.getApplicationContext().setSessionHandler(new SessionHandler(hashSessionManager));
     }
     
     private void bindPasswordService() {
