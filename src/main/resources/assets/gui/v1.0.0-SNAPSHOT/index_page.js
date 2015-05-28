@@ -15,35 +15,39 @@ $(document).ready(function() {
     $('input.textbox-text').first().focus();
 
     $('#form-login').form({
-        url: '/rest/session/login',
         onSubmit: function(){
             var isValid = $(this).form('validate');
-            if (isValid){
+            if (isValid && !$('#form-login').data('submitted')){
+                $('#form-login').data('submitted', true);
             	$.messager.progress({
             	    'interval': (loginDelayMilliseconds / 10),
             	    'title': 'Bitte einen Augenblick Geduld',
                     'msg': 'Aus Sicherheitsgründen findet der Login verzögert statt...'
             	});
-            }
-            return isValid;
-        },
-        success:function(response) {
-            $.messager.progress('close');
-
-            var response = eval('(' + response + ')');  // convert the JSON string to javascript object
-
-            if (!response.success) {
-                $.messager.alert({
-                	'title': 'Login nicht erfolgreich',
-                	'msg': response.exception.message,
-                	'icon': 'error',
-                	'fn': (function() {
-                	    $('input.textbox-text').first().focus();
-                	})
+            	$.ajax({
+                    type: 'POST',
+                    url: '/rest/session/login',
+                    data: $('#form-login').serialize(),
+                    success: function(response) {
+                        $.messager.progress('close');
+                        location.href = '/mykraut/index.html';
+                    },
+                    error: function(errorObject) {
+                        $.messager.progress('close');
+                        $.messager.alert({
+                            'title': 'Login nicht erfolgreich',
+                            'msg': errorObject.responseJSON.exception.message,
+                            'icon': 'error',
+                            'fn': (function() {
+                                $('input.textbox-text').first().focus();
+                                $('#form-login').data('submitted', false);
+                            })
+                        });
+                    },
+                    dataType: 'json'
                 });
-            } else {
-                location.href = '/mykraut/index.html';
             }
+            return false;
         }
     }).keypress(function(e) {
         if(e.which == 13) {
