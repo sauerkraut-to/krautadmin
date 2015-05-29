@@ -28,6 +28,7 @@ import com.samaxes.filter.NoETagFilter;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.apache.shiro.codec.Base64;
 import org.eclipse.jetty.server.session.HashSessionManager;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -44,6 +45,7 @@ import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.ws.rs.Path;
 import javax.ws.rs.ext.ExceptionMapper;
+import java.io.File;
 import java.lang.reflect.AnnotatedElement;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -54,6 +56,10 @@ import org.apache.shiro.crypto.hash.ConfigurableHashService;
 import org.eclipse.jetty.server.session.SessionHandler;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
 import to.sauerkraut.krautadmin.auth.PasswordService;
+import to.sauerkraut.krautadmin.auth.Realm;
+import to.sauerkraut.krautadmin.auth.SecureShiroBundle;
+import to.sauerkraut.krautadmin.core.IO;
+import to.sauerkraut.krautadmin.core.crypto.TwofishCipherService;
 import to.sauerkraut.krautadmin.db.ApplicationUpgradeManagerAndFixturesLoader;
 import to.sauerkraut.krautadmin.db.model.Model;
 import to.sauerkraut.krautadmin.jersey.GenericExceptionMapper;
@@ -110,7 +116,31 @@ public class KrautAdminModule extends AbstractModule implements
         bindDb();
         bindScheduler();
         bindApplication();
-        requestStaticInjection(Model.class, ApplicationUpgradeManagerAndFixturesLoader.class);
+        generateApplicationSecretIfNecessary(bindCipherService());
+        requestStaticInjection(Model.class, ApplicationUpgradeManagerAndFixturesLoader.class, Realm.class,
+                SecureShiroBundle.class);
+    }
+
+    private void generateApplicationSecretIfNecessary(final TwofishCipherService cipherService) {
+        if (configuration.getApplicationSecret() == null) {
+            final byte[] applicationSecret = cipherService.generateNewKey().getEncoded();
+            final String applicationSecretBase64 = Base64.encodeToString(applicationSecret);
+            configuration.setApplicationSecret(applicationSecretBase64);
+            IO.writeContent(System.lineSeparator() + "applicationSecret: \""
+                    + applicationSecretBase64 + "\""
+                    + System.lineSeparator(), new File(configuration.getConfigurationPath()), true);
+        }
+    }
+
+    private TwofishCipherService bindCipherService() {
+        final TwofishCipherService cipherService = new TwofishCipherService();
+        cipherService.setKeySize(TwofishCipherService.RECOMMENDED_KEY_SIZE);
+        cipherService.setMode(TwofishCipherService.RECOMMENDED_OPERATION_MODE);
+        cipherService.setModeName(TwofishCipherService.RECOMMENDED_OPERATION_MODE.name());
+        cipherService.setPaddingScheme(TwofishCipherService.RECOMMENDED_PADDING_SCHEME);
+        cipherService.setGenerateInitializationVectors(true);
+        bind(TwofishCipherService.class).toInstance(cipherService);
+        return cipherService;
     }
 
     private void configureCustomResponseCaching() {

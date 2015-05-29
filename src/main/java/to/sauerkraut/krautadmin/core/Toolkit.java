@@ -25,6 +25,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.security.CodeSource;
+import java.security.Permission;
+import java.security.PermissionCollection;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -392,5 +394,49 @@ public final class Toolkit {
             return lplugin.newInstance(PluginClassLoader.getThreadPluginClassLoaderChild());
         }
         return null;
+    }
+
+    public static void removeCryptographyRestrictions() {
+        if (!isRestrictedCryptography()) {
+            LOG.info("Cryptography restrictions removal not needed");
+            return;
+        }
+        try {
+        /*
+         * Do the following, but with reflection to bypass access checks:
+         *
+         * JceSecurity.isRestricted = false;
+         * JceSecurity.defaultPolicy.perms.clear();
+         * JceSecurity.defaultPolicy.add(CryptoAllPermission.INSTANCE);
+         */
+            final Class<?> jceSecurity = Class.forName("javax.crypto.JceSecurity");
+            final Class<?> cryptoPermissions = Class.forName("javax.crypto.CryptoPermissions");
+            final Class<?> cryptoAllPermission = Class.forName("javax.crypto.CryptoAllPermission");
+
+            final Field isRestrictedField = jceSecurity.getDeclaredField("isRestricted");
+            isRestrictedField.setAccessible(true);
+            isRestrictedField.set(null, false);
+
+            final Field defaultPolicyField = jceSecurity.getDeclaredField("defaultPolicy");
+            defaultPolicyField.setAccessible(true);
+            final PermissionCollection defaultPolicy = (PermissionCollection) defaultPolicyField.get(null);
+
+            final Field perms = cryptoPermissions.getDeclaredField("perms");
+            perms.setAccessible(true);
+            ((Map<?, ?>) perms.get(defaultPolicy)).clear();
+
+            final Field instance = cryptoAllPermission.getDeclaredField("INSTANCE");
+            instance.setAccessible(true);
+            defaultPolicy.add((Permission) instance.get(null));
+
+            LOG.info("Successfully removed cryptography restrictions");
+        } catch (final Exception e) {
+            LOG.warn("Failed to remove cryptography restrictions", e);
+        }
+    }
+
+    public static boolean isRestrictedCryptography() {
+        // This simply matches the Oracle JRE, but not OpenJDK.
+        return "Java(TM) SE Runtime Environment".equals(System.getProperty("java.runtime.name"));
     }
 }

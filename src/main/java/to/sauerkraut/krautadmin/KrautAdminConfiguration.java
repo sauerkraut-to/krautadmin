@@ -63,6 +63,9 @@ public class KrautAdminConfiguration extends Configuration
     private String artifactName;
     @JsonIgnore
     private boolean updatePending;
+
+    @JsonProperty
+    private String applicationSecret;
     
     @NotNull
     @Valid
@@ -224,6 +227,14 @@ public class KrautAdminConfiguration extends Configuration
     @Override
     public void setArtifactName(final String artifactName) {
         this.artifactName = artifactName;
+    }
+
+    public String getApplicationSecret() {
+        return applicationSecret;
+    }
+
+    public void setApplicationSecret(final String applicationSecret) {
+        this.applicationSecret = applicationSecret;
     }
 
     /**

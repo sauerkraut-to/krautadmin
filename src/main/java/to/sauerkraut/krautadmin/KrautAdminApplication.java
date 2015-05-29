@@ -19,36 +19,23 @@ package to.sauerkraut.krautadmin;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-
 import javassist.CtClass;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.cache.MemoryConstrainedCacheManager;
-import org.apache.shiro.realm.Realm;
-import org.apache.shiro.web.env.IniWebEnvironment;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.appwork.exceptions.WTFException;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jdownloader.plugins.controller.PluginClassLoader;
-import org.secnod.dropwizard.shiro.ShiroBundle;
-import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.vyarus.dropwizard.guice.GuiceBundle;
-import ru.vyarus.dropwizard.guice.injector.lookup.InjectorLookup;
 import ru.vyarus.dropwizard.orient.OrientServerBundle;
-import to.sauerkraut.krautadmin.auth.ConfigurableCookieRememberMeManager;
+import to.sauerkraut.krautadmin.auth.SecureShiroBundle;
 import to.sauerkraut.krautadmin.cli.MetadataAwareConfigurationFactoryFactory;
-import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
 import to.sauerkraut.krautadmin.core.Toolkit;
+import to.sauerkraut.krautadmin.db.setup.DatabaseAutoCreationBundle;
 import to.sauerkraut.krautadmin.resources.assets.ConfiguredAssetsBundle;
 
-import javax.servlet.Filter;
+import java.io.IOException;
+import java.security.Security;
+import java.util.HashMap;
 
 import static javassist.ClassPool.getDefault;
 
@@ -56,8 +43,12 @@ import static javassist.ClassPool.getDefault;
  *
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
-@SuppressWarnings({"checkstyle:classdataabstractioncoupling", "checkstyle:classfanoutcomplexity"})
+@SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class KrautAdminApplication extends Application<KrautAdminConfiguration> {
+    static {
+        Toolkit.removeCryptographyRestrictions();
+        Security.addProvider(new BouncyCastleProvider());
+    }
     private static String applicationContainingFolder;
     private static ClassLoader classLoader;
     private static final Logger LOG = LoggerFactory.getLogger(KrautAdminApplication.class);
@@ -142,10 +133,8 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
     }
 
     @Override
-    @SuppressWarnings("checkstyle:anoninnerlength")
     public void initialize(final Bootstrap<KrautAdminConfiguration> bootstrap) {
         final Application application = this;
-        final MemoryConstrainedCacheManager shiroCacheManager = new MemoryConstrainedCacheManager();
         bootstrap.setConfigurationFactoryFactory(
                 new MetadataAwareConfigurationFactoryFactory<KrautAdminConfiguration>());
         bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/", "index.html", "client"));
@@ -156,55 +145,7 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
                 .enableAutoConfig(getClass().getPackage().getName())
                 .searchCommands(true)
                 .build());
-        bootstrap.addBundle(new ShiroBundle<KrautAdminConfiguration>() {
-            @Override
-            protected ShiroConfiguration narrow(final KrautAdminConfiguration configuration) {
-                return configuration.getShiroConfiguration();
-            }
-            @Override
-            protected Collection<Realm> createRealms(final KrautAdminConfiguration configuration) {
-                final KrautAdminConfiguration.SecurityConfiguration securityConfiguration = 
-                        configuration.getSecurityConfiguration();
-                final HashedCredentialsMatcher hashedCredentialsMatcher = 
-                        new HashedCredentialsMatcher(securityConfiguration.getPasswordHashFormat());
-                hashedCredentialsMatcher.setHashIterations(securityConfiguration.getPasswordHashIterations());
-                hashedCredentialsMatcher.setStoredCredentialsHexEncoded(false);
-                final to.sauerkraut.krautadmin.auth.Realm r = 
-                        new to.sauerkraut.krautadmin.auth.Realm(shiroCacheManager,
-                                hashedCredentialsMatcher);
-                InjectorLookup.getInjector(application).get().injectMembers(r);
-                return Collections.singleton((Realm) r);
-            }
-            @Override
-            protected Filter createFilter(final KrautAdminConfiguration configuration) {
-                final ShiroConfiguration shiroConfig = narrow(configuration);
-                final IniWebEnvironment shiroEnv = new IniWebEnvironment();
-                shiroEnv.setConfigLocations(shiroConfig.iniConfigs());
-                shiroEnv.init();
-
-                return new AbstractShiroFilter() {
-                    @Override
-                    public void init() throws Exception {
-                        final Collection<Realm> realms = createRealms(configuration);
-                        if (realms.isEmpty()) {
-                            setSecurityManager(shiroEnv.getWebSecurityManager());
-                        } else {
-                            final DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-                            final CookieRememberMeManager cookieRememberMeManager =
-                                    new ConfigurableCookieRememberMeManager(
-                                            configuration.getSecurityConfiguration()
-                                                    .getRememberMeCookieConfiguration());
-                            securityManager.setRememberMeManager(cookieRememberMeManager);
-                            securityManager.setRealms(realms);
-                            securityManager.setCacheManager(shiroCacheManager);
-                            setSecurityManager(securityManager);
-                        }
-
-                        setFilterChainResolver(shiroEnv.getFilterChainResolver());
-                    }
-                };
-            }
-        });
+        bootstrap.addBundle(new SecureShiroBundle());
     }
 
     @Override

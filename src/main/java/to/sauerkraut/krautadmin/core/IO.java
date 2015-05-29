@@ -182,8 +182,17 @@ public final class IO {
      * @param file The file to write
      */
     public static void writeContent(final CharSequence content, final File file, final Charset encoding) {
+        writeContent(content, file, false, encoding);
+    }
+
+    public static void writeContent(final CharSequence content, final File file, final boolean append) {
+        writeContent(content, file, append, DEFAULT_ENCODING);
+    }
+
+    public static void writeContent(final CharSequence content, final File file, final boolean append,
+                                    final Charset encoding) {
         try {
-            FileUtils.write(file, content, encoding);
+            FileUtils.write(file, content, encoding, append);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

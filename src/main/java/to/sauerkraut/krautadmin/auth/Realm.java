@@ -54,9 +54,9 @@ public class Realm extends AuthorizingRealm {
     public static final String ERROR_WRONG_CREDENTIALS = "Das eingegebene Codewort stimmt nicht";
 
     @Inject
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
     @Log
-    private Logger logger;
+    private static Logger logger;
     
     public Realm() {
         super(null, null);
