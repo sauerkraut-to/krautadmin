@@ -161,8 +161,7 @@ shiro:
 
 security:
   passwordHashFormat: 'SHA-256'
-  passwordHashIterations: 500000
-  loginDelayMilliseconds: 3000
+  passwordHashIterations: 1000000
   maximumFailedAttempts: 3
   banDays: 1
   # remember-me-cookie:
@@ -183,6 +182,23 @@ server:
   rootPath: '/rest/*'
   gzip:
     enabled: true
+  adminConnectors: []
+  applicationConnectors:
+    - type: http
+      port: 8080
+# You could define a specific IP to bind the application to (you could also set this on https-connector below):
+#      bindHost: 127.0.0.1
+#####################################################
+# If you want your application to be usable with encryption (recommended), uncomment the following to enable listening
+# for secure HTTPS connections on the specified port. Of course FIRST you will have to set up a java key store containing
+# your host certificate and private key. For more information on possible configuration parameters have a look at
+# https://dropwizard.github.io/dropwizard/manual/configuration.html#https
+#####################################################
+#    - type: https
+#      port: 8443
+#      keyStorePath: example.keystore
+#      keyStorePassword: example
+#      validateCerts: false
 
 # The gui for a specific release should be cached forever. html files won't be cached, which means that
 # if a new release is installed, the paths to the gui-files will change (release string is embedded in the path),

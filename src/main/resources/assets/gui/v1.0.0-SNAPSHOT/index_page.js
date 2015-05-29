@@ -1,16 +1,9 @@
 $(document).ready(function() {
     redirectIfSessionAvailableElseDisplayBody();
-    var defaultAdditionalClientSideDelayMilliseconds = 100;
-    var loginDelayMilliseconds = 3100;
+    var loginDelayMilliseconds = 2000;
     updateClock();
     setInterval('updateClock()', 1000);
     setInterval('keepAlive()', 30000);
-
-    $.getJSON('/rest/application/loginDelayMilliseconds', function(response) {
-        if (response.success) {
-            loginDelayMilliseconds = response.payload + defaultAdditionalClientSideDelayMilliseconds;
-        }
-    });
 
     $('input.textbox-text').first().focus();
 

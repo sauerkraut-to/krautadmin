@@ -235,9 +235,7 @@ public class KrautAdminConfiguration extends Configuration
         @JsonProperty
         private String passwordHashFormat;
         @JsonProperty
-        private int passwordHashIterations = 500000;
-        @JsonProperty
-        private long loginDelayMilliseconds = 3000;
+        private int passwordHashIterations = 1000000;
         @JsonProperty
         private int maximumFailedAttempts = 3;
         @JsonProperty
@@ -260,14 +258,6 @@ public class KrautAdminConfiguration extends Configuration
 
         public void setPasswordHashIterations(final int passwordHashIterations) {
             this.passwordHashIterations = passwordHashIterations;
-        }
-
-        public long getLoginDelayMilliseconds() {
-            return loginDelayMilliseconds;
-        }
-
-        public void setLoginDelayMilliseconds(final long loginDelayMilliseconds) {
-            this.loginDelayMilliseconds = loginDelayMilliseconds;
         }
 
         public int getMaximumFailedAttempts() {

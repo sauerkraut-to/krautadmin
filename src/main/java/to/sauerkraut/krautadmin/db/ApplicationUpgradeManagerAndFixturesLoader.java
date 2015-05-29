@@ -62,9 +62,7 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
     @Inject
     private static ModelRepository modelRepository;
     @Inject
-    private FrontendDataMirrorRepository frontendDataMirrorRepository;
-    @Inject
-    private PasswordService passwordService;
+    private static PasswordService passwordService;
     @Inject
     private KrautAdminConfiguration configuration;
     
@@ -110,7 +108,7 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
 
     public static boolean applyDatabaseFixtureFile(final long fileIndex, final String classpathFilePath) {
         boolean madeChanges = false;
-        HashMap<String, Object> fixturesMap = null;
+        HashMap<String, Object> fixturesMap;
 
         if (null == loadedDatabaseFixtureRepository.findByNumber(fileIndex)) {
             try {
@@ -243,6 +241,7 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
         }
     }
 
+    @SuppressWarnings("checkstyle:cyclomaticcomplexity")
     public static void persistDatabaseFixture(final HashMap<String, Object> loadedFixtures) {
         if (loadedFixtures == null) {
             return;
@@ -259,6 +258,16 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
                 for (Object possibleModelInstance : modelsCollection) {
                     if (Model.class.isAssignableFrom(possibleModelInstance.getClass())) {
                         final Model modelInstance = (Model) possibleModelInstance;
+                        if (modelInstance instanceof User) {
+                            final User user = (User) modelInstance;
+                            if (user.getUsername() != null
+                                    && (user.getPasswordHash() == null || user.getPasswordSalt() == null)) {
+                                final PasswordService.HashResult hashResult =
+                                        passwordService.hashPassword(user.getUsername());
+                                user.setPasswordHash(hashResult.getPasswordHashBase64());
+                                user.setPasswordSalt(hashResult.getPasswordSaltBase64());
+                            }
+                        }
                         try {
                             modelInstance.validateAndSave();
                         } catch (ConstraintViolationException e) {

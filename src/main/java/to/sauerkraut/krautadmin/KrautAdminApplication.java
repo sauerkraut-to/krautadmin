@@ -27,6 +27,7 @@ import java.util.HashMap;
 
 import javassist.CtClass;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.cache.MemoryConstrainedCacheManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.web.env.IniWebEnvironment;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -144,6 +145,7 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
     @SuppressWarnings("checkstyle:anoninnerlength")
     public void initialize(final Bootstrap<KrautAdminConfiguration> bootstrap) {
         final Application application = this;
+        final MemoryConstrainedCacheManager shiroCacheManager = new MemoryConstrainedCacheManager();
         bootstrap.setConfigurationFactoryFactory(
                 new MetadataAwareConfigurationFactoryFactory<KrautAdminConfiguration>());
         bootstrap.addBundle(new ConfiguredAssetsBundle("/assets/", "/", "index.html", "client"));
@@ -168,7 +170,8 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
                 hashedCredentialsMatcher.setHashIterations(securityConfiguration.getPasswordHashIterations());
                 hashedCredentialsMatcher.setStoredCredentialsHexEncoded(false);
                 final to.sauerkraut.krautadmin.auth.Realm r = 
-                        new to.sauerkraut.krautadmin.auth.Realm(hashedCredentialsMatcher);
+                        new to.sauerkraut.krautadmin.auth.Realm(shiroCacheManager,
+                                hashedCredentialsMatcher);
                 InjectorLookup.getInjector(application).get().injectMembers(r);
                 return Collections.singleton((Realm) r);
             }
@@ -193,6 +196,7 @@ public class KrautAdminApplication extends Application<KrautAdminConfiguration> 
                                                     .getRememberMeCookieConfiguration());
                             securityManager.setRememberMeManager(cookieRememberMeManager);
                             securityManager.setRealms(realms);
+                            securityManager.setCacheManager(shiroCacheManager);
                             setSecurityManager(securityManager);
                         }
 

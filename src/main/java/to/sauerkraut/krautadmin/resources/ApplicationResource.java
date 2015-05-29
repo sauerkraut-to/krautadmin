@@ -18,7 +18,6 @@ package to.sauerkraut.krautadmin.resources;
 
 import javax.inject.Inject;
 
-import io.dropwizard.jersey.caching.CacheControl;
 import to.sauerkraut.krautadmin.KrautAdminConfiguration;
 import to.sauerkraut.krautadmin.client.dto.GenericResponse;
 
@@ -37,13 +36,7 @@ public class ApplicationResource {
     @Inject
     private KrautAdminConfiguration configuration;
 
-    @GET
-    @Path("/loginDelayMilliseconds")
-    @CacheControl(maxAge = 60 * 60)
-    public GenericResponse<Long> getLoginDelayMilliseconds() {
-        return new GenericResponse<>(configuration.getSecurityConfiguration().getLoginDelayMilliseconds());
-    }
-
+    //@CacheControl(maxAge = 60 * 60) // do not cache this, but remember the possibility of this annotation
     @POST
     @Path("/keepAlive")
     public GenericResponse<String> keepAlive() {

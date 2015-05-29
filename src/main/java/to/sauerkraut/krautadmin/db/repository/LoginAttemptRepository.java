@@ -33,7 +33,7 @@ import java.util.Date;
 @Transactional
 @ProvidedBy(DynamicSingletonProvider.class)
 public interface LoginAttemptRepository extends ObjectCrud<LoginAttempt> {
-    
+
     @Query("update LoginAttempt set lastAttempt = :lastAttempt, hashedIp = :hashedIp upsert where hashedIp = :hashedIp")
     int upsert(@Param("hashedIp") String hashedIp, @Param("lastAttempt") Date lastAttempt);
     
@@ -58,6 +58,6 @@ public interface LoginAttemptRepository extends ObjectCrud<LoginAttempt> {
     @Query("select from LoginAttempt where hashedIp = ? and failedAttempts >= ? limit 1")
     LoginAttempt findByHashedIpAndLimitExceeded(String hashedIp, int maximumFailedAttempts);
 
-    @Query("update LoginAttempt increment failedAttempts = 1 where hashedIp = ? limit 1")
-    int increaseFailedAttemptByOneForHashedIp(String hashedIp);
+    @Query("update LoginAttempt increment failedAttempts = :amount where hashedIp = :hashedIp limit 1")
+    int incrementFailedAttempt(@Param("hashedIp") String hashedIp, @Param("amount") int amount);
 }

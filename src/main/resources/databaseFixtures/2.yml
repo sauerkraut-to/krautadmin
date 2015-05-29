@@ -46,8 +46,6 @@ roles:
 users:
   - &usr1 !User
     username: "hofrat"
-    passwordHash: "2IMDq6izkORW/NqGALp42Oj0aJnIii1YqNFJmoE+Y2M="
-    passwordSalt: "9bW2liELg8TvlBwGpYGVrA=="
     active: true
     passwordChangeNeeded: true
     roles: [*rol2, *rol3, *rol4]

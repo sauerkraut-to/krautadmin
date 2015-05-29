@@ -54,16 +54,16 @@ public class PasswordService {
     * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
     */
     public static class HashResult {
-        private final String hashedPasswordBase64;
+        private final String passwordHashBase64;
         private final String passwordSaltBase64;
         
-        public HashResult(final String hashedPasswordBase64, final String passwordSaltBase64) {
-            this.hashedPasswordBase64 = hashedPasswordBase64;
+        public HashResult(final String passwordHashBase64, final String passwordSaltBase64) {
+            this.passwordHashBase64 = passwordHashBase64;
             this.passwordSaltBase64 = passwordSaltBase64;
         }
 
-        public String getHashedPasswordBase64() {
-            return hashedPasswordBase64;
+        public String getPasswordHashBase64() {
+            return passwordHashBase64;
         }
 
         public String getPasswordSaltBase64() {
