@@ -111,22 +111,24 @@ public class Realm extends AuthorizingRealm {
                 final String username = (String) principals.getPrimaryPrincipal();
                 final User user = userRepository.findActiveByUsername(username);
                 if (user == null) {
-                    throw new UnknownAccountException(ERROR_USER_NOT_EXISTS);
-                }
-                final int totalRoles = user.getRoles().size();
-                final Set<String> roleNames = new LinkedHashSet<>(totalRoles);
-                final Set<String> permissionNames = new LinkedHashSet<>();
-                if (totalRoles > 0) {
-                    for (Role role : user.getRoles()) {
-                        roleNames.add(role.getShortName());
-                        for (Permission permission : role.getPermissions()) {
-                            permissionNames.add(permission.getShortName());
+                    doClearCache(principals);
+                    return new SimpleAuthorizationInfo();
+                } else {
+                    final int totalRoles = user.getRoles().size();
+                    final Set<String> roleNames = new LinkedHashSet<>(totalRoles);
+                    final Set<String> permissionNames = new LinkedHashSet<>();
+                    if (totalRoles > 0) {
+                        for (Role role : user.getRoles()) {
+                            roleNames.add(role.getShortName());
+                            for (Permission permission : role.getPermissions()) {
+                                permissionNames.add(permission.getShortName());
+                            }
                         }
                     }
+                    final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
+                    info.setStringPermissions(permissionNames);
+                    return info;
                 }
-                final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
-                info.setStringPermissions(permissionNames);
-                return info;
             }
         });
     }

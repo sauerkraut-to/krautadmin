@@ -43,9 +43,12 @@ roles:
     permissions: [*per2]
     weight: 1000
 
+######
+# Users: if no password hash and salt is provided, the password of the new user will equal the username and the user
+# will be advised to change the initial password after login.
+######
 users:
   - &usr1 !User
-    username: "hofrat"
+    username: "kanzler"
     active: true
-    passwordChangeNeeded: true
     roles: [*rol2, *rol3, *rol4]

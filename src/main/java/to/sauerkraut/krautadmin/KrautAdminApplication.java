@@ -47,7 +47,7 @@ import static javassist.ClassPool.getDefault;
 public class KrautAdminApplication extends Application<KrautAdminConfiguration> {
     static {
         Toolkit.removeCryptographyRestrictions();
-        Security.addProvider(new BouncyCastleProvider());
+        Security.insertProviderAt(new BouncyCastleProvider(), 1);
     }
     private static String applicationContainingFolder;
     private static ClassLoader classLoader;

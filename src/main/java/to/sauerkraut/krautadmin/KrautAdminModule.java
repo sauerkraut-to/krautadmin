@@ -55,11 +55,9 @@ import java.util.Set;
 import org.apache.shiro.crypto.hash.ConfigurableHashService;
 import org.eclipse.jetty.server.session.SessionHandler;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
-import to.sauerkraut.krautadmin.auth.PasswordService;
-import to.sauerkraut.krautadmin.auth.Realm;
-import to.sauerkraut.krautadmin.auth.SecureShiroBundle;
+import to.sauerkraut.krautadmin.auth.*;
 import to.sauerkraut.krautadmin.core.IO;
-import to.sauerkraut.krautadmin.core.crypto.TwofishCipherService;
+import to.sauerkraut.krautadmin.core.crypto.ThreefishCipherService;
 import to.sauerkraut.krautadmin.db.ApplicationUpgradeManagerAndFixturesLoader;
 import to.sauerkraut.krautadmin.db.model.Model;
 import to.sauerkraut.krautadmin.jersey.GenericExceptionMapper;
@@ -118,10 +116,10 @@ public class KrautAdminModule extends AbstractModule implements
         bindApplication();
         generateApplicationSecretIfNecessary(bindCipherService());
         requestStaticInjection(Model.class, ApplicationUpgradeManagerAndFixturesLoader.class, Realm.class,
-                SecureShiroBundle.class);
+                SecureShiroBundle.class, PermissionsFilter.class, RolesFilter.class);
     }
 
-    private void generateApplicationSecretIfNecessary(final TwofishCipherService cipherService) {
+    private void generateApplicationSecretIfNecessary(final ThreefishCipherService cipherService) {
         if (configuration.getApplicationSecret() == null) {
             final byte[] applicationSecret = cipherService.generateNewKey().getEncoded();
             final String applicationSecretBase64 = Base64.encodeToString(applicationSecret);
@@ -132,14 +130,14 @@ public class KrautAdminModule extends AbstractModule implements
         }
     }
 
-    private TwofishCipherService bindCipherService() {
-        final TwofishCipherService cipherService = new TwofishCipherService();
-        cipherService.setKeySize(TwofishCipherService.RECOMMENDED_KEY_SIZE);
-        cipherService.setMode(TwofishCipherService.RECOMMENDED_OPERATION_MODE);
-        cipherService.setModeName(TwofishCipherService.RECOMMENDED_OPERATION_MODE.name());
-        cipherService.setPaddingScheme(TwofishCipherService.RECOMMENDED_PADDING_SCHEME);
+    private ThreefishCipherService bindCipherService() {
+        final ThreefishCipherService cipherService =
+                new ThreefishCipherService(ThreefishCipherService.RECOMMENDED_KEY_SIZE);
+        cipherService.setMode(ThreefishCipherService.RECOMMENDED_OPERATION_MODE);
+        cipherService.setModeName(ThreefishCipherService.RECOMMENDED_OPERATION_MODE.name());
+        cipherService.setPaddingScheme(ThreefishCipherService.RECOMMENDED_PADDING_SCHEME);
         cipherService.setGenerateInitializationVectors(true);
-        bind(TwofishCipherService.class).toInstance(cipherService);
+        bind(ThreefishCipherService.class).toInstance(cipherService);
         return cipherService;
     }
 
@@ -195,8 +193,10 @@ public class KrautAdminModule extends AbstractModule implements
             jrConfig.getSingletons().remove(s);
         }
 
+        final GenericExceptionMapper exceptionMapper = new GenericExceptionMapper();
+        requestInjection(exceptionMapper);
         // Register the custom ExceptionMapper(s)
-        environment.jersey().register(new GenericExceptionMapper());
+        environment.jersey().register(exceptionMapper);
         // the following is currently not needed, as we handle ShiroExceptions in the GenericExceptionMapper as well
         //environment.jersey().register(new ShiroExceptionMapper());
     }

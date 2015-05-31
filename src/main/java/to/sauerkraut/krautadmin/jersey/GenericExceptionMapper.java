@@ -26,9 +26,11 @@ import org.slf4j.LoggerFactory;
 import to.sauerkraut.krautadmin.auth.Realm;
 import to.sauerkraut.krautadmin.client.dto.ExceptionDetails;
 import to.sauerkraut.krautadmin.client.dto.GenericResponse;
+import to.sauerkraut.krautadmin.core.IO;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -40,17 +42,25 @@ import java.util.List;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public class GenericExceptionMapper implements ExceptionMapper<Exception> {
+    private static final String NOT_FOUND_PAGE_PATH = "/assets/404.html";
     private static final Logger LOG = LoggerFactory.getLogger(GenericExceptionMapper.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final String RESPONSE_NOT_FOUND =
+            IO.readContentAsString(IO.class.getResourceAsStream(NOT_FOUND_PAGE_PATH));
 
     @Override
     public Response toResponse(final Exception exception) {
         if (exception instanceof WebApplicationException) {
-            final WebApplicationException webApplicationException = (WebApplicationException) exception;
-            final Response webApplicationExceptionResponse = webApplicationException.getResponse();
-            return Response.status(webApplicationExceptionResponse.getStatus())
-                    .entity(defaultJSON(webApplicationException))
-                    .type(MediaType.APPLICATION_JSON).build();
+            if (exception instanceof NotFoundException) {
+                return Response.status(Response.Status.NOT_FOUND).entity(RESPONSE_NOT_FOUND)
+                        .type(MediaType.TEXT_HTML).build();
+            } else {
+                final WebApplicationException webApplicationException = (WebApplicationException) exception;
+                final Response webApplicationExceptionResponse = webApplicationException.getResponse();
+                return Response.status(webApplicationExceptionResponse.getStatus())
+                        .entity(defaultJSON(webApplicationException))
+                        .type(MediaType.APPLICATION_JSON).build();
+            }
         } else if (exception instanceof AuthenticationException) {
             Exception translatedException = exception;
             if (exception instanceof IncorrectCredentialsException) {
@@ -87,11 +97,11 @@ public class GenericExceptionMapper implements ExceptionMapper<Exception> {
         //TODO: render NotFoundException as HTML
     }
 
-    private String defaultJSON(final Exception exception) {
+    public static String defaultJSON(final Exception exception) {
         return defaultJSON(exception, null);
     }
 
-    private String defaultJSON(final Exception exception,
+    public static String defaultJSON(final Exception exception,
                                final List<GenericResponse.ConstraintViolation> constraintViolations) {
         final ExceptionDetails exceptionDetails = new ExceptionDetails(
                 String.valueOf(exception.getMessage()).concat("."), exception.getClass().getSimpleName());

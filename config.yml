@@ -164,6 +164,9 @@ security:
   passwordHashIterations: 1000000
   maximumFailedAttempts: 3
   banDays: 1
+  # setting this to true means caching a user's permissions, which might cause security issues, if a user's permissions
+  # changes or the user is deleted and shiro still uses the old cached permissions
+  authorizationCachingEnabled: false
   # remember-me-cookie:
   # If you want to your users never to be remembered longer than the current browser session, set maxAgeSeconds to -1
   # Also, you can set the fields "domain", "path", "version" and "name" if you need to.

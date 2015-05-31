@@ -266,6 +266,7 @@ public class ApplicationUpgradeManagerAndFixturesLoader implements DataInitializ
                                         passwordService.hashPassword(user.getUsername());
                                 user.setPasswordHash(hashResult.getPasswordHashBase64());
                                 user.setPasswordSalt(hashResult.getPasswordSaltBase64());
+                                user.setPasswordChangeAdvised(true);
                             }
                         }
                         try {

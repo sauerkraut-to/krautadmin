@@ -123,6 +123,7 @@ security:
   passwordHashIterations: 1000000
   maximumFailedAttempts: 3
   banDays: 1
+  authorizationCachingEnabled: false
   remember-me-cookie:
     secure: false
 
@@ -144,4 +145,4 @@ server:
       port: 8081
       bindHost: 127.0.0.1
 
-applicationSecret: "th1M+2rx5pHukRZP2mJUuzWKHjk+QjHhaVaTOTHUx1Q="
+applicationSecret: "JIFntd1P7pDmNFDZexLipdHsUYo4L9B2iQw6T9WfG7d+qNQyBfZqaEHMQusXb+6JATjXknAPQ4p9965A4mnuiQ=="

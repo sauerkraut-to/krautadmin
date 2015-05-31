@@ -251,6 +251,8 @@ public class KrautAdminConfiguration extends Configuration
         private int maximumFailedAttempts = 3;
         @JsonProperty
         private int banDays = 1;
+        @JsonProperty
+        private boolean authorizationCachingEnabled;
         @Valid
         @JsonProperty("remember-me-cookie")
         private RememberMeCookieConfiguration rememberMeCookieConfiguration = new RememberMeCookieConfiguration();
@@ -294,6 +296,14 @@ public class KrautAdminConfiguration extends Configuration
         public void setRememberMeCookieConfiguration(
                 final RememberMeCookieConfiguration rememberMeCookieConfiguration) {
             this.rememberMeCookieConfiguration = rememberMeCookieConfiguration;
+        }
+
+        public boolean isAuthorizationCachingEnabled() {
+            return authorizationCachingEnabled;
+        }
+
+        public void setAuthorizationCachingEnabled(final boolean authorizationCachingEnabled) {
+            this.authorizationCachingEnabled = authorizationCachingEnabled;
         }
 
         /**

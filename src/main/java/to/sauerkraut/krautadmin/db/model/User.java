@@ -45,7 +45,7 @@ public class User extends Model {
     @NotBlank
     @JsonIgnore
     private String passwordSalt;
-    private boolean passwordChangeNeeded;
+    private boolean passwordChangeAdvised;
     
     public User() {
         this.roles = new HashSet<>();
@@ -94,12 +94,12 @@ public class User extends Model {
         this.passwordSalt = passwordSalt;
     }
 
-    public boolean getPasswordChangeNeeded() {
-        return passwordChangeNeeded;
+    public boolean getPasswordChangeAdvised() {
+        return passwordChangeAdvised;
     }
 
-    public void setPasswordChangeNeeded(final boolean passwordChangeNeeded) {
-        this.passwordChangeNeeded = passwordChangeNeeded;
+    public void setPasswordChangeAdvised(final boolean passwordChangeAdvised) {
+        this.passwordChangeAdvised = passwordChangeAdvised;
     }
 
     public void setRoles(final Set<Role> roles) {

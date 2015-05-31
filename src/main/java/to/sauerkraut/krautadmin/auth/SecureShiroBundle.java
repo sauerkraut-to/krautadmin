@@ -26,7 +26,7 @@ import org.apache.shiro.web.servlet.AbstractShiroFilter;
 import org.secnod.dropwizard.shiro.ShiroBundle;
 import org.secnod.dropwizard.shiro.ShiroConfiguration;
 import to.sauerkraut.krautadmin.KrautAdminConfiguration;
-import to.sauerkraut.krautadmin.core.crypto.TwofishCipherService;
+import to.sauerkraut.krautadmin.core.crypto.ThreefishCipherService;
 
 import javax.inject.Inject;
 import javax.servlet.Filter;
@@ -39,7 +39,7 @@ import java.util.Collections;
 @SuppressWarnings("checkstyle:classdataabstractioncoupling")
 public class SecureShiroBundle extends ShiroBundle<KrautAdminConfiguration> {
     @Inject
-    private static TwofishCipherService cipherService;
+    private static ThreefishCipherService cipherService;
 
     protected final MemoryConstrainedCacheManager shiroCacheManager;
 
@@ -63,6 +63,7 @@ public class SecureShiroBundle extends ShiroBundle<KrautAdminConfiguration> {
         final to.sauerkraut.krautadmin.auth.Realm r =
                 new to.sauerkraut.krautadmin.auth.Realm(shiroCacheManager,
                         hashedCredentialsMatcher);
+        r.setAuthorizationCachingEnabled(configuration.getSecurityConfiguration().isAuthorizationCachingEnabled());
         return Collections.singleton((org.apache.shiro.realm.Realm) r);
     }
     @Override
