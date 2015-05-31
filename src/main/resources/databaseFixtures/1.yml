@@ -9,8 +9,222 @@
 # joc = journal category
 # mac = mobile app category
 # dos = desktop operating systems and distributions category
+# iec = IT education category
 
 categories:
+  - &iec1 !Category
+    shortName: iec1
+    name: "Datenbanken"
+    description: "... sowohl SQL als auch NoSQL!"
+
+  - &iec2 !Category
+    shortName: iec2
+    name: "Grafik & Bildbearbeitung"
+
+  - &iec3 !Category
+    shortName: iec3
+    name: "3D Bearbeitung"
+
+  - &iec4 !Category
+    shortName: iec4
+    name: "Animation"
+
+  - &iec5 !Category
+    shortName: iec5
+    name: "CAD und Architektur"
+
+  - &iec6 !Category
+    shortName: iec6
+    name: "Layout und Druck"
+
+  - &iec7 !Category
+    shortName: iec7
+    name: "Video"
+
+  - &iec8 !Category
+    shortName: iec8
+    name: "Audio"
+
+  - &iec9 !Category
+    shortName: iec9
+    name: "Organisation"
+    description: "Bildverwaltung und mehr..."
+
+  - &iec10 !Category
+    shortName: iec10
+    name: "Hardware & Technik"
+
+  - &iec11 !Category
+    shortName: iec11
+    name: "Informatik allgemein"
+
+  - &iec12 !Category
+    shortName: iec12
+    name: "Softwareentwicklung"
+    description: "... Webentwicklung besitzt eine eigene Kategorie!"
+
+  - &iec13 !Category
+    shortName: iec13
+    name: "Webentwicklung"
+
+  - &iec14 !Category
+    shortName: iec14
+    name: "Entwicklung mobiler Anwendungen"
+    description: "... auch Apps genannt!"
+
+  - &iec15 !Category
+    shortName: iec15
+    name: "Projektmanagement"
+    description: "Wir haben uns alle lieb!"
+
+  - &iec16 !Category
+    shortName: iec16
+    name: "Warenwirtschaft & SAP"
+
+  - &iec17 !Category
+    shortName: iec17
+    name: "Wirtschaftsinformatik"
+
+  - &iec18 !Category
+    shortName: iec18
+    name: "Zertifizierung"
+
+  - &iec19 !Category
+    shortName: iec19
+    name: "Kryptographie, Sicherheit & Privatsphäre"
+
+  - &iec20 !Category
+    shortName: iec20
+    name: "Hacking und Systemtest"
+
+  - &iec21 !Category
+    shortName: iec21
+    name: "Lösungen für Spiele"
+
+  - &iec22 !Category
+    shortName: iec22
+    name: "Geoinformationsmanagement"
+    description: "GPS, Navigation, Geo-Tracking, Geodaten & -verwaltung, ortsbezogene Dienste und Augmented Reality"
+
+  - &iec23 !Category
+    shortName: iec23
+    name: "OSX"
+
+  - &iec24 !Category
+    shortName: iec24
+    name: "Windows Desktop"
+
+  - &iec25 !Category
+    shortName: iec25
+    name: "Unix, Linux, BSD Desktop"
+
+  - &iec26 !Category
+    shortName: iec26
+    name: "OSX Server"
+
+  - &iec27 !Category
+    shortName: iec27
+    name: "Windows Server"
+
+  - &iec28 !Category
+    shortName: iec28
+    name: "Unix, Linux, BSD Server"
+
+  - &iec29 !Category
+    shortName: iec29
+    name: "iOS"
+
+  - &iec30 !Category
+    shortName: iec30
+    name: "Windows für mobile Geräte"
+
+  - &iec31 !Category
+    shortName: iec31
+    name: "Eingebettete Systeme"
+
+  - &iec32 !Category
+    shortName: iec32
+    name: "Android"
+
+  - &iec33 !Category
+    shortName: iec33
+    name: "Blackberry OS & QNX"
+
+  - &iec34 !Category
+    shortName: iec34
+    name: "Sonstige mobile Systeme"
+
+  - &iec35 !Category
+    shortName: iec35
+    name: "Betriebssysteme allgemein"
+
+  - &iec36 !Category
+    shortName: iec36
+    name: "Entwicklungsumgebungen"
+
+  - &iec37 !Category
+    shortName: iec37
+    name: "Spezielle Entwicklungswerkzeuge"
+
+  - &iec38 !Category
+    shortName: iec38
+    name: "Programmier- & Scriptsprachen"
+
+  - &iec39 !Category
+    shortName: iec39
+    name: "Webdesign & Auszeichnungssprachen"
+    description: "... HTML ist keine Programmiersprache, sondern eine Auszeichnungssprache!"
+
+  - &iec40 !Category
+    shortName: iec40
+    name: "Spieleprogrammierung für Desktop"
+
+  - &iec41 !Category
+    shortName: iec41
+    name: "Spieleprogrammierung für mobile Plattformen"
+
+  - &iec42 !Category
+    shortName: iec42
+    name: "Versionsverwaltung"
+
+  - &iec43 !Category
+    shortName: iec43
+    name: "Prozessmanagement"
+
+  - &iec44 !Category
+    shortName: iec44
+    name: "Richtlinien, Entwurfsmuster, Konventionen"
+    description: "Nur sauberer und verständlicher Code ist guter Code!"
+
+  - &iec45 !Category
+    shortName: iec45
+    name: "Netzwerke und Firewalls"
+
+  - &iec46 !Category
+    shortName: iec46
+    name: "Internet und Protokolle"
+
+  - &iec47 !Category
+    shortName: iec47
+    name: "Kommunikation"
+    description: "... nicht auf die Verschlüsselung vergessen!"
+
+  - &iec48 !Category
+    shortName: iec48
+    name: "IT-Startups & -Gründung"
+
+  - &iec49 !Category
+    shortName: iec49
+    name: "Werbung & Verdienst"
+
+  - &iec50 !Category
+    shortName: iec50
+    name: "Community Building"
+
+  - &iec51 !Category
+    shortName: iec51
+    name: "Administration"
+
   - &mac1 !Category
     shortName: mac1
     name: "Bücher & Nachschlagewerke"
@@ -439,14 +653,15 @@ categories:
     shortName: boc42
     name: "Jugendbücher"
 
-  - &boc43 !Category
-    shortName: boc43
-    name: "IT-Fachbücher"
-
   - &boc44 !Category
     shortName: boc44
-    name: "Nicht-IT-Fachbücher"
+    name: "Fachbücher (nicht IT)"
     description: "Ein Fachbuch richtet sich an die Spezialisten eines bestimmten wissenschaftlichen oder auch etwa handwerklichen Faches"
+
+  - &boc45 !Category
+    shortName: boc45
+    name: "Überwachung & Manipulation"
+    description: "People processing, Meinungssteuerung, gläserner Mensch, Brot & Spiele und vieles mehr..."
 
   - &gac1 !Category
     shortName: gac1
@@ -1200,7 +1415,7 @@ categories:
 
   - &sdc25 !Category
     shortName: sdc25
-    name: "Kryptographie"
+    name: "Kryptographie, Sicherheit & Privatsphäre"
     description: "Werkzeuge zur gewährleistung eines sicheren Datenflusses und/oder sicherer Persistierung"
 
   - &sdc26 !Category
@@ -1337,6 +1552,10 @@ categories:
 
   - &sdc56 !Category
     shortName: sdc56
+    name: "Assemblierung"
+
+  - &sdc57 !Category
+    shortName: sdc57
     name: "Administration"
     description: "Auch Server- Datenbank- u.ä. Administratoren wären ohne die richtigen Werkzeuge aufgeschmissen"
 
@@ -1510,17 +1729,11 @@ sections:
     description: "Plattformunabhängige oder zumindest auf mehreren Plattformen lauffähige Desktopanwendungen"
     categories: [*sonstiges, *dac1, *dac2, *dac3, *dac4, *dac5, *dac6, *dac7, *dac8, *dac9, *dac10, *dac11, *dac12, *dac13, *dac14, *dac15, *dac16, *dac17, *dac18, *dac19, *dac20, *dac21, *dac22, *dac23, *dac24, *dac25, *dac26, *dac27, *dac28, *dac29]
 
-  - &sec5 !Section
-    shortName: sec5
-    name: "Hörbuch-Serien"
-    description: "Gestaffelte und ungestaffelte mehrteilige Hörbuch-Serien"
-    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
-
   - &sec6 !Section
     shortName: sec6
     name: "Hörbücher"
     description: "Für alle, die ein gutes Buch dem Fernseher vorziehen und gerne zuhören"
-    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
+    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc44, *boc45]
 
   - &sec7 !Section
     shortName: sec7
@@ -1556,7 +1769,7 @@ sections:
     shortName: sec12
     name: "IT-Ressourcen"
     description: "IT-Experten, die Elite von morgen. Lasst sie uns kräftig unterstützen mit allen nötigen Werkzeugen und Materialien!"
-    categories: [*sonstiges, *sdc1, *sdc2, *sdc3, *sdc4, *sdc5, *sdc6, *sdc7, *sdc8, *sdc9, *sdc10, *sdc11, *sdc12, *sdc13, *sdc14, *sdc15, *sdc16, *sdc17, *sdc18, *sdc19, *sdc20, *sdc21, *sdc22, *sdc23, *sdc24, *sdc25, *sdc26, *sdc27, *sdc28, *sdc29, *sdc30, *sdc31, *sdc32, *sdc33, *sdc34, *sdc35, *sdc36, *sdc37, *sdc38, *sdc39, *sdc40, *sdc41, *sdc42, *sdc43, *sdc44, *sdc45, *sdc46, *sdc47, *sdc48, *sdc49, *sdc50, *sdc51, *sdc52, *sdc53, *sdc54, *sdc55, *sdc56]
+    categories: [*sonstiges, *sdc1, *sdc2, *sdc3, *sdc4, *sdc5, *sdc6, *sdc7, *sdc8, *sdc9, *sdc10, *sdc11, *sdc12, *sdc13, *sdc14, *sdc15, *sdc16, *sdc17, *sdc18, *sdc19, *sdc20, *sdc21, *sdc22, *sdc23, *sdc24, *sdc25, *sdc26, *sdc27, *sdc28, *sdc29, *sdc30, *sdc31, *sdc32, *sdc33, *sdc34, *sdc35, *sdc36, *sdc37, *sdc38, *sdc39, *sdc40, *sdc41, *sdc42, *sdc43, *sdc44, *sdc45, *sdc46, *sdc47, *sdc48, *sdc49, *sdc50, *sdc51, *sdc52, *sdc53, *sdc54, *sdc55, *sdc56, *sdc57]
 
 #  - &sec13 !Section
 #    name: "Bild & Fotografie"
@@ -1578,13 +1791,7 @@ sections:
     shortName: sec13
     name: "Digitale Bücher"
     description: "Bücherwürmer, versammelt euch!"
-    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
-
-  - &sec14 !Section
-    shortName: sec14
-    name: "Digitale Buchreihen"
-    description: "Für die Serienjunkies unter den Leseratten"
-    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc43, *boc44]
+    categories: [*boc1, *boc2, *boc3, *boc4, *boc5, *boc6, *boc7, *boc8, *boc9, *boc10, *boc11, *boc12, *boc13, *boc14, *boc15, *boc16, *boc17, *boc18, *boc19, *boc20, *boc21, *boc22, *boc23, *boc24, *boc25, *boc26, *boc27, *boc28, *boc29, *boc30, *boc31, *boc32, *boc33, *boc36, *boc37, *boc38, *boc39, *boc40, *boc41, *boc42, *boc44, *boc45]
 
   - &sec15 !Section
     shortName: sec15
@@ -1669,3 +1876,15 @@ sections:
     name: "Betriebssysteme und Distributionen"
     description: "Windows ist nur eine Möglichkeit von vielen."
     categories: [*dos1, *dos2, *dos3, *dos4, *dos5, *dos6, *dos7, *dos8, *dos9, *dos10, *dos11, *dos12, *dos13, *dos14, *dos15, *dos16, *dos17, *dos18, *dos19, *dos20, *dos21, *dos22, *dos23, *dos24]
+
+  - &sec29 !Section
+    shortName: sec29
+    name: "IT-Fachbücher"
+    description: "Gesammeltes Wissen für den geneigten Informatiker und auch für normale Anwender"
+    categories: [*iec1, *iec2, *iec3, *iec4, *iec5, *iec6, *iec7, *iec8, *iec9, *iec10, *iec11, *iec12, *iec13, *iec14, *iec15, *iec16, *iec17, *iec18, *iec19, *iec20, *iec21, *iec22, *iec23, *iec24, *iec25, *iec26, *iec27, *iec28, *iec29, *iec30, *iec31, *iec32, *iec33, *iec34, *iec35, *iec36, *iec37, *iec38, *iec39, *iec40, *iec41, *iec42, *iec43, *iec44, *iec45, *iec46, *iec47, *iec48, *iec49, *iec50, *iec51]
+
+  - &sec30 !Section
+    shortName: sec30
+    name: "IT-Fachvideos"
+    description: "Eine Vielzahl von IT-Experten gibt ihr Wissen auch in Form von Videomaterial weiter."
+    categories: [*iec1, *iec2, *iec3, *iec4, *iec5, *iec6, *iec7, *iec8, *iec9, *iec10, *iec11, *iec12, *iec13, *iec14, *iec15, *iec16, *iec17, *iec18, *iec19, *iec20, *iec21, *iec22, *iec23, *iec24, *iec25, *iec26, *iec27, *iec28, *iec29, *iec30, *iec31, *iec32, *iec33, *iec34, *iec35, *iec36, *iec37, *iec38, *iec39, *iec40, *iec41, *iec42, *iec43, *iec44, *iec45, *iec46, *iec47, *iec48, *iec49, *iec50, *iec51]
