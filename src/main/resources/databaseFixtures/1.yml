@@ -1,4 +1,5 @@
 # dac = desktop app category
+# sdc = software development category
 # sec = section
 # moc = movie category
 # pfc = porno film category
@@ -1088,6 +1089,257 @@ categories:
     name: "Mobil"
     description: "Systeme für mobile Geräte, wie zum Beispiel Smartphones"
 
+  - &sdc1 !Category
+    shortName: sdc1
+    name: "Produktivität & Automatisierung"
+    description: "Werkzeuge, die die Produktivität des Entwicklers steigern oder gewisse Abläufe automatisieren"
+
+  - &sdc2 !Category
+    shortName: sdc2
+    name: "Erstellungsprozess & -automatisierung"
+    description: "Spezielle Build-Werkzeuge, oder Werkzeuge die den Build-Prozess verbessern und/oder automatisieren"
+
+  - &sdc3 !Category
+    shortName: sdc3
+    name: "Entwicklungsumgebungen"
+    description: "Vollwertige Entwicklungsumgebungen für diverse Sprachen"
+
+  - &sdc4 !Category
+    shortName: sdc4
+    name: "Texteditoren"
+    description: "Einfache oder auch umfangreichere und modulare Editoren, die nicht eindeutig eine vollwertige Entwicklungsumgebung darstellen"
+
+  - &sdc5 !Category
+    shortName: sdc5
+    name: "Hacking und Systemtest"
+    description: "... zum Testen der Sicherheit vorhandener Systeme und Netze"
+
+  - &sdc6 !Category
+    shortName: sdc6
+    name: "Setup-Erstellung und Installation"
+    description: "Software zur Erstellung von Installationsroutinen"
+
+  - &sdc7 !Category
+    shortName: sdc7
+    name: "Deployment"
+    description: "Werkzeuge, die den Deployment-Prozess ermöglichen oder verbessern"
+
+  - &sdc8 !Category
+    shortName: sdc8
+    name: "Update- und Upgrade-Management"
+    description: "Unterstützung bei der Gestaltung des Aktualierungsprozesses"
+
+  - &sdc9 !Category
+    shortName: sdc9
+    name: "Versionsverwaltung"
+    description: "... insbesondere GUI-Unterstützungen und Werkzeuge für die Versionierung via GIT, SVN, Mercurial, Bazaar und anderen"
+
+  - &sdc10 !Category
+    shortName: sdc10
+    name: "Übersetzung & Lokalisierung"
+    description: "Unterstützenden Software für hippe Startups mit Going-Global Strategie und 0815-Bootstrap-Design"
+
+  - &sdc11 !Category
+    shortName: sdc11
+    name: "Quellcode von Webanwendungen"
+    description: "... inkludiert auch PHP-Skripte"
+
+  - &sdc12 !Category
+    shortName: sdc12
+    name: "Quellcode von webbasierten Spielen"
+
+  - &sdc13 !Category
+    shortName: sdc13
+    name: "Quellcode von Desktop-Anwendungen"
+
+  - &sdc14 !Category
+    shortName: sdc14
+    name: "Quellcode von Desktop-Spielen"
+
+  - &sdc15 !Category
+    shortName: sdc15
+    name: "Quellcode von mobilen Anwendungen"
+
+  - &sdc16 !Category
+    shortName: sdc16
+    name: "Quellcode von mobilen Spielen"
+
+  - &sdc17 !Category
+    shortName: sdc17
+    name: "Quellcode serverseitiger Software"
+
+  - &sdc18 !Category
+    shortName: sdc18
+    name: "Spezielle serverseitige Software"
+    description: "Serverseitige Werkzeuge und unterstützende (auch administrative) serverseitige Applikationen"
+
+  - &sdc19 !Category
+    shortName: sdc19
+    name: "Datenbank-Dumps"
+
+  - &sdc20 !Category
+    shortName: sdc20
+    name: "Dekompilierung"
+
+  - &sdc21 !Category
+    shortName: sdc21
+    name: "Deassemblierung"
+
+  - &sdc22 !Category
+    shortName: sdc22
+    name: "Reverse Engineering, De-Obfuscation & Entschlüsselung"
+
+  - &sdc23 !Category
+    shortName: sdc23
+    name: "Datenhaltung & Persistierung"
+    description: "... insbesondere betreffend Datenbanken, etc."
+
+  - &sdc24 !Category
+    shortName: sdc24
+    name: "Code Generatoren"
+
+  - &sdc25 !Category
+    shortName: sdc25
+    name: "Kryptographie"
+    description: "Werkzeuge zur gewährleistung eines sicheren Datenflusses und/oder sicherer Persistierung"
+
+  - &sdc26 !Category
+    shortName: sdc26
+    name: "Krypoanalyse"
+    description: "Gewinnung von Informationen aus verschlüsselten Inhalten"
+
+  - &sdc27 !Category
+    shortName: sdc27
+    name: "Dokumentation"
+    description: "Werkzeuge zur Unterstützung, Verbesserung oder Teil-Automatisierung der Dokumentation"
+
+  - &sdc28 !Category
+    shortName: sdc28
+    name: "Nachschlage-Software"
+    description: "Werkzeuge, die diverse Nachschlagewerke für Entwickler integrieren"
+
+  - &sdc29 !Category
+    shortName: sdc29
+    name: "Datenmodellierung"
+
+  - &sdc30 !Category
+    shortName: sdc30
+    name: "Debugging"
+
+  - &sdc31 !Category
+    shortName: sdc31
+    name: "Spiele-Entwicklung und -Engines"
+
+  - &sdc32 !Category
+    shortName: sdc32
+    name: "Entwicklung grafische Benutzeroberflächen"
+    description: "... insbesondere Bibliotheken und Werkzeuge zur Unterstützung bei der Entwiklung grafischer Benutzeroberflächen"
+
+  - &sdc33 !Category
+    shortName: sdc33
+    name: "Qualitätssicherung"
+
+  - &sdc34 !Category
+    shortName: sdc34
+    name: "Parser & Konverter"
+
+  - &sdc35 !Category
+    shortName: sdc35
+    name: "Testen"
+    description: "Werkzeuge zur Ermöglichung, Unterstützung, Verbesserung und Automatisierung von Testfall-Implementierungen"
+
+  - &sdc36 !Category
+    shortName: sdc36
+    name: "Kompilierung"
+    description: "Compiler für eine oder mehrere Plattformen"
+
+  - &sdc37 !Category
+    shortName: sdc37
+    name: "Frameworks für Webentwicklung"
+
+  - &sdc38 !Category
+    shortName: sdc38
+    name: "Frameworks für Desktop-App-Entwicklung"
+
+  - &sdc39 !Category
+    shortName: sdc39
+    name: "Frameworks für mobile-App-Entwicklung"
+
+  - &sdc40 !Category
+    shortName: sdc40
+    name: "Frameworks für Desktop-Spiele-Entwicklung"
+
+  - &sdc41 !Category
+    shortName: sdc41
+    name: "Frameworks für mobile-Spiele-Entwicklung"
+
+  - &sdc42 !Category
+    shortName: sdc42
+    name: "Virtualisierung"
+    description: "... insbesondere Anwendungen für die Erstellung oder das Laufen lassen virtueller Maschinen"
+
+  - &sdc43 !Category
+    shortName: sdc43
+    name: "Usability"
+    description: "Werkzeuge zur Verbesserung der Usability"
+
+  - &sdc44 !Category
+    shortName: sdc44
+    name: "Teamwork und Team-Kommunikation"
+    description: "Unterstützende Werkzeuge für die gemeinsame Entwicklung innerhalb von Teams"
+
+  - &sdc45 !Category
+    shortName: sdc45
+    name: "Bibliotheken für Webentwicklung"
+
+  - &sdc46 !Category
+    shortName: sdc46
+    name: "Bibliotheken für Desktop-App-Entwicklung"
+
+  - &sdc47 !Category
+    shortName: sdc47
+    name: "Bibliotheken für mobile-App-Entwicklung"
+
+  - &sdc48 !Category
+    shortName: sdc48
+    name: "Bibliotheken für Desktop-Spiele-Entwicklung"
+
+  - &sdc49 !Category
+    shortName: sdc49
+    name: "Bibliotheken für mobile-Spiele-Entwicklung"
+
+  - &sdc50 !Category
+    shortName: sdc50
+    name: "Code-Analyse"
+
+  - &sdc51 !Category
+    shortName: sdc51
+    name: "Agile Entwicklung"
+    description: "Werkzeuge zur Unterstützung bei der agilen Software-Entwicklung"
+
+  - &sdc52 !Category
+    shortName: sdc52
+    name: "Qualitätssicherung & Code-Review"
+    description: "... betrifft sowohl manuelle als auch automatisierte Reviews"
+
+  - &sdc53 !Category
+    shortName: sdc53
+    name: "Objekt-Relationales Mapping"
+
+  - &sdc54 !Category
+    shortName: sdc54
+    name: "Vorlagen"
+    description: "Vorlagen verschiedenster Art zur einfachen Wiederverwendung"
+
+  - &sdc55 !Category
+    shortName: sdc55
+    name: "Interpreter"
+
+  - &sdc56 !Category
+    shortName: sdc56
+    name: "Administration"
+    description: "Auch Server- Datenbank- u.ä. Administratoren wären ohne die richtigen Werkzeuge aufgeschmissen"
+
   - &dac1 !Category
     shortName: dac1
     name: "Brennen & Imageerstellung"
@@ -1235,7 +1487,7 @@ categories:
 
 sections:
   - &sec1 !Section
-    shortName: 1
+    shortName: sec1
     name: "Desktop-Anwendungen [Windows]"
     description: "Allerlei nützliche Anwendungen für Windows-Nutzer"
     categories: [*sonstiges, *dac1, *dac2, *dac3, *dac4, *dac5, *dac6, *dac7, *dac8, *dac9, *dac10, *dac11, *dac12, *dac13, *dac14, *dac15, *dac16, *dac17, *dac18, *dac19, *dac20, *dac21, *dac22, *dac23, *dac24, *dac25, *dac26, *dac27, *dac28, *dac29]
@@ -1302,9 +1554,9 @@ sections:
 
   - &sec12 !Section
     shortName: sec12
-    name: "Entwickler- & Webentwickler-Ressourcen"
+    name: "IT-Ressourcen"
     description: "IT-Experten, die Elite von morgen. Lasst sie uns kräftig unterstützen mit allen nötigen Werkzeugen und Materialien!"
-    categories: []
+    categories: [*sonstiges, *sdc1, *sdc2, *sdc3, *sdc4, *sdc5, *sdc6, *sdc7, *sdc8, *sdc9, *sdc10, *sdc11, *sdc12, *sdc13, *sdc14, *sdc15, *sdc16, *sdc17, *sdc18, *sdc19, *sdc20, *sdc21, *sdc22, *sdc23, *sdc24, *sdc25, *sdc26, *sdc27, *sdc28, *sdc29, *sdc30, *sdc31, *sdc32, *sdc33, *sdc34, *sdc35, *sdc36, *sdc37, *sdc38, *sdc39, *sdc40, *sdc41, *sdc42, *sdc43, *sdc44, *sdc45, *sdc46, *sdc47, *sdc48, *sdc49, *sdc50, *sdc51, *sdc52, *sdc53, *sdc54, *sdc55, *sdc56]
 
 #  - &sec13 !Section
 #    name: "Bild & Fotografie"
