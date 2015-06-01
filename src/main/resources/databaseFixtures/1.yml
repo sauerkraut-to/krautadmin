@@ -1728,12 +1728,6 @@ sections:
     description: "Allerlei nützliche Anwendungen für Linux-Nutzer"
     categories: [*sonstiges, *dac1, *dac2, *dac3, *dac4, *dac5, *dac6, *dac7, *dac8, *dac9, *dac10, *dac11, *dac12, *dac13, *dac14, *dac15, *dac16, *dac17, *dac18, *dac19, *dac20, *dac21, *dac22, *dac23, *dac24, *dac25, *dac26, *dac27, *dac28, *dac29]
 
-  - &sec4 !Section
-    shortName: sec4
-    name: "Desktop-Anwendungen [Multiplattform]"
-    description: "Plattformunabhängige oder zumindest auf mehreren Plattformen lauffähige Desktopanwendungen"
-    categories: [*sonstiges, *dac1, *dac2, *dac3, *dac4, *dac5, *dac6, *dac7, *dac8, *dac9, *dac10, *dac11, *dac12, *dac13, *dac14, *dac15, *dac16, *dac17, *dac18, *dac19, *dac20, *dac21, *dac22, *dac23, *dac24, *dac25, *dac26, *dac27, *dac28, *dac29]
-
   - &sec6 !Section
     shortName: sec6
     name: "Hörbücher"
@@ -1868,12 +1862,6 @@ sections:
     shortName: sec26
     name: "Desktop-Spiele [Mac OSX]"
     description: "Wer braucht da noch Heizkörper?"
-    categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
-
-  - &sec27 !Section
-    shortName: sec27
-    name: "Desktop-Spiele [Multiplattform]"
-    description: "Betriebssystemunabhängige oder zumindest auf mehreren Plattformen lauffähige Spiele"
     categories: [*gac1, *gac2, *gac3, *gac4, *gac5, *gac6, *gac7, *gac8, *gac9, *gac10, *gac11, *gac12, *gac13, *gac14, *gac15, *gac16, *gac17, *gac18, *gac19, *gac20, *gac21, *gac22, *gac23, *gac24, *gac25, *gac26, *gac27, *gac28, *gac29, *gac30, *gac31]
 
   - &sec28 !Section
