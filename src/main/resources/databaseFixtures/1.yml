@@ -225,6 +225,11 @@ categories:
     shortName: iec51
     name: "Administration"
 
+  - &iec52 !Category
+    shortName: iec52
+    name: "Diverse Spezialisierungen"
+    description: "Inhalte zu Bioinformatik, Medieninformatik, Medizininformatik, Scientific Computing und anderen Fachgebieten"
+
   - &mac1 !Category
     shortName: mac1
     name: "Bücher & Nachschlagewerke"
@@ -1881,10 +1886,10 @@ sections:
     shortName: sec29
     name: "IT-Fachbücher"
     description: "Gesammeltes Wissen für den geneigten Informatiker und auch für normale Anwender"
-    categories: [*iec1, *iec2, *iec3, *iec4, *iec5, *iec6, *iec7, *iec8, *iec9, *iec10, *iec11, *iec12, *iec13, *iec14, *iec15, *iec16, *iec17, *iec18, *iec19, *iec20, *iec21, *iec22, *iec23, *iec24, *iec25, *iec26, *iec27, *iec28, *iec29, *iec30, *iec31, *iec32, *iec33, *iec34, *iec35, *iec36, *iec37, *iec38, *iec39, *iec40, *iec41, *iec42, *iec43, *iec44, *iec45, *iec46, *iec47, *iec48, *iec49, *iec50, *iec51]
+    categories: [*sonstiges, *iec1, *iec2, *iec3, *iec4, *iec5, *iec6, *iec7, *iec8, *iec9, *iec10, *iec11, *iec12, *iec13, *iec14, *iec15, *iec16, *iec17, *iec18, *iec19, *iec20, *iec21, *iec22, *iec23, *iec24, *iec25, *iec26, *iec27, *iec28, *iec29, *iec30, *iec31, *iec32, *iec33, *iec34, *iec35, *iec36, *iec37, *iec38, *iec39, *iec40, *iec41, *iec42, *iec43, *iec44, *iec45, *iec46, *iec47, *iec48, *iec49, *iec50, *iec51, *iec52]
 
   - &sec30 !Section
     shortName: sec30
     name: "IT-Fachvideos"
     description: "Eine Vielzahl von IT-Experten gibt ihr Wissen auch in Form von Videomaterial weiter."
-    categories: [*iec1, *iec2, *iec3, *iec4, *iec5, *iec6, *iec7, *iec8, *iec9, *iec10, *iec11, *iec12, *iec13, *iec14, *iec15, *iec16, *iec17, *iec18, *iec19, *iec20, *iec21, *iec22, *iec23, *iec24, *iec25, *iec26, *iec27, *iec28, *iec29, *iec30, *iec31, *iec32, *iec33, *iec34, *iec35, *iec36, *iec37, *iec38, *iec39, *iec40, *iec41, *iec42, *iec43, *iec44, *iec45, *iec46, *iec47, *iec48, *iec49, *iec50, *iec51]
+    categories: [*sonstiges, *iec1, *iec2, *iec3, *iec4, *iec5, *iec6, *iec7, *iec8, *iec9, *iec10, *iec11, *iec12, *iec13, *iec14, *iec15, *iec16, *iec17, *iec18, *iec19, *iec20, *iec21, *iec22, *iec23, *iec24, *iec25, *iec26, *iec27, *iec28, *iec29, *iec30, *iec31, *iec32, *iec33, *iec34, *iec35, *iec36, *iec37, *iec38, *iec39, *iec40, *iec41, *iec42, *iec43, *iec44, *iec45, *iec46, *iec47, *iec48, *iec49, *iec50, *iec51, *iec52]
