@@ -20,52 +20,48 @@ package to.sauerkraut.krautadmin.core.i18n;
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
 public enum LanguageCode {
-    // Bulgarian
-    bg("Bulgarisch"),
-    // Catalan
-    ca("Katalanisch"),
-    // Czech
-    cs("Tschechisch"),
-    // Danish
-    da("Dänisch"),
     // German
     de("Deutsch"),
-    // Brazilian Portuguese
-    pt_BR("Brasilianisches Portugiesisch"),
-    // Greek
-    el("Griechisch"),
     // English
     en("Englisch"),
-    // Spanish
-    es("Spanisch"),
-    // Persian
-    fa("Persisch"),
+    // multiple languages
+    multi("Mehrere Sprachen"),
+    // porn language
+    porn("Porno-Sprache"),
+    // Brazilian Portuguese
+    pt_BR("Brasilianisches Portugiesisch"),
+    // Bulgarian
+    bg("Bulgarisch"),
+    // Danish
+    da("Dänisch"),
     // French
     fr("Französisch"),
     // Galician
     gl("Galicisch"),
+    // Greek
+    el("Griechisch"),
     // Hindi
     hi("Hindi"),
-    // Croatian
-    hr("Kroatisch"),
-    // Hungarian
-    hu("Ungarisch"),
     // Indonesian
     id("Indonesisch"),
     // Italian
     it("Italienisch"),
     // Cambodian
     km("Kambodschanisch"),
+    // Catalan
+    ca("Katalanisch"),
     // Korean
     ko("Koreanisch"),
-    // Traditional Chinese
-    zh_TW("Tradidionelles Chinesisch"),
+    // Croatian
+    hr("Kroatisch"),
     // Latvian
     lv("Lettisch"),
     // Dutch
     nl("Niederländisch"),
     // Norwegian
     no("Norwegisch"),
+    // Persian
+    fa("Persisch"),
     // Polish
     pl("Polnisch"),
     // Portuguese
@@ -74,26 +70,29 @@ public enum LanguageCode {
     ro("Rumänisch"),
     // Russian
     ru("Russisch"),
+    // Swedish
+    sv("Schwedisch"),
     // Slovak
     sk("Slowakisch"),
     // Slovenian
     sl("Slowenisch"),
-    // Swedish
-    sv("Schwedisch"),
-    // Turkish
+    // Spanish
+    es("Spanisch"),
+    // Traditional Chinese
+    zh_TW("Tradidionelles Chinesisch"),
+    // Czech
+    cs("Tschechisch"),
     tr("Türkisch"),
     // Ukrainian
     uk("Ukrainisch"),
-    // Vietnamese
-    vi("Vietnamesisch"),
+    // Hungarian
+    hu("Ungarisch"),
     // Simplified Chinese
     zh("Vereinfachtes Chinesisch"),
+    // Vietnamese
+    vi("Vietnamesisch"),
     // other or unknown language
-    unknown("Sonstige oder unbekannte Sprache"),
-    // multiple languages
-    multi("Mehrere Sprachen"),
-    // porn language
-    porn("Porno-Sprache");
+    unknown("Sonstige oder unbekannte Sprache");
 
     private final String displayName;
 
