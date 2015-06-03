@@ -17,16 +17,10 @@
 package to.sauerkraut.krautadmin.db;
 
 import com.google.common.reflect.ClassPath;
-import javax.inject.Inject;
-
 import com.google.inject.persist.Transactional;
 import org.slf4j.Logger;
 import ru.vyarus.guice.ext.log.Log;
 import ru.vyarus.guice.persist.orient.db.data.DataInitializer;
-
-import javax.inject.Singleton;
-import javax.validation.ConstraintViolationException;
-
 import to.sauerkraut.binding.yamlbeans.YamlReader;
 import to.sauerkraut.krautadmin.KrautAdminApplication;
 import to.sauerkraut.krautadmin.KrautAdminConfiguration;
@@ -34,8 +28,14 @@ import to.sauerkraut.krautadmin.auth.PasswordService;
 import to.sauerkraut.krautadmin.core.IO;
 import to.sauerkraut.krautadmin.core.Toolkit;
 import to.sauerkraut.krautadmin.db.model.*;
-import to.sauerkraut.krautadmin.db.repository.*;
+import to.sauerkraut.krautadmin.db.repository.LoadedConfigurationUpdateRepository;
+import to.sauerkraut.krautadmin.db.repository.LoadedDatabaseFixtureRepository;
+import to.sauerkraut.krautadmin.db.repository.LoadedDatabaseUpdateRepository;
+import to.sauerkraut.krautadmin.db.repository.ModelRepository;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.*;
 
