@@ -23,11 +23,6 @@ import java.util.regex.Pattern;
  */
 @SuppressWarnings("checkstyle:declarationorder")
 public final class Constant {
-
-    private Constant() {
-
-    }
-
     // regex prefix
     private static final String RP = "^";
     // regex suffix
@@ -88,4 +83,8 @@ public final class Constant {
     public static final Pattern DOWNLOAD_PROTOCOL_PATTERN = Pattern.compile(DOWNLOAD_PROTOCOL_PATTERN_STRING);
     public static final Pattern LINKING_PROTOCOL_PATTERN = Pattern.compile(LINKING_PROTOCOL_PATTERN_STRING);
     public static final Pattern FQDN_PATTERN = Pattern.compile(FQDN_PATTERN_STRING);
+
+    private Constant() {
+
+    }
 }
