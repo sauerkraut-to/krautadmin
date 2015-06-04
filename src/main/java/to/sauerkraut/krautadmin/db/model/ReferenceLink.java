@@ -17,9 +17,11 @@
 package to.sauerkraut.krautadmin.db.model;
 
 import com.orientechnologies.orient.core.metadata.schema.OClass;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.type.index.CompositeIndex;
+import to.sauerkraut.krautadmin.core.Constant;
 import to.sauerkraut.krautadmin.core.i18n.LanguageCode;
 
 import javax.validation.constraints.NotNull;
@@ -37,6 +39,7 @@ public class ReferenceLink extends Model {
     private String title;
     // should be in the language the language-code indicates
     @NotBlank
+    @Length(min = Constant.MIN_SIZE_DESCRIPTION, max = Constant.MAX_SIZE_DESCRIPTION)
     private String description;
     @NotNull
     private LanguageCode languageCode;
