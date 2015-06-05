@@ -29,9 +29,9 @@ public final class Constant {
     private static final String RS = "$";
     private static final String SUPPORTED_DOWNLOAD_PROTOCOLS_REGEX = "(ht|f)tps?";
     private static final String SUPPORTED_LINKING_PROTOCOLS_REGEX = "https?";
-    private static final String CREDENTIALS_REGEX = "([a-zA-Z0-9\\.\\-\\_\\%]+(\\:[a-zA-Z0-9\\.\\-\\_\\%]+)?\\@)?";
+    private static final String CREDENTIALS_REGEX = "([a-zA-Z0-9\\.\\-_%]+(:[a-zA-Z0-9\\.\\-_%]+)?@)?";
     private static final String PATH_AND_ANCHOR_REGEX =
-            "(:[0-9]+)?/?([a-zA-Z0-9\\-\\._\\?\\,\\'/\\\\\\+&amp;%\\$#\\=~\\!])*";
+            "(:[0-9]+)?/?([a-zA-Z0-9\\-\\._\\?,'/\\\\\\+&amp;%\\$#=~!])*";
     private static final String IPV6_REGEX = "(\\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:"
             + "){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9]["
             + "0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|"
@@ -46,10 +46,10 @@ public final class Constant {
             + "))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0"
             + "-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])){3}))|:)))(%.+)?\\s*)";
     private static final String IPV4_REGEX =
-            "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])";
-    private static final String SUPPORTED_FQDN_REGEX = "(localhost|(([a-zA-Z0-9\\-\\.\\_]*\\.)*[a-zA-Z0-9\\-]+\\.[a-"
+            "((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9])";
+    private static final String SUPPORTED_FQDN_REGEX = "(localhost|(([a-zA-Z0-9\\-\\._]*\\.)*[a-zA-Z0-9\\-]+\\.[a-"
             + "zA-Z]{2,63})|" + IPV4_REGEX + "|(\\[" + IPV6_REGEX + "\\]))";
-    private static final String PROTOCOL_SEPERATOR_REGEX = "\\://";
+    private static final String PROTOCOL_SEPARATOR_REGEX = "://";
 
     public static final int MIN_SIZE_CAPTION = 3;
     public static final int MIN_SIZE_NAME = 3;
@@ -68,16 +68,16 @@ public final class Constant {
     public static final String LINKING_PROTOCOL_PATTERN_STRING = RP + SUPPORTED_LINKING_PROTOCOLS_REGEX + RS;
     public static final String FQDN_PATTERN_STRING = RP + SUPPORTED_FQDN_REGEX + RS;
     public static final String DOWNLOAD_URL_PATTERN_STRING = RP + SUPPORTED_DOWNLOAD_PROTOCOLS_REGEX
-            + PROTOCOL_SEPERATOR_REGEX + CREDENTIALS_REGEX + SUPPORTED_FQDN_REGEX + PATH_AND_ANCHOR_REGEX + RS;
+            + PROTOCOL_SEPARATOR_REGEX + CREDENTIALS_REGEX + SUPPORTED_FQDN_REGEX + PATH_AND_ANCHOR_REGEX + RS;
     public static final String LINKING_URL_PATTERN_STRING = RP + SUPPORTED_LINKING_PROTOCOLS_REGEX
-            + PROTOCOL_SEPERATOR_REGEX + CREDENTIALS_REGEX + SUPPORTED_FQDN_REGEX + PATH_AND_ANCHOR_REGEX + RS;
-    public static final String USER_OR_GROUP_NAME_PATTERN_STRING =
-            RP + "[a-z0-9_-]{" + MIN_SIZE_NAME + ',' + MAX_SIZE_NAME + '}' + RS;
-    public static final String CAPTION_PATTERN_STRING =
-            RP + ".{" + MIN_SIZE_CAPTION + ',' + MAX_SIZE_CAPTION + '}' + RS;
+            + PROTOCOL_SEPARATOR_REGEX + CREDENTIALS_REGEX + SUPPORTED_FQDN_REGEX + PATH_AND_ANCHOR_REGEX + RS;
+    public static final String NAME_PATTERN_STRING =
+            RP + "([\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]+(\\p{Zs}+[\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}])*)+" + RS;
+    public static final String TEXT_PATTERN_STRING =
+            RP + "([\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]+([\\p{Z}\\p{C}]+[\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}])*)+" + RS;
 
-    public static final Pattern CAPTION_PATTERN = Pattern.compile(CAPTION_PATTERN_STRING);
-    public static final Pattern USER_OR_GROUP_NAME_PATTERN = Pattern.compile(USER_OR_GROUP_NAME_PATTERN_STRING);
+    public static final Pattern NAME_PATTERN = Pattern.compile(NAME_PATTERN_STRING);
+    public static final Pattern TEXT_PATTERN = Pattern.compile(TEXT_PATTERN_STRING);
     public static final Pattern DOWNLOAD_URL_PATTERN = Pattern.compile(DOWNLOAD_URL_PATTERN_STRING);
     public static final Pattern LINKING_URL_PATTERN = Pattern.compile(LINKING_URL_PATTERN_STRING);
     public static final Pattern DOWNLOAD_PROTOCOL_PATTERN = Pattern.compile(DOWNLOAD_PROTOCOL_PATTERN_STRING);
