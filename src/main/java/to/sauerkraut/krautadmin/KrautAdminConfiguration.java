@@ -17,18 +17,12 @@
 package to.sauerkraut.krautadmin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.dropwizard.Configuration;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import javax.inject.Inject;
 import com.google.inject.persist.PersistService;
-
-import javax.servlet.DispatcherType;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-
+import io.dropwizard.Configuration;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.secnod.dropwizard.shiro.ShiroConfiguration;
@@ -41,6 +35,10 @@ import to.sauerkraut.krautadmin.job.scheduler.ExtendedSchedulerConfiguration;
 import to.sauerkraut.krautadmin.resources.assets.ConfiguredAssetsBundle;
 import to.sauerkraut.krautadmin.resources.assets.HasAssetsConfiguration;
 
+import javax.inject.Inject;
+import javax.servlet.DispatcherType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
@@ -311,7 +309,7 @@ public class KrautAdminConfiguration extends Configuration
          * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
          */
         public static class RememberMeCookieConfiguration {
-            public static final String DEFAULT_NAME = "goldkeks";
+            public static final String DEFAULT_NAME = "vergissmeinnicht";
             public static final int DEFAULT_VERSION = -1;
             public static final int DEFAULT_MAX_AGE = 60 * 60 * 24 * 365;
 

@@ -24,5 +24,18 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
  */
 @Persistent
 public class Application extends Model {
+    // TODO: hash the api key + public IP of the host (get it from sauerkraut.to) before each request and send uid too
+    private String apiKey;
 
+    public Application() {
+        
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(final String apiKey) {
+        this.apiKey = apiKey;
+    }
 }
