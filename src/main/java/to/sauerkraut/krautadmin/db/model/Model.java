@@ -16,13 +16,13 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
-import javax.inject.Inject;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import com.orientechnologies.orient.object.enhancement.OObjectEntitySerializer;
 import ru.vyarus.guice.persist.orient.db.PersistentContext;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 import ru.vyarus.guice.persist.orient.db.transaction.template.TxAction;
 
+import javax.inject.Inject;
 import javax.persistence.Id;
 import javax.persistence.Version;
 import javax.validation.ConstraintViolation;
@@ -47,6 +47,7 @@ public abstract class Model {
 
     @Id
     private String id;
+
     @Version
     private Long version;
 

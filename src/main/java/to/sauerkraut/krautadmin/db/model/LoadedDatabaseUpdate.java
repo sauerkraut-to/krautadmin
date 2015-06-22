@@ -26,6 +26,7 @@ import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Inde
  */
 @Persistent
 public class LoadedDatabaseUpdate extends Model {
+
     @Index(OClass.INDEX_TYPE.UNIQUE)
     private long number;
 

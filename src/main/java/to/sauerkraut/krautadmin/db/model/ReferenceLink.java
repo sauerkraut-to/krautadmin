@@ -19,12 +19,17 @@ package to.sauerkraut.krautadmin.db.model;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.ci.CaseInsensitive;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.lucene.LuceneIndex;
 import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.type.index.CompositeIndex;
 import to.sauerkraut.krautadmin.core.Constant;
 import to.sauerkraut.krautadmin.core.i18n.LanguageCode;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.util.Set;
 
 /**
  *
@@ -32,27 +37,60 @@ import javax.validation.constraints.NotNull;
  */
 @Persistent
 @CompositeIndex(name = "uniqueReferenceLink",
-        type = OClass.INDEX_TYPE.UNIQUE, fields = {"languageCode", "url", "anchor"})
+        type = OClass.INDEX_TYPE.UNIQUE, fields = {"languageCode", "url", "anchor"}, ignoreNullValues = true)
 public class ReferenceLink extends Model {
+
     // should be in the language the language-code indicates
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
+    @Pattern(regexp = Constant.NAME_PATTERN_STRING)
+    @Length(min = Constant.MIN_SIZE_NAME, max = Constant.MAX_SIZE_NAME)
+    @LuceneIndex
+    @CaseInsensitive
     private String title;
+
     // should be in the language the language-code indicates
     @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.BASIC_WITH_IMAGES)
+    @Pattern(regexp = Constant.TEXT_PATTERN_STRING)
     @Length(min = Constant.MIN_SIZE_DESCRIPTION, max = Constant.MAX_SIZE_DESCRIPTION)
+    @CaseInsensitive
+    // do not index this field yet - searching in title and producer should be enough
+    //@LuceneIndex
     private String description;
+
     @NotNull
+    @CaseInsensitive
     private LanguageCode languageCode;
+
     @NotNull
     private Integer initialReleaseYear;
+
     private boolean consecutivelyReleased;
+
+    // e.g. band name, author name, developer corporation name, artist name, journal name
+    @Pattern(regexp = Constant.NAME_PATTERN_STRING)
+    @Length(min = 0, max = Constant.MAX_SIZE_NAME)
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
+    @LuceneIndex
+    @CaseInsensitive
+    private String producer;
+
     private boolean prependWWW;
+
     // without www (if available) and without protocol
     @NotBlank
+    @CaseInsensitive
     private String url;
-    //TODO: remove @NotNull annotation as soon as the library supports defining indexes that will not ignore null values
-    @NotNull
+
+    @CaseInsensitive
     private String anchor;
+
+    @NotNull
+    private Set<Section> sections;
+
+    @NotNull
+    private Set<Category> categories;
 
     public String getTitle() {
         return title;
@@ -116,5 +154,29 @@ public class ReferenceLink extends Model {
 
     public void setAnchor(final String anchor) {
         this.anchor = anchor;
+    }
+
+    public Set<Section> getSections() {
+        return sections;
+    }
+
+    public void setSections(final Set<Section> sections) {
+        this.sections = sections;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(final Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(final String producer) {
+        this.producer = producer;
     }
 }

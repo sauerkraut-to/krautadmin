@@ -16,9 +16,13 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
-import java.util.Date;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.*;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.ci.CaseInsensitive;
+import to.sauerkraut.krautadmin.core.Constant;
+
+import javax.validation.constraints.Pattern;
+import java.util.Date;
 
 /**
  *
@@ -27,23 +31,46 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 @Persistent
 public class FrontendDataMirror extends Model {
 
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
+    @Length(min = Constant.MIN_SIZE_NAME, max = Constant.MAX_SIZE_NAME)
+    @Pattern(regexp = Constant.NAME_PATTERN_STRING)
+    @CaseInsensitive
+    @NotBlank
     private String name;
+
     @NotEmpty
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     private String ftpServer;
+
     @NotEmpty
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     private String ftpUsername;
+
     @NotEmpty
     private String ftpPassword;
+
     private int ftpPort;
+
     @NotEmpty
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     private String ftpBasePath;
+
     @NotEmpty
+    @URL
     private String httpBaseUrl;
-    private boolean visible; 
-    private boolean active; 
+
+    private boolean visible;
+
+    private boolean active;
+
     private Date syncedUntil;
+
     private Date lastFailedSync;
+
+    private String lastErrorMessage;
+
     private boolean implicit;
+
     private SecureProtocol secureProtocol;
     
     public FrontendDataMirror() {
@@ -178,6 +205,14 @@ public class FrontendDataMirror extends Model {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public String getLastErrorMessage() {
+        return lastErrorMessage;
+    }
+
+    public void setLastErrorMessage(final String lastErrorMessage) {
+        this.lastErrorMessage = lastErrorMessage;
     }
 
     /**

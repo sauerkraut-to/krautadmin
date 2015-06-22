@@ -1407,7 +1407,8 @@ categories:
 
   - &sdc22 !Category
     shortName: sdc22
-    name: "Reverse Engineering, De-Obfuscation & Entschlüsselung"
+    name: "Reverse Engineering & Entschlüsselung"
+    description: "... auch De-Obfuscation kann und soll thematisiert werden!"
 
   - &sdc23 !Category
     shortName: sdc23

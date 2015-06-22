@@ -16,14 +16,19 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
+import com.orientechnologies.orient.core.metadata.schema.OClass;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
+import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.ci.CaseInsensitive;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
+import to.sauerkraut.krautadmin.core.Constant;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
-import javax.validation.constraints.NotNull;
-
-import com.orientechnologies.orient.core.metadata.schema.OClass;
-import org.hibernate.validator.constraints.NotEmpty;
-import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
-import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
 
 /**
  *
@@ -32,14 +37,30 @@ import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Inde
 @Persistent
 public class Role extends Model {
 
-    @NotEmpty
+    @NotBlank
+    @CaseInsensitive
     @Index(OClass.INDEX_TYPE.UNIQUE)
+    @Length(min = Constant.MIN_SIZE_SHORT_NAME, max = Constant.MAX_SIZE_SHORT_NAME)
+    @Pattern(regexp = Constant.NAME_PATTERN_STRING)
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     private String shortName;
-    @NotEmpty
+
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
+    @Length(min = Constant.MIN_SIZE_NAME, max = Constant.MAX_SIZE_NAME)
+    @Pattern(regexp = Constant.NAME_PATTERN_STRING)
+    @NotBlank
+    @CaseInsensitive
     private String name;
+
     @NotNull
     private Set<Permission> permissions;
+
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.BASIC_WITH_IMAGES)
+    @Pattern(regexp = Constant.TEXT_PATTERN_STRING)
+    @Length(min = 0, max = Constant.MAX_SIZE_DESCRIPTION)
+    @CaseInsensitive
     private String description;
+
     private int weight;
     
     public Role() {

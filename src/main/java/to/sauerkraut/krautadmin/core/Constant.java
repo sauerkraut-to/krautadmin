@@ -16,8 +16,6 @@
  */
 package to.sauerkraut.krautadmin.core;
 
-import java.util.regex.Pattern;
-
 /**
  * @author sauerkraut.to <gutsverwalter@sauerkraut.to>
  */
@@ -27,11 +25,12 @@ public final class Constant {
     private static final String RP = "^";
     // regex suffix
     private static final String RS = "$";
-    private static final String SUPPORTED_DOWNLOAD_PROTOCOLS_REGEX = "(ht|f)tps?";
+    /*private static final String SUPPORTED_DOWNLOAD_PROTOCOLS_REGEX = "(ht|f)tps?";
     private static final String SUPPORTED_LINKING_PROTOCOLS_REGEX = "https?";
     private static final String CREDENTIALS_REGEX = "([a-zA-Z0-9\\.\\-_%]+(:[a-zA-Z0-9\\.\\-_%]+)?@)?";
-    private static final String PATH_AND_ANCHOR_REGEX =
-            "(:[0-9]+)?/?([a-zA-Z0-9\\-\\._\\?,'/\\\\\\+&amp;%\\$#=~!])*";
+    private static final String PORT_REGEX = "(:[0-9]+)?";
+    private static final String PATH_SEPARATOR_REGEX = "/";
+    private static final String PATH_WITH_QUERY_AND_ANCHOR_REGEX = "?([a-zA-Z0-9\\-\\._\\?,'/\\\\\\+&amp;%\\$#=~!])*";
     private static final String IPV6_REGEX = "(\\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:"
             + "){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])(\\.(25[0-5]|2[0-4][0-9]|1[0-9]["
             + "0-9]|[1-9]?[0-9])){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4][0-9]|"
@@ -49,40 +48,37 @@ public final class Constant {
             "((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\\.){3,3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9])";
     private static final String SUPPORTED_FQDN_REGEX = "(localhost|(([a-zA-Z0-9\\-\\._]*\\.)*[a-zA-Z0-9\\-]+\\.[a-"
             + "zA-Z]{2,63})|" + IPV4_REGEX + "|(\\[" + IPV6_REGEX + "\\]))";
-    private static final String PROTOCOL_SEPARATOR_REGEX = "://";
+    private static final String PROTOCOL_SEPARATOR_REGEX = "://";*/
 
     public static final int MIN_SIZE_CAPTION = 3;
     public static final int MIN_SIZE_NAME = 3;
+    public static final int MIN_SIZE_USERNAME = 3;
+    public static final int MIN_SIZE_SHORT_NAME = 3;
     public static final int MIN_SIZE_LONG_CAPTION = 3;
     public static final int MIN_SIZE_POSTING = 10;
     public static final int MIN_SIZE_DESCRIPTION = 10;
-    public static final int MIN_SIZE_SHORT_DESCRIPTION = 10;
-    public static final int MAX_SIZE_NAME = 50;
+    public static final int MAX_SIZE_NAME = 60;
+    public static final int MAX_SIZE_USERNAME = 35;
+    public static final int MAX_SIZE_SHORT_NAME = 25;
     public static final int MAX_SIZE_CAPTION = 100;
     public static final int MAX_SIZE_LONG_CAPTION = 200;
-    public static final int MAX_SIZE_POSTING = 2000;
-    public static final int MAX_SIZE_DESCRIPTION = 1000;
-    public static final int MAX_SIZE_SHORT_DESCRIPTION = 500;
+    public static final int MAX_SIZE_POSTING = 2700;
+    public static final int MAX_SIZE_DESCRIPTION = 1700;
 
-    public static final String DOWNLOAD_PROTOCOL_PATTERN_STRING = RP + SUPPORTED_DOWNLOAD_PROTOCOLS_REGEX + RS;
+    /*public static final String DOWNLOAD_PROTOCOL_PATTERN_STRING = RP + SUPPORTED_DOWNLOAD_PROTOCOLS_REGEX + RS;
     public static final String LINKING_PROTOCOL_PATTERN_STRING = RP + SUPPORTED_LINKING_PROTOCOLS_REGEX + RS;
     public static final String FQDN_PATTERN_STRING = RP + SUPPORTED_FQDN_REGEX + RS;
     public static final String DOWNLOAD_URL_PATTERN_STRING = RP + SUPPORTED_DOWNLOAD_PROTOCOLS_REGEX
-            + PROTOCOL_SEPARATOR_REGEX + CREDENTIALS_REGEX + SUPPORTED_FQDN_REGEX + PATH_AND_ANCHOR_REGEX + RS;
+            + PROTOCOL_SEPARATOR_REGEX + CREDENTIALS_REGEX + SUPPORTED_FQDN_REGEX + PORT_REGEX + PATH_SEPARATOR_REGEX
+            + PATH_WITH_QUERY_AND_ANCHOR_REGEX + RS;
     public static final String LINKING_URL_PATTERN_STRING = RP + SUPPORTED_LINKING_PROTOCOLS_REGEX
-            + PROTOCOL_SEPARATOR_REGEX + CREDENTIALS_REGEX + SUPPORTED_FQDN_REGEX + PATH_AND_ANCHOR_REGEX + RS;
+            + PROTOCOL_SEPARATOR_REGEX + CREDENTIALS_REGEX + SUPPORTED_FQDN_REGEX + PORT_REGEX + PATH_SEPARATOR_REGEX
+            + PATH_WITH_QUERY_AND_ANCHOR_REGEX + RS;*/
     public static final String NAME_PATTERN_STRING =
             RP + "([\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]+(\\p{Zs}+[\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}])*)+" + RS;
     public static final String TEXT_PATTERN_STRING =
             RP + "([\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]+([\\p{Z}\\p{C}]+[\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}])*)+" + RS;
-
-    public static final Pattern NAME_PATTERN = Pattern.compile(NAME_PATTERN_STRING);
-    public static final Pattern TEXT_PATTERN = Pattern.compile(TEXT_PATTERN_STRING);
-    public static final Pattern DOWNLOAD_URL_PATTERN = Pattern.compile(DOWNLOAD_URL_PATTERN_STRING);
-    public static final Pattern LINKING_URL_PATTERN = Pattern.compile(LINKING_URL_PATTERN_STRING);
-    public static final Pattern DOWNLOAD_PROTOCOL_PATTERN = Pattern.compile(DOWNLOAD_PROTOCOL_PATTERN_STRING);
-    public static final Pattern LINKING_PROTOCOL_PATTERN = Pattern.compile(LINKING_PROTOCOL_PATTERN_STRING);
-    public static final Pattern FQDN_PATTERN = Pattern.compile(FQDN_PATTERN_STRING);
+    public static final String SUPPORTED_LINKING_PROTOCOLS_STRING = RP + "https?" + RS;
 
     private Constant() {
 

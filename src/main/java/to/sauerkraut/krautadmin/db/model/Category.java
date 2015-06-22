@@ -17,9 +17,15 @@
 package to.sauerkraut.krautadmin.db.model;
 
 import com.orientechnologies.orient.core.metadata.schema.OClass;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.ci.CaseInsensitive;
 import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
+import to.sauerkraut.krautadmin.core.Constant;
+
+import javax.validation.constraints.Pattern;
 
 /**
  *
@@ -28,11 +34,25 @@ import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Inde
 @Persistent
 public class Category extends Model {
 
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
+    @Length(min = Constant.MIN_SIZE_NAME, max = Constant.MAX_SIZE_NAME)
+    @Pattern(regexp = Constant.NAME_PATTERN_STRING)
+    @CaseInsensitive
     @NotBlank
     private String name;
+
     @NotBlank
+    @CaseInsensitive
     @Index(OClass.INDEX_TYPE.UNIQUE)
+    @Length(min = Constant.MIN_SIZE_SHORT_NAME, max = Constant.MAX_SIZE_SHORT_NAME)
+    @Pattern(regexp = Constant.NAME_PATTERN_STRING)
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     private String shortName;
+
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.BASIC)
+    @Pattern(regexp = Constant.TEXT_PATTERN_STRING)
+    @Length(min = 0, max = Constant.MAX_SIZE_DESCRIPTION)
+    @CaseInsensitive
     private String description;
 
     public Category() {

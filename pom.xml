@@ -22,11 +22,62 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.8.1</dropwizard.version>
-        <orient.version>2.1-rc3</orient.version>
+        <orient.version>2.0.10</orient.version>
         <mainClass>to.sauerkraut.krautadmin.KrautAdminApplication</mainClass>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.8.2</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.vyarus</groupId>
+            <artifactId>guice-ext-annotations</artifactId>
+            <version>1.1.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject</groupId>
+                    <artifactId>guice</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject.extensions</groupId>
+                    <artifactId>guice-persist</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>ru.vyarus</groupId>
+            <artifactId>generics-resolver</artifactId>
+            <version>1.2.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject</groupId>
+                    <artifactId>guice</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject.extensions</groupId>
+                    <artifactId>guice-persist</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>com.samaxes.filter</groupId>
             <artifactId>cachefilter</artifactId>
@@ -196,6 +247,11 @@
             <version>4.0</version>
         </dependency>
         <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-persist</artifactId>
+            <version>4.0</version>
+        </dependency>
+        <dependency>
             <groupId>ru.vyarus</groupId>
             <artifactId>dropwizard-guicey</artifactId>
             <version>3.0.0</version>
@@ -241,8 +297,12 @@
         <dependency>
             <groupId>ru.vyarus</groupId>
             <artifactId>guice-persist-orient</artifactId>
-            <version>3.0.2</version>
+            <version>3.0.3-SNAPSHOT</version>
             <exclusions>
+                <exclusion>
+                    <groupId>ru.vyarus</groupId>
+                    <artifactId>generics-resolver</artifactId>
+                </exclusion>
                 <exclusion>
                     <groupId>com.orientechnologies</groupId>
                     <artifactId>orientdb-graphdb</artifactId>
@@ -266,6 +326,14 @@
                 <exclusion>
                     <groupId>com.google.inject</groupId>
                     <artifactId>guice</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ru.vyarus</groupId>
+                    <artifactId>guice-ext-annotations</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.inject.extensions</groupId>
+                    <artifactId>guice-persist</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>

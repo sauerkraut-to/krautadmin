@@ -16,6 +16,7 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
+import org.hibernate.validator.constraints.SafeHtml;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 
 /**
@@ -25,10 +26,11 @@ import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
 @Persistent
 public class Application extends Model {
     // TODO: hash the api key + public IP of the host (get it from sauerkraut.to) before each request and send uid too
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
     private String apiKey;
 
     public Application() {
-        
+
     }
 
     public String getApiKey() {

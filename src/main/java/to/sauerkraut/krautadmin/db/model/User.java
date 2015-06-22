@@ -16,15 +16,21 @@
  */
 package to.sauerkraut.krautadmin.db.model;
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.orientechnologies.orient.core.metadata.schema.OClass;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.SafeHtml;
 import ru.vyarus.guice.persist.orient.db.scheme.annotation.Persistent;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.ci.CaseInsensitive;
 import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Index;
+import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.lucene.LuceneIndex;
+import to.sauerkraut.krautadmin.core.Constant;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -33,18 +39,28 @@ import ru.vyarus.guice.persist.orient.db.scheme.initializer.ext.field.index.Inde
 @Persistent
 public class User extends Model {
 
-    @NotBlank
+    @CaseInsensitive
     @Index(OClass.INDEX_TYPE.UNIQUE)
+    @LuceneIndex(name = "user.username.lucene")
+    @NotBlank
+    @SafeHtml(whitelistType = SafeHtml.WhiteListType.NONE)
+    @Length(min = Constant.MIN_SIZE_USERNAME, max = Constant.MAX_SIZE_USERNAME)
+    @Pattern(regexp = Constant.NAME_PATTERN_STRING)
     private String username;
+
     @NotBlank
     @JsonIgnore
     private String passwordHash;
+
     @NotNull
     private Set<Role> roles;
+
     private boolean active;
+
     @NotBlank
     @JsonIgnore
     private String passwordSalt;
+
     private boolean passwordChangeAdvised;
     
     public User() {
